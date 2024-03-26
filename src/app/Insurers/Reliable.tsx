@@ -1,5 +1,4 @@
 import MaxWithWrapper from '@/components/MaxWithWrapper'
-import React from 'react'
 import { PharmaSalesPills,MapImage} from "@/data/imageData";
 import { ReliableItems1, ReliableItems2 } from "./data";
 

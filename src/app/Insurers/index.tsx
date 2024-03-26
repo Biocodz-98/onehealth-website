@@ -1,4 +1,3 @@
-import React from 'react'
 import Hero from "./Hero"
 import Sponsors from './Sponsors'
 import ServiceProvider from './ServiceProvider'

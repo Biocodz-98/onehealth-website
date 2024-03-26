@@ -1,4 +1,3 @@
-import React from 'react'
 import { CareDelivery, CareImage, OneWellness } from '@/data/imageData';
 import { CareSolutionData } from './data';
 import CareCard from '../../components/cards/CareCard';

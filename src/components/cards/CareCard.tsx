@@ -1,5 +1,4 @@
 "use client"
-import React from 'react'
 // import Background from '../Background'
 import {Link} from 'react-router-dom'
 import { Icons } from '../Icons'

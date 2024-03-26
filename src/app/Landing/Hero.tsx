@@ -1,4 +1,3 @@
-import React from 'react'
 import {  HeroCardData} from './data';
 import { HeroWomen } from '@/data/imageData';
 // import HeroCard from '../../components/cards/HeroCard';

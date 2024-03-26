@@ -1,4 +1,3 @@
-import React from 'react'
 import OneHealthServiceSuits from '@/components/OneHealthServiceSuits'
 import { PhamaCustomerData } from './data';
 export default function PharmaCustomers() {

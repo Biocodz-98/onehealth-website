@@ -1,4 +1,3 @@
-import React from 'react'
 import { IconType } from 'react-icons'
 export type ContactGuideMiniProps= {title: string, Icon: IconType};
 export default function ContactGuideMini({ Icon, title }: ContactGuideMiniProps) {

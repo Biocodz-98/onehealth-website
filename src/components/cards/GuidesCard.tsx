@@ -1,4 +1,3 @@
-import React from 'react'
 export type GuideCardProps = { image: string; index?: number };
 export default function GuidesCard({image,index}:GuideCardProps) {
   return (

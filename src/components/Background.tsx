@@ -1,4 +1,3 @@
-import React from 'react';
 import {HeroBGL,HeroBGR} from "@/data/imageData"
 import { cn } from '@/lib/utils';
 
