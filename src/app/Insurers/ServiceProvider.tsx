@@ -14,6 +14,7 @@ export default function ServiceProvider() {
 			containsNoStyles={false}
 			serviceCollections={ServiceProviderData}
 			sectionCls="md:pb-56"
+			sectionHeaderCls="px-4 md:px-0"
 		>
 			<MaxWithWrapper>
 				<div className="flex md:flex-row flex-col md:h-[20.5rem] w-full mx-auto my-7 md:my-28  px-6 justify-around gap-10 items-center">

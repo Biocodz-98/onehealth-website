@@ -59,7 +59,11 @@ export default function Hero() {
 			heroCardData={HeroCardData}
 			heroImage={HeroWomen}
 			heroImageAlt="elegant woman and child reminded to pickup their medication"
-			wrapperWidth='md:px-4 lg:px-16'
+			wrapperWidth="md:px-4 lg:px-16"
+			cardClassName="p-4 "
+			className1="md:order-last order-first md:-left-24"
+			className2="md:order-last"
+			headerTextCls=" leading-10  md:leading-12 "
 		/>
 	);
 }

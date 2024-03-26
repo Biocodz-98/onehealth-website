@@ -63,13 +63,13 @@ export default function GuidianceContact(props: GuidianceContactProps) {
 			>
 				<h1
 					className={cn(
-						"font-head font-semibold text-[1.6rem] md:text-4xl leading-9 text-secondary ",
+						"font-head font-semibold text-[1.6rem] md:text-4xl leading-9 text-secondary",
 						props.customH1Cls
 					)}
 				>
 					{props.headingText1}
 				</h1>
-				<h1 className="font-head font-semibold text-[1.5rem] pr-4 md:pr-0 max-w-screen-2xl w-[98vw] md:w-full text-wrap  md:text-4xl leading-9 text-secondary">
+				<h1 className="font-head font-semibold text-[1.5rem]  md:pr-0 max-w-screen-2xl w-[98%] md:w-full text-wrap  md:text-4xl leading-9 text-secondary">
 					{props.headingText2}
 				</h1>
 				<div className="flex flex-wrap gap-7 items-center mt-6 my-3">

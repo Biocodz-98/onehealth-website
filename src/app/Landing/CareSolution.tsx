@@ -97,6 +97,7 @@ export default function CareSolution() {
 				noStyleImage={CareDelivery}
 				noStyleImageAlt="care delivery image"
 				serviceCollections={CareSolutionData}
+				sectionHeaderCls='px-4'
 			>
 				<div className="overflow-hidden relative h-fit  md:h-[37rem] lg:h-[520px]  lg:w-[83vw] w-[95vw] bg-[#117754] rounded-[45px] mt-10 mx-auto">
 					<div className="leftbg w-full h-full clip-right bg-[#114920]/75 absolute z-0"></div>

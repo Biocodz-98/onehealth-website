@@ -34,10 +34,10 @@ export default function Footer() {
   return (
 		<motion.section ref={fRef} className="bg-white relative">
 			<MaxWithWrapper>
-				<div className="lg:h-[480px] lg:w-[70rem] md:w-[85vw] w-[93vw] h-[70vh] md:h-[50vh] mx-auto flex bg-[#228821] relative rounded-[40px] overflow-hidden mb-12 ">
+				<div className="lg:h-[480px] lg:w-[70rem] md:w-[85vw] w-[93vw] h-[76vh] md:h-[50vh] mx-auto flex bg-[#228821] relative rounded-[40px] overflow-hidden mb-12 ">
 					<div className="absolute footclipleft h-full w-full bg-[#10441E]"></div>
 					<div className="absolute footclipright h-full w-full bg-[#27634E]"></div>
-					<div className="content left-[50%] top-[50%] -translate-y-[50%] -translate-x-[50%] flex items-center justify-center gap-10  flex-col absolute w-full h-full">
+					<div className="content left-[50%] top-[40%] md:top-[50%] -translate-y-[50%] -translate-x-[50%] flex items-center justify-center gap-10  flex-col absolute w-full h-full">
 						<motion.h1
 							variants={Header}
 							animate={smController1}
@@ -52,7 +52,7 @@ export default function Footer() {
 						>
 							Get started with OneHealth
 						</motion.h1>
-						<div className="grid md:flex flex-wrap justify-center gap-10 mt-5 ">
+						<div className="grid md:flex flex-wrap justify-center gap-10 md:mt-5">
 							{GSO.map((item, index) => (
 								// <FillButtonC href={item.link} title={item.title} key={index} />
 								<FooterItem
@@ -68,17 +68,17 @@ export default function Footer() {
 								<OpenButton href={item.link} title={item.title} key={index} />
 							))}
 						</div> */}
-						<div className="flex w-full">
+						<div className="flex w-full ">
 							<div className="relative left-0 z-10 w-full h-full">
 								<img
 									src={GetStartedLeft1}
 									alt="get started footer images"
-									className="absolute -bottom-24 left-14"
+									className="absolute -bottom-44 md:-bottom-24 left-14"
 								/>
 								<img
 									src={GetStartedLeft2}
 									alt="get started footer images"
-									className="absolute -top-24"
+									className="absolute -top-9 md:-top-24"
 								/>
 								<img
 									src={GetStartedLeft3}
@@ -90,7 +90,7 @@ export default function Footer() {
 								<img
 									src={GetStartedRight}
 									alt="get started footer images"
-									className="absolute w-full -left-9 -top-[83px] scale-[128%]"
+									className="absolute w-full -left-9 top-9 md:-top-[83px] scale-[128%]"
 								/>
 							</div>
 						</div>

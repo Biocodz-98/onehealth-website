@@ -3,19 +3,19 @@ import CareCard, { CareCardProps } from './cards/CareCard';
 import SectionHeader from './SectionHeader';
 import { cn } from '@/lib/utils';
 
-export interface OneHealthServiceSuitsProps{
-    tag: string;
-    headingText: string;
-    subHeadingText: string;
-    containsNoStyles: boolean;
-    noStyleHeading?:string;
-    noStyleImage?:string;
-    noStyleImageAlt?:string;
-    noStyleContentText?:string;
-    serviceCollections: CareCardProps[];
-    children?:React.ReactNode;
-	sectionCls?:string;
-
+export interface OneHealthServiceSuitsProps {
+	tag: string;
+	headingText: string;
+	subHeadingText: string;
+	containsNoStyles: boolean;
+	noStyleHeading?: string;
+	noStyleImage?: string;
+	noStyleImageAlt?: string;
+	noStyleContentText?: string;
+	serviceCollections: CareCardProps[];
+	children?: React.ReactNode;
+	sectionCls?: string;
+	sectionHeaderCls?: string;
 }
 export default function  OneHealthServiceSuits(props: OneHealthServiceSuitsProps) {
 	return (
@@ -35,6 +35,7 @@ export default function  OneHealthServiceSuits(props: OneHealthServiceSuitsProps
 				tag={props.tag}
 				headingText={props.headingText}
 				subHeadingText={props.subHeadingText}
+				className={props.sectionHeaderCls}
 			/>
 			<div className="cards mt-14 flex flex-wrap px-2 md:flex-row flex-col gap-8 place-content-center lg:place-content-start">
 				{props.containsNoStyles && (

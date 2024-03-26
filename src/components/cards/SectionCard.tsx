@@ -21,14 +21,14 @@ export interface SectionCardProps {
 
 export default function SectionCard(props:SectionCardProps) {
   return (
-		<section className={cn("relative  w-full min-h-[88.5vh] h-fit mb-20 flex flex-col items-center",props.sectionCls)}>
+		<section className={cn("relative  w-full min-h-[88.5vh] h-fit mb-20 flex flex-col items-center px-4 md:px-0",props.sectionCls)}>
 			<div className="bg-[#228821] z-0 absolute rounded-3xl md:rounded-[6rem] lg:rounded-[160px] w-[99.6%] h-full mx-auto overflow-hidden">
 				<div className="section-card-clip-right bg-[#27634E61] absolute z-10 w-full h-full rounded-3xl md:rounded-[6rem] lg:rounded-[160px] "></div>
 				<div className="section-card-clip-left bg-[#10441E1C] absolute z-10 w-full h-full rounded-3xl md:rounded-[6rem] lg:rounded-[160px]"></div>
 			</div>
 			<div
 				className={cn(
-					"content bg-white relative z-20 mx-auto flex flex-col place-content-center rounded-3xl md:rounded-[40px] my-12 md:my-28 p-10 px-5 md:p-10 lg:p-20 gap-12 md:gap-16",
+					"content bg-white relative z-20 mx-auto flex flex-col place-content-center rounded-3xl md:rounded-[40px] my-12 md:my-28 p-10 px-3 md:p-10 lg:p-20 gap-12 md:gap-16 w-[97%] md:w-[86%]",
 					props.contentCls
 				)}
 			>
@@ -40,7 +40,7 @@ export default function SectionCard(props:SectionCardProps) {
 				/>
 				<div
 					className={cn(
-						"content2 flex flex-col md:flex-row justify-between p-5 px-10 md:px-0 lg:px-10",
+						"content2 flex flex-col md:flex-row justify-between p-5 px-3 md:px-0 lg:px-10",
 						props.parentCls
 					)}
 				>

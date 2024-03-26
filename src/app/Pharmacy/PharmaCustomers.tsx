@@ -9,6 +9,7 @@ export default function PharmaCustomers() {
 			subHeadingText="Deliver more medications and make more prescription sales with OneHealth pharmacy provider portal. Easily receive orders, manage enrollee repeat medications & drive positive health experience."
 			containsNoStyles={false}
 			serviceCollections={PhamaCustomerData}
+			sectionHeaderCls='px-4 md:px-0'
 		/>
 	);
 }

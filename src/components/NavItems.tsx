@@ -4,6 +4,7 @@ import { NAV_LINKS,CALL_TO_ACTION,PRODUCTS_CATEGORY } from '@/config'
 import { NavLink } from "react-router-dom";
 import { cn } from '@/lib/utils';
 import { Icons } from './Icons'
+import Search from './Search';
 
 
 interface NavigationItemProps  {
@@ -12,6 +13,7 @@ interface NavigationItemProps  {
 	logoCls?: string;
 	navCls?: string;
 	callCls?: string;
+	hideCls?: string;
 }
 
 export default function NavItems(props:NavigationItemProps) {
@@ -53,19 +55,9 @@ export default function NavItems(props:NavigationItemProps) {
 						}
 					</li>
 				</ul>
-				<div className="shadow-lg border border-slate-150 rounded-lg bg-slate-200">
-					<form>
-						<div className="rounded-lg flex items-center bg-slate-50 focus-within:outline focus-within:outline-primary">
-							<button type="submit" className="p-1.5">
-								<Icons.search className="" />
-							</button>
-							<input
-								className="py-2 placeholder:text-sm focus:outline-none bg-transparent placeholder:text-slate-500 pr-1.5 w-52"
-								type="search"
-								placeholder="Search medicines, plans etc."
-							/>
-						</div>
-					</form>
+				<div className={props.hideCls}>
+
+					<Search/>
 				</div>
 			</div>
 
