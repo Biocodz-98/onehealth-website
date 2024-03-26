@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { NAV_LINKS,CALL_TO_ACTION,PRODUCTS_CATEGORY } from '@/config'
 import { NavLink } from "react-router-dom";
 import { cn } from '@/lib/utils';

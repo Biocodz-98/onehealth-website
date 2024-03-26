@@ -1,4 +1,4 @@
-import React,{useRef,useEffect} from 'react'
+import {useRef,useEffect} from 'react'
 import {Link} from "react-router-dom";
 import { cn } from '@/lib/utils';
 import GuidesCard,{ GuideCardProps } from './cards/GuidesCard';

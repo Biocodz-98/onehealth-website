@@ -1,7 +1,6 @@
-import React,{useState,useEffect} from 'react'
+import {useState,useEffect} from 'react'
 import MaxWithWrapper from './MaxWithWrapper';
 import {Link, NavLink,useLocation} from 'react-router-dom';
-import { RiMenu3Line } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import { Icons } from './Icons';
 import NavItems from './NavItems';

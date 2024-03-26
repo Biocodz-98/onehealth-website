@@ -1,4 +1,4 @@
-import React,{useRef,useEffect} from 'react';
+import {useRef,useEffect} from 'react';
 import { TestimonialCardData, GuideCardData, ContactGuideInfoData} from "@/data/generalData";
 import {TestimonialB} from "@/data/imageData"
 import MaxWithWrapper from '../../components/MaxWithWrapper';

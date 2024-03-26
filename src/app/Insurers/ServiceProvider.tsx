@@ -1,4 +1,3 @@
-import React from "react";
 import OneHealthServiceSuits from "@/components/OneHealthServiceSuits";
 import { ServiceProviderData, CoverageData } from "./data";
 import CareCard from "@/components/cards/CareCard";
