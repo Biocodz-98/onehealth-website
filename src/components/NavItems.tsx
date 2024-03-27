@@ -98,8 +98,15 @@ export default function NavItems(props:NavigationItemProps) {
 						key={index}
 						className={`${items.variant} text-sm whitespace-nowrap flex items-center gap-2`}
 						to={`${items.href}`}
+						target={
+							items.label.toLowerCase() === "enter pharmarcy" ||
+							items.label.toLowerCase() === "sign in"
+								? "_blank"
+								: ""
+						}
 					>
 						{items.label == "Call us" && <Icons.call />}
+
 						{items.label}
 					</NavLink>
 				))}
