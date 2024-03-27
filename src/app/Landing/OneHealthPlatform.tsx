@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import MaxWithWrapper from '../../components/MaxWithWrapper'
 import { PlatformCardData } from './data';
 import PlatformCard from '../../components/cards/PlatformCard';

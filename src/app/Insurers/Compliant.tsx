@@ -1,4 +1,3 @@
-import React from 'react'
 import MaxWithWrapper from '@/components/MaxWithWrapper'
 import SectionHeaderMini from '@/components/SectionHeaderMini'
 import { CompliantData } from './data'

@@ -1,4 +1,3 @@
-import React from 'react'
 import SectionCard from "@/components/cards/SectionCard";
 import { EnrolleesData } from "./data";
 import { HomeScreen } from "@/data/imageData";

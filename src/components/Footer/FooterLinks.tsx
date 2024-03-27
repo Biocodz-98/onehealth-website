@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import  { useRef, useEffect } from "react";
 import { Icons } from '../Icons';
 import { PlatformData, ProductData, ResourceData } from './data';
 import {Link} from 'react-router-dom';

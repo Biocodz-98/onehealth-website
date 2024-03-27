@@ -1,4 +1,3 @@
-import React from 'react';
 import { WhyOneHealthcareData } from "./data";
 import {WhyOneHealthPills} from "@/data/imageData"
 // import WhyOneHealthCard from '@/components/cards/WhyOneHealth';

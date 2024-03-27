@@ -1,4 +1,3 @@
-import React from 'react'
 import Hero from './Hero'
 import PharmaCustomers from './PharmaCustomers'
 import ElevatePharmacy from './ElevatePharmacy'

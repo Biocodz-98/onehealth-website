@@ -1,4 +1,3 @@
-import React from 'react'
 import WhyOneHealthHIT from "@/components/WhyOneHealthHIT";
 import { PharmaSalesData } from "./data";
 import { PharmaSalesPills } from "@/data/imageData";

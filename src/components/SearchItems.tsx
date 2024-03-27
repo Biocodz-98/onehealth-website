@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 
 export default function SearchItems({name,image,link}:{name:string,image:string,link:string}) {

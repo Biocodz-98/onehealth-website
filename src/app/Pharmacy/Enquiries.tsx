@@ -1,4 +1,3 @@
-import React from "react"
 import MaxWithWrapper from "@/components/MaxWithWrapper";
 import GuidianceContact from "@/components/GuidianceContact";
 import {GuideCardData,ContactGuideInfoData} from "@/data/generalData"

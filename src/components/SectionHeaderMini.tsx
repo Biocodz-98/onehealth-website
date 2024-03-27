@@ -1,4 +1,4 @@
-import React,{useRef,useEffect} from 'react'
+import {useRef,useEffect} from 'react'
 import { cn } from '@/lib/utils';
 import { motion, useInView, useAnimation } from "framer-motion";
 import { Header, H1P1L } from "@/animate.data";

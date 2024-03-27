@@ -1,4 +1,3 @@
-import React from 'react'
 import { SponsorImageList } from './data';
 import MaxWithWrapper from '@/components/MaxWithWrapper';
 

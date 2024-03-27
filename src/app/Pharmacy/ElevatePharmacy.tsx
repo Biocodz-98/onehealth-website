@@ -1,4 +1,3 @@
-import React from 'react'
 import SectionCard from '@/components/cards/SectionCard'
 import { ElevatePharmacyData } from './data';
 import {PhoneSection} from "@/data/imageData"
