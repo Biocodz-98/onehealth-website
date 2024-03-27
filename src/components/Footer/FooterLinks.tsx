@@ -156,7 +156,7 @@ export default function FooterLinks() {
 									{item.title}
 								</Link>
 								{Boolean(item.tag) && (
-									<span className="absolute -right-20 md:-right-14 px-2 py-1 rounded-sm bg-[#B1FFB8] text-wrap w-fit text-secondary font-sans font-bold text-[0.55rem]">
+									<span className="relative ml-2 px-2 py-1 rounded-sm bg-[#B1FFB8] text-wrap w-fit text-secondary font-sans font-bold text-[0.55rem]">
 										{item.tag}
 									</span>
 								)}

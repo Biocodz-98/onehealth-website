@@ -152,6 +152,7 @@ ul li{
     line-height: 24px;
   }
 }
+
 /* adjust pagination position */
 .swiper-wrapper{
     padding-bottom: 65px;
@@ -160,6 +161,7 @@ ul li{
     justify-content: center !important;  */
     gap: 2rem !important;
   }
+
 /* change pagination background */
 .swiper-pagination-bullet {
     width: 4rem !important;
@@ -169,12 +171,16 @@ ul li{
 
 @media screen and (max-width:600px){
   .swiper-pagination-bullet {
-    width: 2rem !important;}
+    width: 1.5rem !important;}
   .swiper-wrapper{
-    padding-inline:2rem ;
+    /* padding-inline:4rem ; */
     /* align-items: center !important;
     justify-content: center !important;  */
-    gap: 1.2rem !important;
+    gap: .5rem !important;
+     padding-bottom: 105px;
+  }
+  .swiper-slides{
+    gap:2rem !important;
   }
 }
 @media screen and (max-width:1025px){

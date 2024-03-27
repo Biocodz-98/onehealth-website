@@ -45,7 +45,7 @@ export default function PlatformCard({
 			className={cn(
 				`${
 					index == 0 ? "bg-[#228821] " : "bg-[#EAFBDA]"
-				}  flex flex-col max-w-82 w-[400px] relative h-fit  z-0 rounded-3xl overflow-hidden `,
+				}  flex flex-col max-w-96 w-full relative h-fit  z-0 rounded-3xl overflow-hidden `,
 				cls
 			)}
 		>

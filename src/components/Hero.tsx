@@ -42,13 +42,13 @@ export default function Hero(props:HeroProps) {
 			<MaxWithWrapper className={props.wrapperWidth}>
 				<div
 					className={cn(
-						"content grid md:grid-cols-12 gap-9 md:gap-0 lg:gap-9 md:px-10 relative md:top-8 h-fit md:items-center md:justify-items-around md:justify-around ",
+						"content flex md:flex-row flex-col gap-9 md:gap-0 lg:gap-9 md:px-10 relative h-fit md:items-center md:justify-items-around md:justify-around ",
 						props.className
 					)}
 				>
 					<div
 						className={cn(
-							" left flex flex-col gap-10 md:col-span-6 top-10 relative items-center md:items-start",
+							" left flex flex-col gap-10 md:col-span-6 top-10 relative items-center md:items-start ",
 							props.className1
 						)}
 					>
@@ -60,20 +60,20 @@ export default function Hero(props:HeroProps) {
 						<div className=" flex flex-col gap-10 px-2 md:px-0">
 							<h1
 								className={cn(
-									"text-wrap w-full text-start font-bold leading-5  md:leading-12 font-head text-[2.3rem] lg:text-5xl text-primary",
+									"text-wrap w-full md:text-start text-center font-bold leading-5  md:leading-12 font-head text-[2.3rem] lg:text-5xl text-primary",
 									props.headerTextCls
 								)}
 							>
 								{props.headerText}
 							</h1>
-							<p className="leading-7 text-base md:text-xl font-normal text-slate-600  md:pr-0 lg:pr-20 ">
+							<p className="leading-7 text-base md:text-xl font-normal text-slate-600  md:pr-0 lg:pr-20 md:text-start text-center font">
 								{props.subHeader}
 							</p>
 						</div>
 						<div
 							className={cn(
-								"cards flex gap-4 w-full md:flex-row flex-col md:overflow-visible py-5 md:py-0 md:mt-5 lg:mt-0 px-2 md:px-0",
-								props.hcCls 
+								"cards flex gap-2 w-full md:flex-row flex-col flex-wrap  md:overflow-visible py-5 md:py-0 md:mt-5 lg:mt-0 px-2 md:px-0",
+								props.hcCls
 							)}
 						>
 							{props.heroCardData.map((item, index) => (
@@ -87,10 +87,10 @@ export default function Hero(props:HeroProps) {
 							))}
 						</div>
 					</div>
-					<div></div>
+					{/* <div></div> */}
 					<div
 						className={cn(
-							"right md:w-[20rem] lg:w-[504px] md:h-[500px] w-[25rem] mx-auto md:mx-0 -order-1 md:order-1 top-8 relative lg:col-span-4 mt-0 md:-mt-52 lg:mt-0 ",
+							"right lg:w-[504px] md:h-[500px] mx-auto md:mx-0 -order-1 md:order-1 top-8 relative lg:col-span-4 lg:mt-0 ",
 							props.className2
 						)}
 					>

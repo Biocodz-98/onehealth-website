@@ -1,22 +1,57 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import MaxWithWrapper from './MaxWithWrapper';
 import {Link, NavLink,useLocation} from 'react-router-dom';
-import { RiMenu3Line } from "react-icons/ri";
+
 import { RxCross2 } from "react-icons/rx";
 import { Icons } from './Icons';
 import NavItems from './NavItems';
-import { motion } from 'framer-motion';
-import { MobileNav } from '@/animate.data';
 import Search from './Search';
+import { MobileNavData } from './Header/data';
+import Whatsapp from './Whatsapp';
+import MobileNavItem from './MobileNavItem';
+import useSearch from '@/hooks/useSearch';
+import ResourcePage from './Header/Resource';
+import SearchItems from './SearchItems';
+
+
 
 export default function Navbar() {
-	const location = useLocation();
-	const [open,setOpen] = useState<boolean>(false);
-	const [hasAdvertisement,setHasAdvertisement] = useState<boolean>(true);
 
-	useEffect(()=>{
-		setOpen(false);
-	},[location])
+	const location = useLocation();
+	const [isHovered,setIsHovered] = useState<boolean>(false);
+	const [hasAdvertisement,setHasAdvertisement] = useState<boolean>(true);
+	const [searchQuery,setSearchQuery] = useState<string>("");
+
+	//mobile devices
+	const [active, setActive] = useState<boolean[]>([false,false,false,false,false]);
+
+	const checkpath = (item:string) => {
+		const checker = item.trim().toLowerCase();
+		console.log(checker, "item is login", checker === "cart");
+		if (checker === "home" || location.pathname.toLowerCase() === "/") {
+			setActive([true, false, false, false, false]);
+		} 
+		if (checker === "product") {
+			setActive([false, true, false, false, false]);
+		} 
+		if (checker === "call us") {
+			setActive([false, false, true, false, false]);
+		} 
+		if (checker === "cart") {
+			console.log("should log", item);
+			setActive([false, false, false, true, false]);
+		}
+		if (checker === "login") {
+			setActive([false, false, false, false, true]);
+		}
+		if((checker !== "login") && (checker !== "product") && (checker !== "call us") && (checker !== "cart") && (checker !== "home")) {
+			setActive([false, false, false, false, false]);
+		}
+	};
+
+	const {error,searchResult,loading} = useSearch(searchQuery);
+
+	console.log(searchResult,error,loading,"from api search result");
 
   return (
 		<>
@@ -57,49 +92,73 @@ export default function Navbar() {
 									</p>
 								</div>
 								<div className="hidden z-50 ld:ml-8 lg:block lg:self-stretch">
-									<NavItems />
+									<NavItems
+										searchQuery={searchQuery}
+										setHovered={setIsHovered}
+										setSearchQuery={setSearchQuery}
+									/>
 								</div>
 							</div>
 							<div className="mobile-search md:hidden flex w-full px-4">
-								<Search className="w-full" />
-								{/* {!open ? (
-									<RiMenu3Line
-										onClick={() => setOpen((prev) => !prev)}
-										className="md:hidden ml-auto text-4xl"
-									/>
-								) : (
-									<RxCross2
-										onClick={() => setOpen((prev) => !prev)}
-										className="md:hidden ml-auto text-4xl"
-									/>
-								)} */}
+								<Search
+									className="w-full"
+									setQuery={setSearchQuery}
+									query={searchQuery}
+								/>
 							</div>
 						</div>
 					</header>
-					{open && (
-						<motion.div
-							animate="animate"
-							initial="initial"
-							variants={MobileNav}
-							exit={MobileNav.exit}
-							whileInView="animate"
-							transition={{ duration: 0.65, delay: 0.1, ease: "backOut" }}
-							viewport={{
-								once: true,
-							}}
-							className="mobile-nav md:hidden absolute top-36 bg-white pl-2 p-5 pb-10 right-0"
-						>
-							<NavItems
-								cls="flex flex-col"
-								cls1="flex-col md:items-center items-start"
-								callCls="flex-col md:w-fit w-full md:ml-8 mx-0"
-								navCls="md:flex-row flex-col md:w-fit w-full mx-0 md:ml-8"
-								hideCls="hidden"
+					<ResourcePage setIsHovered={setIsHovered} isHovered={isHovered} />
+					{searchQuery && (
+						<div className="searched product flex flex-col gap-2 p-4 absolute max-h-[80vh] overflow-auto w-full bg-white max-w-[85%] md:max-w-[60%]">
+							<RxCross2
+								onClick={() => setSearchQuery("")}
+								className="absolute text-4xl text-red-500 right-0 hover:cursor-pointer"
 							/>
-						</motion.div>
+							<div className="py-3 flex w-full"></div>
+							{loading && (
+								<div className="mx-auto text-center self-center text-xl w-full ">
+									Loading products ...
+								</div>
+							)}
+							{Object.keys(error).length > 0 && (
+								<div className="mx-auto text-center self-center text-xl text-red-500 w-full">
+									Something went wrong, try again ...
+								</div>
+							)}
+							{searchResult.length == 0 && (
+								<div className="mx-auto text-center self-center text-xl text-red-500  w-full flex min-w-[80%]">
+									No Product Found!
+								</div>
+							)}
+							{searchResult.map((item, index) => (
+								<SearchItems
+									key={index}
+									image={item.image}
+									link={item.link ?? "#"}
+									name={item.name}
+								/>
+							))}
+						</div>
 					)}
 				</MaxWithWrapper>
+
+				<nav className="lg:hidden fixed bottom-0 flex w-full bg-slate-50">
+					{MobileNavData.map((item, index) => (
+						<MobileNavItem
+							key={index}
+							action={item.action}
+							text={item.text}
+							Icon={item.icon}
+							active={active[index]}
+							setActive={checkpath}
+						/>
+					))}
+				</nav>
+
+				<Whatsapp />
 			</div>
 		</>
 	);
 }
+

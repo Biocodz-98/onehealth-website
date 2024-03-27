@@ -59,10 +59,12 @@ export default function Hero() {
 			heroCardData={HeroCardData}
 			heroImage={HeroWomen}
 			heroImageAlt="elegant woman and child reminded to pickup their medication"
-			wrapperWidth="md:px-4 lg:px-16"
-			cardClassName="p-4 "
-			className1="md:order-last order-first md:-left-24"
-			className2="md:order-last"
+			wrapperWidth="md:px-4 "
+			cardClassName="p-4"
+			className="grid md:flex flex-col md:flex-col justify-between lg:flex-row  overflow-visible md:pb-32 lg:px-28"
+			className1="order-first gap-8 md:gap-14 md:pl-0  px-2 md:px-0 w-full relative lg:w-[65%]"
+			className2="h-[490px] mt-9 lg:h-[650px] w-full mb-10 pb-5 order-last px-5 lg:px-0 md:min-w-[500px] relative"
+			classNameImg="relative "
 			headerTextCls=" leading-10  md:leading-12 "
 		/>
 	);

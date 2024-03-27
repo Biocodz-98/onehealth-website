@@ -5,7 +5,7 @@ import MaxWithWrapper from '../../components/MaxWithWrapper';
 import TestimonialCard from '../../components/cards/TestimonialCard';
 import { motion, useInView, useAnimation } from "framer-motion";
 import { H1P1L,H1P1R, Header, Scale } from "@/animate.data";
-import { Pagination, A11y,Autoplay } from "swiper/modules";
+import { Pagination,Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
@@ -103,20 +103,20 @@ export default function Testimonial() {
 						viewport={{
 							once: true,
 						}}
-						className="testimonial flex gap-5 mt-10 max-w-screen w-[98.6vw] md:w-full overflow-auto py-5 relative"
+						className="testimonial flex mt-10 max-w-screen w-[98.6vw] md:w-full overflow-auto py-5 relative"
 					>
 						<Swiper
 							// install Swiper modules
-							modules={[Pagination, A11y, Autoplay]}
-							spaceBetween={4}
+							modules={[Pagination,  Autoplay]}
+							slidesPerView="auto"
 							breakpoints={{
-								420: {
+								320: {
 									slidesPerView: 2,
-									spaceBetween :3,
+									spaceBetween :4
 								},
 								639: {
-									slidesPerView: 3,
-									spaceBetween :4,
+									slidesPerView: 2,
+									spaceBetween :2,
 								},
 								865: {
 									slidesPerView: 3,
@@ -129,16 +129,16 @@ export default function Testimonial() {
 									slidesPerView: 5,
 								},
 							}}
-							slidesPerView={1}
+							// slidesPerView={1}
 							loop={true}
-							// centeredSlides={true}
+							// centeredSlides={true} 							centeredSlidesBounds={true}
 							autoplay={{
 								delay: 2500,
 								disableOnInteraction: false,
 							}}
 							pagination={{ clickable: true }}
-							onSwiper={(swiper) => console.log(swiper)}
-							onSlideChange={() => console.log("slide change")}
+							// onSwiper={(swiper) => console.log(swiper)}
+							// onSlideChange={() => console.log("slide change")}
 							className="mySwiper"
 						>
 							{TestimonialCardData.map((item, index) => (

@@ -3,26 +3,40 @@ import MaxWithWrapper from '@/components/MaxWithWrapper'
 import SectionHeaderMini from '@/components/SectionHeaderMini'
 import { CompliantData } from './data'
 import { FemaleDoc } from '@/data/imageData'
+import { cn } from '@/lib/utils'
 
-function ComplaintItem({image, title,desc}:{image:string, title:string, desc:string}){
-    return (
-			<div className="flex gap-8 ">
-				<div className="image py-5 w-16 h-16">
-					<img
-						src={image}
-                        width={64}
-                        height={64}
-						alt="Expectation from your pharmacy manager; Optimized network delivery or pickup, regulatory compliance,advance technological support logistics image"
-					/>
-				</div>
-				<div className="text space-y-3">
-					<h5 className="text-[#114920] font-head font-bold text-xl">
-						{title}
-					</h5>
-					<p className="text-[#475367] font-body font-medium">{desc}</p>
-				</div>
+export function ComplaintItem({
+	image,
+	title,
+	desc,
+	imageCls,
+	comCls,
+	textCls,
+}: {
+	image: string;
+	title: string;
+	desc: string;
+	imageCls?: string;
+	comCls?: string;
+	textCls?: string;
+}) {
+	return (
+		<div className={cn("flex gap-8 ", comCls)}>
+			<div className={cn("image py-5 w-16 h-16", imageCls)}>
+				<img
+					src={image}
+					// width={64}
+					// height={64}
+					alt="Expectation from your pharmacy manager; Optimized network delivery or pickup, regulatory compliance,advance technological support logistics image"
+					className="w-full"
+				/>
 			</div>
-		);
+			<div className={cn("text space-y-3", textCls)}>
+				<h5 className="text-[#114920] font-head font-bold text-xl">{title}</h5>
+				<p className="text-[#475367] font-body font-medium">{desc}</p>
+			</div>
+		</div>
+	);
 }
 export default function Compliant() {
   return (
