@@ -62,6 +62,7 @@ import resPin from "../../public/resPin.svg";
 import profile from "../../public/profile.svg";
 import send from "../../public/send.svg";
 import home from "../../public/home.svg";
+import whatsappSound from "../../public/whatapp.wav";
 
 
 
@@ -136,3 +137,5 @@ export const Respin = resPin as string;
 export const Profile = profile as string;
 export const Send = send as string;
 export const Home = home as string;
+
+export const WhatappSound = whatsappSound as string;

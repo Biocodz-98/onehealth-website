@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import MaxWithWrapper from './MaxWithWrapper';
 import {Link, NavLink,useLocation} from 'react-router-dom';
 
@@ -12,6 +12,7 @@ import MobileNavItem from './MobileNavItem';
 import useSearch from '@/hooks/useSearch';
 import ResourcePage from './Header/Resource';
 import SearchItems from './SearchItems';
+// import { WhatappSound } from '@/data/imageData';
 
 
 
@@ -19,6 +20,7 @@ export default function Navbar() {
 
 	const location = useLocation();
 	const [isHovered,setIsHovered] = useState<boolean>(false);
+	const [showWhatapp,setShowWhatapp] = useState<boolean>(false);
 	const [hasAdvertisement,setHasAdvertisement] = useState<boolean>(true);
 	const [searchQuery,setSearchQuery] = useState<string>("");
 
@@ -51,7 +53,20 @@ export default function Navbar() {
 
 	const {error,searchResult,loading} = useSearch(searchQuery);
 
-	console.log(searchResult,error,loading,"from api search result");
+	//pop in whatsapp
+	useEffect(()=>{
+		const timer = setTimeout(() => {
+			setShowWhatapp(true);
+
+			// Attempt to play alert sound
+			// const alertSound = new Audio(WhatappSound);
+			// alertSound.play().catch((error) => {
+			// 	console.error("Failed to play alert sound:", error.message);
+			// });
+		}, 4000);
+
+		return () => clearTimeout(timer);
+	},[]);
 
   return (
 		<>
@@ -155,8 +170,10 @@ export default function Navbar() {
 						/>
 					))}
 				</nav>
-
-				<Whatsapp />
+				{showWhatapp &&
+					<Whatsapp />
+				
+				}
 			</div>
 		</>
 	);
