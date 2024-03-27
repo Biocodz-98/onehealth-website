@@ -10,7 +10,7 @@ export default function Search({className,query,setQuery}:{className?: string,qu
 					<button type="submit" className="p-1.5" 
 						onClick={(e)=>{
 							e.preventDefault();
-							setQuery?.((query+" ")??"");
+							setQuery?.((query ?? "")+" ");
 							console.log(query,"click");
 						}}
 					>
