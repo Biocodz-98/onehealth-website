@@ -16,7 +16,7 @@ export default function Subsriber() {
 			viewport={{
 				once: true,
 			}}
-			className="bg-[#228821]  w-full p-5 py-9 md:p-9 rounded-3xl col-span-4 flex flex-col gap-5  overflow-hidden "
+			className="bg-[#228821]  w-full p-5 py-9 md:p-9 rounded-3xl col-span-4 flex flex-col gap-5  overflow-hidden  justify-between"
 		>
 			<motion.h1
 				variants={H1P1L}
@@ -39,8 +39,8 @@ export default function Subsriber() {
 					once: true,
 				}}
 			>
-				<p className="text-white md:pr-20">Feeling a bit lost some times?</p>
-				<p className="text-white md:pr-20">
+				<p className="text-white ">Feeling a bit lost some times?</p>
+				<p className="text-white ">
 					Get a weekly dose of actionable health advice, secrets, tips, trends,
 					and banter in your inbox.
 				</p>
