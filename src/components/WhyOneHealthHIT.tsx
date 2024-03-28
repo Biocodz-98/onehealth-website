@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import MaxWithWrapper from './MaxWithWrapper';
 import WhyOneHealthCard ,{ WhyOneHealthProps } from './cards/WhyOneHealth';
 import SectionHeaderMini from './SectionHeaderMini';
