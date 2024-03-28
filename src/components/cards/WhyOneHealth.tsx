@@ -20,7 +20,7 @@ export default function WhyOneHealthCard({image,heading,description,cls}: WhyOne
 					alt="why choose one health as your number one healthcare provider image"
 				/>
 			</div>
-			<h1 className="text-[#228821] font-head text-3xl font-semibold text-center">
+			<h1 className="text-[#228821] font-head text-3xl font-semibold text-center text-nowrap">
 				{heading}
 			</h1>
 			<p className="text-center font-light font-body md:leading-8 text-lg ">{description}</p>

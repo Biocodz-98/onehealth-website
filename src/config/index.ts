@@ -1,6 +1,10 @@
 import { Icons } from "@/components/Icons";
 
-export const PRODUCTS_CATEGORY = ["Medicine", "Consultant", "Appointment"];
+export const PRODUCTS_CATEGORY = [
+	{ name: "Medicine", link: "https://onehealthng.com/pharmacy" },
+	{ name: "Consultant", link: "https://onehealthng.com/book-doctor" },
+	{ name: "Appointment", link: "https://onehealthng.com/book-doctor" },
+];
 
 export const NAV_LINKS = [
 	{

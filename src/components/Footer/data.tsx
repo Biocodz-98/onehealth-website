@@ -6,12 +6,14 @@ export const GSO = [
 	},
 	{
 		title: "HMO OR INSURER?",
-		link: "https://partner.onehealthng.com/pharmacy",
+		// link: "https://partner.onehealthng.com/pharmacy",
+		link: "/insurers",
 		action: "Partner with us",
 	},
 	{
 		title: "PHARMACY OWNER?",
-		link: "https://partner.onehealthng.com/",
+		// link: "https://partner.onehealthng.com/",
+		link: "https://forms.gle/Z38NAhYRH2uXUcEZA",
 		action: "Sign up",
 	},
 ];

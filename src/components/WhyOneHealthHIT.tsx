@@ -84,7 +84,7 @@ export default function  WhyOneHealthHIT(props: WhyOneHealthHITProps) {
 						viewport={{
 							once: true,
 						}}
-						className="flex place-content-center gap-14 my-20"
+						className="flex place-content-center gap-14 my-20 "
 					>
 						{props.children}
 					</motion.div>

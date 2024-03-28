@@ -55,7 +55,7 @@ export default function NavItems(props:NavigationItemProps) {
 										className="bg-slate-150 hover:bg-slate-200 px-3 py-2 rounded-full text-sm list-none z-40"
 										key={index}
 									>
-										<NavLink to={`#${item}`}>{item}</NavLink>
+										<NavLink to={item.link}>{item.name}</NavLink>
 									</li>
 								))}
 							</ul>

@@ -179,9 +179,9 @@ ul li{
     gap: .5rem !important;
      padding-bottom: 105px;
   }
-  .swiper-slides{
+  /* .swiper-slides{
     gap:2rem !important;
-  }
+  } */
 }
 @media screen and (max-width:1025px){
   .swiper-wrapper{
