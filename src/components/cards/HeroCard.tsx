@@ -17,7 +17,7 @@ export default function HeroCard({
 	return (
 		<div
 			className={cn(
-				" grid grid-cols-12 grid-rows-12 md:flex md:flex-col md:max-w-[205px] md:max-h-[201px] w-[98%] md:w-full p-5 rounded-3xl shadow-xs shadow-[#101928]/15 bg-white inset-0 drop-shadow-md md:px-5 px-1 m-1 border",
+				" grid grid-cols-12 grid-rows-12 md:flex md:flex-col md:max-w-[200px] md:max-h-[201px] w-full md:w-full p-3 rounded-3xl shadow-xs shadow-[#101928]/15 bg-white inset-0 drop-shadow-md md:px-5 px-1 m-1 border",
 				className
 			)}
 		>
@@ -27,9 +27,9 @@ export default function HeroCard({
 					{"  "} {title}
 				</p>
 			</div>
-			<div className="bg-[#F4F4F4] md:p-1.5 md:m-1.5 px-3 md:mx-0 rounded-md relative h-24 w-40 md:my-3 overflow-hidden -order-1 md:order-1 col-span-6 row-span-12 mr-5 md:mr-0">
-				<div className="absolute top-3 -right-0">
-					<img src={imagesrc} alt="hero image" width={90} height={90} />
+			<div className="bg-[#F4F4F4] md:p-1.5 md:m-1.5 px-3 md:mx-0 rounded-md relative h-24 md:w-40 md:my-3 overflow-hidden -order-1 md:order-1 col-span-6 row-span-12 mr-5 md:mr-0">
+				<div className="absolute top-3 -right-0 h-full w-full">
+					<img src={imagesrc} alt="hero image" />
 				</div>
 			</div>
 			<div className="action font-bold text-md leading-4 flex items-center justify-between text-primary mt-2 order-2 col-span-6 row-span-6 pl-2 md:pl-0">

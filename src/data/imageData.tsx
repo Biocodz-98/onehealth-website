@@ -55,6 +55,14 @@ import computerSupport from "../../public/computerSupport.svg";
 import trackingOrder from "../../public/trackOrder.svg";
 import sheets from "../../public/Sheets.svg";
 import femaleDoc from "../../public/femaleDoc.svg";
+import resource from "../../public/resource.png";
+import resChart from "../../public/resChart.svg";
+import resCandles from "../../public/resCandles.svg";
+import resPin from "../../public/resPin.svg";
+import profile from "../../public/profile.svg";
+import send from "../../public/send.svg";
+import home from "../../public/home.svg";
+import whatsappSound from "../../public/whatapp.wav";
 
 
 
@@ -120,3 +128,14 @@ export const Sheets = sheets as string;
 export const ComputerSupport = computerSupport as string;
 export const TrackOrder = trackingOrder as string;
 export const FemaleDoc =femaleDoc as string;
+
+
+export const Resource = resource as string;
+export const Reschart = resChart as string;
+export const Rescandles = resCandles as string;
+export const Respin = resPin as string;
+export const Profile = profile as string;
+export const Send = send as string;
+export const Home = home as string;
+
+export const WhatappSound = whatsappSound as string;
