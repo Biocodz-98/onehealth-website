@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import  { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 export default function MaxWithWrapper({className,children}:{className?:string,children:ReactNode}) {
   return (

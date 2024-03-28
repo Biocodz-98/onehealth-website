@@ -15,7 +15,7 @@ export default function Subsriber() {
 			viewport={{
 				once: true,
 			}}
-			className="bg-[#228821]  w-full p-5 py-9 md:p-9 rounded-3xl col-span-4 flex flex-col gap-5 md:pr-20 overflow-hidden "
+			className="bg-[#228821]  w-full p-5 py-9 md:p-9 rounded-3xl col-span-4 flex flex-col gap-5  overflow-hidden "
 		>
 			<motion.h1
 				variants={H1P1L}
@@ -38,8 +38,8 @@ export default function Subsriber() {
 					once: true,
 				}}
 			>
-				<p className="text-white">Feeling a bit lost some times?</p>
-				<p className="text-white">
+				<p className="text-white md:pr-20">Feeling a bit lost some times?</p>
+				<p className="text-white md:pr-20">
 					Get a weekly dose of actionable health advice, secrets, tips, trends,
 					and banter in your inbox.
 				</p>
@@ -54,19 +54,16 @@ export default function Subsriber() {
 				viewport={{
 					once: true,
 				}}
+				className="w-full"
 			>
-				<div className="flex w-full max-w-sm items-center space-x-2">
-					<div className="flex relative">
-						<Input
-							type="email"
-							placeholder="Email Address"
-							className="pl-6 w-[14.4rem] md:w-[17.5rem]"
-						/>
+				<div className="flex w-full flex-wrap  gap-2">
+					<div className="flex relative w-full max-w-[67%]">
+						<Input type="email" placeholder="Email Address" className="pl-6 " />
 						<FiMail className="text-[#667185] absolute flex top-[32%] ml-2" />
 					</div>
 					<Button
 						type="submit"
-						className="text-secondary text-center bg-[#8DDE44] w-[7.9rem]"
+						className="text-secondary text-center bg-[#8DDE44] w-fit p-4 px-5"
 					>
 						Subscribe
 					</Button>
