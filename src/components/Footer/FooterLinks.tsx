@@ -37,7 +37,7 @@ export default function FooterLinks() {
 			exit={Header.exit}
 			className="col-span-7 bg-slate-100/75 w-[95vw] md:max-w-screen-2xl md:w-full md:rounded-[20px]"
 		>
-			<div className="flex md:flex-row  flex-wrap gap-12 md:gap-0 justify-between p-4 md:p-3 lg:p-8 text-[#3E3838] text-sm font-medium">
+			<div className="flex md:flex-row  flex-wrap gap-12  justify-between p-4 md:p-3 lg:p-8 text-[#3E3838] text-sm font-medium">
 				<motion.div
 					variants={Scale}
 					animate="animate"
@@ -60,7 +60,7 @@ export default function FooterLinks() {
 						viewport={{
 							once: true,
 						}}
-						className="text-[#3E3838]/75"
+						className="text-[#3E3838]/75 relative top-2"
 					>
 						Product
 					</motion.h5>
@@ -96,7 +96,7 @@ export default function FooterLinks() {
 						viewport={{
 							once: true,
 						}}
-						className="text-[#3E3838]/75"
+						className="text-[#3E3838]/75 relative top-2"
 					>
 						Platform
 					</motion.h5>
@@ -116,7 +116,9 @@ export default function FooterLinks() {
 								key={index}
 								className="list-none"
 							>
-								<Link to={item.link} target="_blank">{item.title}</Link>
+								<Link to={item.link} target="_blank">
+									{item.title}
+								</Link>
 							</motion.li>
 						))}
 					</ul>
@@ -132,7 +134,7 @@ export default function FooterLinks() {
 						viewport={{
 							once: true,
 						}}
-						className="text-[#3E3838]/75"
+						className="text-[#3E3838]/75 relative top-2"
 					>
 						Resources
 					</motion.h5>
