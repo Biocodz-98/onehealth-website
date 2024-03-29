@@ -20,7 +20,7 @@ export default function Navbar() {
 	const location = useLocation();
 	const [isHovered,setIsHovered] = useState<boolean>(false);
 	const [showWhatapp,setShowWhatapp] = useState<boolean>(false);
-	const [hasAdvertisement,setHasAdvertisement] = useState<boolean>(true);
+	const [hasAdvertisement,setHasAdvertisement] = useState<boolean>(false);//use for displaying advertisement on the screen (default false - no advertisement)
 	const [searchQuery,setSearchQuery] = useState<string>("");
 
 	//mobile devices
@@ -51,6 +51,7 @@ export default function Navbar() {
 	};
 
 	const {error,searchResult,loading} = useSearch(searchQuery);
+	console.log(searchResult)
 
 	//pop in whatsapp
 	useEffect(()=>{
@@ -124,7 +125,7 @@ export default function Navbar() {
 					</header>
 					<ResourcePage setIsHovered={setIsHovered} isHovered={isHovered} />
 					{searchQuery && (
-						<div className="searched product flex flex-col gap-2 p-4 absolute max-h-[80vh] overflow-auto w-full bg-white max-w-[85%] md:max-w-[60%]">
+						<div className="searched product flex flex-col p-4 absolute max-h-[80vh] overflow-auto w-full bg-white max-w-[85%] md:max-w-[60%]">
 							<RxCross2
 								onClick={() => setSearchQuery("")}
 								className="absolute text-4xl text-red-500 right-0 hover:cursor-pointer"
@@ -149,7 +150,7 @@ export default function Navbar() {
 								<SearchItems
 									key={index}
 									image={item.image}
-									link={item.link ?? "#"}
+									url={item.url ?? "#"}
 									name={item.name}
 								/>
 							))}
