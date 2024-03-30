@@ -38,7 +38,7 @@ export default function SectionHeaderMini({tag,headingText,lineCls,tagCls,secCls
 					once: true,
 				}}
 			>
-				<p className="bg-[#CFF1D2] rounded-[40px] font-sans font-semibold text-sm leading-5 text-[#475367] p-3 py-2 w-fit  text-nowrap">
+				<p className="bg-[#CFF1D2] rounded-[40px] font-sans font-semibold text-sm leading-5 text-[#475367] p-3 py-2 w-fit  text-nowrap ">
 					{tag}
 				</p>
 				<p className={cn("border border-[#CFF1D2] w-[80%]", lineCls)}></p>
