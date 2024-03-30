@@ -13,10 +13,10 @@ export default function Hero() {
 			heroCardData={HeroCardData}
 			subHeader="Make more pharma sales by delivering medication & prescription orders to a wider customer base without hassles."
 			className1="lg:order-last order-first lg:max-w-[50%] gap-16 md:pl-9 lg:w-[50vw] px-2 md:px-0"
-			className2=" w-full  mb-10 pb-10 mt-10"
+			className2=" w-full  mb-10 pb-10 mt-10 h-[490px] mt-9 lg:h-[650px] md:max-w-[500px] max-h-[560px]"
 			className="grid md:flex flex-col md:flex-col lg:flex-row overflow-visible md:gap-9 gap-0"
 			classNameSection="overflow-hidden md:pb-32"
-			classNameImg="absolute md:-left-[16%] scale-100  md:scale-125 "
+			classNameImg="absolute -left-[2.5%] md:-left-[32%] lg:-left-[16%] scale-100  md:scale-125 "
 			wrapperWidth="md:px-4 lg:px-16"
 			cardClassName="p-4 "
 			headerTextCls=" leading-10  md:leading-12 "
