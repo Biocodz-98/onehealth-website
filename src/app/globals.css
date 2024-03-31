@@ -127,6 +127,9 @@
   .section-tag {
     @apply font-sans bg-[#F0F2F5] font-semibold text-sm leading-5 text-slate-600 w-fit p-2 px-4 rounded-full;
   }
+  .shola{
+    @apply bg-[#1D1D1F] text-white text-[0.42rem] w-fit px-2 font-semibold font-body;
+  }
 
   html,body{
     overflow-x: hidden !important;

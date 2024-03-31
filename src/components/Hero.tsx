@@ -20,6 +20,12 @@ interface HeroProps {
 	cardClassName?: string;
 	hcCls?: string;
 	headerTextCls?: string;
+	isLanding?: boolean;
+	motherImage?: string;
+	sholaImage?: string;
+	productImage?: string;
+	shockImage?: string;
+	textImage?: string;
 }
 
 export default function Hero(props:HeroProps) {
@@ -57,7 +63,7 @@ export default function Hero(props:HeroProps) {
 								{props.badgeTag}
 							</p>
 						)}
-						<div className=" flex flex-col gap-10 px-2 md:px-0">
+						<div className=" flex flex-col gap-10 px-2 md:px-0 md:w-[85%]">
 							<h1
 								className={cn(
 									"text-wrap w-full md:text-start text-center font-bold leading-5  md:leading-12 font-head text-[2.3rem] lg:text-5xl text-primary",
@@ -90,17 +96,53 @@ export default function Hero(props:HeroProps) {
 					{/* <div></div> */}
 					<div
 						className={cn(
-							"right lg:w-[504px] md:h-[500px] mx-auto md:mx-0 -order-1 md:order-1 top-8 relative lg:col-span-4 lg:mt-0 ",
+							"right lg:w-[504px] md:h-[500px] mx-auto md:mx-0 -order-1 md:order-1 top-8 relative lg:col-span-4 lg:mt-0",
 							props.className2
 						)}
 					>
-						<img
-							src={props.heroImage}
-							alt={props.heroImageAlt}
-							className={cn("h-full w-full", props.classNameImg)}
-							// width={504}
-							// height={500}
-						/>
+						{!props.isLanding ? (
+							<img
+								src={props.heroImage}
+								alt={props.heroImageAlt}
+								className={cn("h-full w-full", props.classNameImg)}
+								// width={504}
+								// height={500}
+							/>
+						) : (
+							<div className="grid gap-3 col-span-2 h-full w-full">
+								<div className="col-span-7 row-start-1 row-end-12 rounded-3xl relative">
+									<img
+										src={props.motherImage}
+										alt={props.heroImageAlt}
+										className="h-full w-full"
+									/>
+									<div className="absolute bottom-7 flex items-center gap-1 px-1 left-[7%]">
+										<img
+											src={props.sholaImage}
+											alt={props.heroImageAlt}
+											className=""
+										/>
+										<div className="flex flex-col gap-[0.1rem] ">
+											<p className="shola">
+												Shola, your meds are ready for pickup.
+											</p>
+											<p className="shola">
+												I have set 2 auto-refill for the next 30 days
+											</p>
+											<p className="shola">You save NGN16,000 order</p>
+											<p className="shola">For drug reactions, Send a DM</p>
+										</div>
+									</div>
+								</div>
+								<div className="bg-black col-span-6 row-start-1 row-end-7 rounded-3xl overflow-hidden bg-cover p-3">
+									<img src={props.textImage} alt={props.heroImageAlt} className="w-full"/>
+									<img src={props.shockImage} alt={props.heroImageAlt} className="w-full object-contain" />
+								</div>
+								<div className="bg-[#E5F5D7] col-span-6 row-start-7 row-end-12 rounded-3xl overflow-hidden flex items-center">
+									<img src={props.productImage} alt={props.heroImageAlt} />
+								</div>
+							</div>
+						)}
 					</div>
 				</div>
 			</MaxWithWrapper>

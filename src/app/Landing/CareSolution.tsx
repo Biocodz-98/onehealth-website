@@ -96,7 +96,7 @@ export default function CareSolution() {
 				noStyleImage={CareDelivery}
 				noStyleImageAlt="care delivery image"
 				serviceCollections={CareSolutionData}
-				sectionHeaderCls='px-4'
+				sectionHeaderCls="px-4"
 			>
 				<div className="overflow-hidden relative h-fit  md:h-[37rem] lg:h-[520px]  lg:w-[83vw] w-[95vw] bg-[#117754] rounded-[45px] mt-10 mx-auto">
 					<div className="leftbg w-full h-full clip-right bg-[#114920]/75 absolute z-0"></div>
@@ -118,6 +118,11 @@ export default function CareSolution() {
 							paraCls="md:text-sm lg:text-md"
 							strokec={"#ffffff"}
 							cls=" md:w-[450px] md:h-[622px]"
+							isDownloadable={true}
+							hrefAndriod="https://play.google.com/store/apps/details?id=com.onehealthng.onewellness"
+							hrefIOS="https://apps.apple.com/ng/app/onewellness-health-partner/id6443616382"
+							downloadActionAndriod='Andriod Download'
+							downloadActionIOS='IOS Download'
 						/>
 						<img
 							src={CareImage}

@@ -29,6 +29,11 @@ export interface CareCardProps {
 	index?: number;
 	arrLength?: number;
 	imageWidth?: number;
+	isDownloadable?: boolean;
+	downloadActionAndriod?: string;
+	downloadActionIOS?: string;
+	hrefAndriod?:string;
+	hrefIOS?:string;
 }
 
 export default function CareCard({
@@ -54,7 +59,12 @@ export default function CareCard({
 	arrLength,
 	extendClsLeft,
 	extendClsRight,
-	href
+	href,
+	isDownloadable,
+	downloadActionAndriod,
+	downloadActionIOS,
+	hrefAndriod,
+	hrefIOS
 }: CareCardProps) {
 	const colorIndex0 = index == 0 ? "bg-[#E9FFEB]" : "";
 	const colorIndex1 = arrLength! > 2 && index == 1 ? "bg-[#E9FFEB]" : "";
@@ -106,7 +116,7 @@ export default function CareCard({
 			)}
 			<div
 				className={cn(
-					"content relative z-10 p-10 px-10 gap-20 flex flex-col ",
+					"content relative z-10 p-10 px-4 md:px-10 gap-20 flex flex-col",
 					contentCls
 				)}
 			>
@@ -141,16 +151,54 @@ export default function CareCard({
 					>
 						{description}
 					</p>
-					<Link
-						to={href??"#"}
-						className={cn(
-							`font-sans font-semibold text-xs leading-5 py-2 px-4 flex justify-between w-fit gap-3 border-2 border-secondary rounded-full z-10 `,
-							linkCls
-						)}
-					>
-						<span>{action}</span>{" "}
-						<Icons.rightArrow className={cn("", arrowCls)} strokec={strokec} />
-					</Link>
+					{!isDownloadable ? (
+						<Link
+							to={href ?? "#"}
+							className={cn(
+								`font-sans font-semibold text-xs leading-5 py-2 px-4 flex justify-between w-fit gap-3 border-2 border-secondary rounded-full z-10 `,
+								linkCls
+							)}
+						>
+							<span>{action}</span>{" "}
+							<Icons.rightArrow
+								className={cn("", arrowCls)}
+								strokec={strokec}
+							/>
+						</Link>
+					) : (
+						<div className="flex gap-2">
+							<Link
+								to={hrefAndriod ?? "#"}
+								target="_blank"
+								className={cn(
+									`font-sans font-semibold text-[0.78rem] md:text-xs leading-5 py-2 px-3 text-nowrap items-center flex justify-between w-fit gap-3 border-2 border-secondary rounded-full z-10 `,
+									linkCls
+								)}
+							>
+								<span>{downloadActionAndriod}</span>{" "}
+								<Icons.download
+									className={cn("", arrowCls)}
+									strokec={strokec}
+									fill="#ffffff"
+								/>
+							</Link>
+							<Link
+								to={hrefIOS ?? "#"}
+								target="_blank"
+								className={cn(
+									`font-sans font-semibold text-[0.78rem] md:text-xs leading-5 py-2 md:px-3 px-2 text-nowrap items-center  flex justify-between w-fit gap-3 border-2 border-secondary rounded-full z-10 `,
+									linkCls
+								)}
+							>
+								<span>{downloadActionIOS}</span>{" "}
+								<Icons.download
+									className={cn("", arrowCls)}
+									strokec={strokec}
+									fill="#ffffff"
+								/>
+							</Link>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
