@@ -8,7 +8,7 @@ export const MobileNavData = [
 		action: "/",
 	},
 	{
-		text: "Product",
+		text: "Medicine",
 		icon: Icons.product,
 		action: "https://onehealthng.com/pharmacy",
 	},

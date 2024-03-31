@@ -259,7 +259,7 @@ export default function TextWordy() {
 					</li>
 				</ul>
 
-				<li>Media Exposure:</li>
+				<li>Get More Customers:</li>
 				<ul className="pl-4">
 					<li>
 						Leverage our growing online media presence. Partnering with us means

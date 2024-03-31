@@ -34,7 +34,7 @@ export const CareSolutionData = [
 	{
 		title: "FOR INSURERS",
 		image: CareInsure,
-		action: "Learn more",
+		action: "Get Started",
 		href: "https://partner.onehealthng.com/hmo",
 		heading: "Medication & pharmacy benefits for patients",
 		description: "Enrollee-friendly Pharmacy Benefit & Fulfilment Solution",
@@ -43,7 +43,7 @@ export const CareSolutionData = [
 	{
 		title: "FOR PHARMACIES",
 		image: CareCart,
-		action: "Learn more",
+		action: "Partner with us",
 		href: "https://onehealthng.com/pharmacy",
 		heading: "Pharmacy fulfillment & dispensing",
 		description:
@@ -57,7 +57,7 @@ export const WhyOneHealthcareData = [
 		heading: "Lowest prices",
 		image: WhyOneHealth1,
 		description:
-			"We offer the lowest prices and discounts to give you the best prices on your medications & healthcare solutions",
+			"We offer the lowest prices and discounts to give you the best deal on your medications & healthcare solutions",
 	},
 	{
 		heading: "Medication Support",

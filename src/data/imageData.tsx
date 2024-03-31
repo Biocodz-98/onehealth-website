@@ -65,6 +65,14 @@ import home from "../../public/home.svg";
 import whatsappSound from "../../public/whatapp.wav";
 
 
+///landing image test optimized 
+import shola from "../../public/sholaHero.png";
+import motherchild from "../../public/motherchild.png";
+import productHero from "../../public/productHero.svg";
+import femaleNurseHero from "../../public/femalenurseHero.svg";
+import prescriptionHero from "../../public/prescriptionHero.svg";
+
+
 
 export const HeroIND =  HeroIndividual as string;
 export const HeroINS =  HeroInsures as string;
@@ -139,3 +147,12 @@ export const Send = send as string;
 export const Home = home as string;
 
 export const WhatappSound = whatsappSound as string;
+
+
+///export herolanding
+
+export const Motherchild = motherchild as string;
+export const Shola = shola as string;
+export const ProductHero = productHero as string;
+export const FemaleNurseHero = femaleNurseHero as string;
+export const PrescriptionHero = prescriptionHero as string;

@@ -103,7 +103,7 @@ export default function Navbar() {
 									</NavLink>
 
 									<p className="md:hidden font-normal text-sm py-2">
-										Africa’s most reliable healthcare company
+										Africa’s most reliable healthcare platform
 									</p>
 								</div>
 								<div className="hidden z-50 ld:ml-8 lg:block lg:self-stretch">
