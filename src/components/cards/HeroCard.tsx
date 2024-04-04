@@ -4,8 +4,12 @@ import { cn } from '@/lib/utils';
 export interface HeroCardProps {
 	title: string;
 	imagesrc?: string;
-	action: { title: string; href: string };
 	Image?: string;
+	action: { title: string; href: string };
+	imageCls?: string;
+	titleCls?: string;
+	actionCls?: string;
+	titleGrp?: string;
 	className?: string;
 }
 export default function HeroCard({
@@ -13,6 +17,10 @@ export default function HeroCard({
 	imagesrc,
 	action,
 	className,
+	imageCls,
+	titleCls,
+	actionCls,
+	titleGrp,
 }: HeroCardProps) {
 	return (
 		<div
@@ -21,18 +29,33 @@ export default function HeroCard({
 				className
 			)}
 		>
-			<div className="text-xs uppercase font-sans tracking-wide font-semibold flex items-center gap-3 text-slate-600 leading-4 order-1 md:-order-1 col-span-6 row-span-6 pl-2 md:pl-0">
+			<div
+				className={cn(
+					"text-xs uppercase font-sans tracking-wide font-semibold flex items-center gap-3 text-slate-600 leading-4 order-1 md:-order-1 col-span-6 row-span-6 pl-2 md:pl-0 ",
+					titleGrp
+				)}
+			>
 				<p className="w-5 bg-slate-600 h-0.5" />
-				<p className="flex flex-nowrap">
+				<p className={cn("flex flex-nowrap text-nowrap", titleCls)}>
 					{"  "} {title}
 				</p>
 			</div>
-			<div className="bg-[#F4F4F4] md:p-1.5 md:m-1.5 px-3 md:mx-0 rounded-md relative h-24 md:w-40 md:my-3 overflow-hidden -order-1 md:order-1 col-span-6 row-span-12 mr-5 md:mr-0">
+			<div
+				className={cn(
+					"bg-[#F4F4F4] md:p-1.5 md:m-1.5 px-3 md:mx-0 rounded-md relative h-24 md:w-40 md:my-3 overflow-hidden -order-1 md:order-1 col-span-6 row-span-12 mr-5 md:mr-0",
+					imageCls
+				)}
+			>
 				<div className="absolute top-3 -right-0 h-full w-full">
-					<img src={imagesrc} alt="hero image" />
+					<img src={imagesrc} alt="hero image" className="w-full" />
 				</div>
 			</div>
-			<div className="action font-bold text-md leading-4 flex items-center justify-between text-primary mt-2 order-2 col-span-6 row-span-6 pl-2 md:pl-0">
+			<div
+				className={cn(
+					"action font-bold text-md leading-4 flex items-center justify-between text-primary mt-2 order-2 col-span-6 row-span-6 pl-2 md:pl-0",
+					actionCls
+				)}
+			>
 				<Link to={action.href} target="_blank">
 					{action.title}
 				</Link>

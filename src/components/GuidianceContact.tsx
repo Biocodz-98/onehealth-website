@@ -10,9 +10,11 @@ import {Header, _Header } from "@/animate.data";
 export interface GuidianceContactProps {
 	guidesCard: GuideCardProps[];
 	contactGuideMini: ContactGuideMiniProps[];
-    headingText1: string;
-    headingText2: string;
+	headingText1: string;
+	headingText2: string;
 	customH1Cls?: string;
+	headerCls?: string;
+	customH2Cls?: string;
 	cls?: string;
 }
 
@@ -59,7 +61,7 @@ export default function GuidianceContact(props: GuidianceContactProps) {
 				viewport={{
 					once: true,
 				}}
-				className="writer-guide my-4 md:w-[60%] lg:w-[55%] "
+				className={cn("writer-guide my-4 md:w-[60%] lg:w-[55%]",props.headerCls)}
 			>
 				<h1
 					className={cn(
@@ -69,7 +71,7 @@ export default function GuidianceContact(props: GuidianceContactProps) {
 				>
 					{props.headingText1}
 				</h1>
-				<h1 className="font-head font-semibold text-[1.5rem]  md:pr-0 max-w-screen-2xl w-[98%] md:w-full text-wrap  md:text-4xl leading-9 text-secondary">
+				<h1 className={cn("font-head font-semibold text-[1.5rem]  md:pr-0 max-w-screen-2xl w-[98%] md:w-full text-wrap  md:text-4xl leading-9 text-secondary",props.customH2Cls)}>
 					{props.headingText2}
 				</h1>
 				<div className="flex flex-wrap gap-7 items-center mt-6 my-3">

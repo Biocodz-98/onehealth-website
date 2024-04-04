@@ -1,6 +1,7 @@
 import HeroIndividual from "../../public/heroIndividual.svg";
 import HeroInsures from "../../public/heroPartner.svg";
 import HeroOnboard from "../../public/heroOnboard.svg";
+import herolanding from "../../public/herolanding.png";
 import HW from "../../public/heroWomen.webp";
 import bgHeroL from "../../public/bgHeroL.svg";
 import bgHeroR from "../../public/bgHeroR.svg";
@@ -26,6 +27,7 @@ import multivitaminsTestimonial from "../../public/multivitaminsTestimonial.svg"
 import needMedicalGuide1 from "../../public/needMedicalGuide1.svg";
 import needMedicalGuide2 from "../../public/needMedicalGuide2.svg";
 import needMedicalGuide3 from "../../public/needMedicalGuide3.svg";
+import needMedicalGuide4 from "../../public/needMedicalGuide4.svg";
 import getStartedLeft1 from "../../public/getStartedLeft1.svg";
 import getStartedLeft2 from "../../public/getStartedLeft2.svg";
 import getStartedLeft3 from "../../public/getStartedLeft3.svg";
@@ -55,7 +57,7 @@ import computerSupport from "../../public/computerSupport.svg";
 import trackingOrder from "../../public/trackOrder.svg";
 import sheets from "../../public/Sheets.svg";
 import femaleDoc from "../../public/femaleDoc.svg";
-import resource from "../../public/resource.png";
+import resource from "../../public/resource.svg";
 import resChart from "../../public/resChart.svg";
 import resCandles from "../../public/resCandles.svg";
 import resPin from "../../public/resPin.svg";
@@ -63,6 +65,12 @@ import profile from "../../public/profile.svg";
 import send from "../../public/send.svg";
 import home from "../../public/home.svg";
 import whatsappSound from "../../public/whatapp.wav";
+import nutrify from "../../public/nutrify.svg";
+import motherChild from "../../public/motherChild.svg";
+import antibiotics from "../../public/antibiotics.svg";
+import antimaleria from "../../public/antimaleria.svg";
+import contraceptives from "../../public/contraceptive.svg";
+
 
 
 ///landing image test optimized 
@@ -102,6 +110,7 @@ export const MultivitaminsTestimonial = multivitaminsTestimonial as string;
 export const NeedMedicalGuide1 = needMedicalGuide1 as string;
 export const NeedMedicalGuide2 = needMedicalGuide2 as string;
 export const NeedMedicalGuide3 = needMedicalGuide3 as string;
+export const NeedMedicalGuide4 = needMedicalGuide4 as string;
 
 export const GetStartedLeft1 = getStartedLeft1 as string;
 export const GetStartedLeft2 = getStartedLeft2 as string;
@@ -145,14 +154,19 @@ export const Respin = resPin as string;
 export const Profile = profile as string;
 export const Send = send as string;
 export const Home = home as string;
+export const Nutrify = nutrify as string;
 
 export const WhatappSound = whatsappSound as string;
 
 
 ///export herolanding
-
+export const HeroLanding = herolanding as string;
 export const Motherchild = motherchild as string;
 export const Shola = shola as string;
 export const ProductHero = productHero as string;
 export const FemaleNurseHero = femaleNurseHero as string;
 export const PrescriptionHero = prescriptionHero as string;
+export const Antimaleria = antimaleria as string;
+export const Antibiotics = antibiotics as string;
+export const Contraceptives = contraceptives as string;
+export const MotherChildCat = motherChild as string;

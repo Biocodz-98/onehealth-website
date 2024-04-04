@@ -1,5 +1,5 @@
 import {  HeroCardData} from './data';
-import { HeroWomen,Motherchild,ProductHero,Shola ,FemaleNurseHero,PrescriptionHero} from '@/data/imageData';
+import {Motherchild,ProductHero,Shola ,FemaleNurseHero,PrescriptionHero, HeroLanding} from '@/data/imageData';
 // import HeroCard from '../../components/cards/HeroCard';
 // import Background from '../../components/Background';
 // import MaxWithWrapper from '../../components/MaxWithWrapper';
@@ -56,7 +56,7 @@ export default function Hero() {
 			headerText="Online Pharmacy & Healthcare Solutions"
 			subHeader="Digital infrastructure for Individuals, Payers & Providers for easy access to quality medicines & healthcare solutions"
 			heroCardData={HeroCardData}
-			heroImage={HeroWomen}
+			heroImage={HeroLanding}
 			motherImage={Motherchild}
 			sholaImage={Shola}
 			productImage={ProductHero}
@@ -70,7 +70,7 @@ export default function Hero() {
 			className2="h-[490px] mt-9 lg:h-[650px] w-full mb-10 pb-5 order-last px-5 lg:px-0 md:max-w-[500px] relative max-h-[560px]"
 			classNameImg="relative "
 			headerTextCls=" leading-10  md:leading-12 "
-			isLanding={true}
+			isLanding={false}
 		/>
 	);
 }

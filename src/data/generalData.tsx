@@ -10,6 +10,10 @@ import {
 	HisHealthTestimonial,
 	MultivitaminsTestimonial,
 	SexualHealthTestimonial,
+	MotherChildCat,
+	Antimaleria,
+	Antibiotics,
+	Contraceptives,
 } from "./imageData";
 
 export const GuideCardData = [
@@ -66,27 +70,27 @@ export const TestimonialCardData = [
 		link: "https://onehealthng.com/category/vitamins",
 	},
 	{
-		image: MultivitaminsTestimonial,
+		image: CoughColdTestimonial,
 		title: "Cough & flu",
 		link: "https://onehealthng.com/category/cough-cold-and-flu",
 	},
 	{
-		image: MultivitaminsTestimonial,
+		image: MotherChildCat,
 		title: "Mother & Child",
 		link: "https://onehealthng.com/category/mother-child",
 	},
 	{
-		image: MultivitaminsTestimonial,
+		image: Antimaleria,
 		title: "Maleria Medication",
 		link: "https://onehealthng.com/category/malaria-medications",
 	},
 	{
-		image: MultivitaminsTestimonial,
+		image: Antibiotics,
 		title: "Antibiotics",
 		link: "https://onehealthng.com/category/antibiotics",
 	},
 	{
-		image: MultivitaminsTestimonial,
+		image: Contraceptives,
 		title: "Contraceptives",
 		link: "https://onehealthng.com/category/contraceptives",
 	},
