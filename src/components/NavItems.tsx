@@ -1,11 +1,11 @@
-"use client"
-import { SetStateAction, useState } from 'react'
-import { NAV_LINKS,CALL_TO_ACTION,PRODUCTS_CATEGORY } from '@/config'
+"use client";
+import { SetStateAction, useState } from "react";
+import { NAV_LINKS, CALL_TO_ACTION, PRODUCTS_CATEGORY } from "@/config";
 import { NavLink } from "react-router-dom";
-import { cn } from '@/lib/utils';
-import { Icons } from './Icons'
-import Search from './Search';
-
+import { cn } from "@/lib/utils";
+import { Icons } from "./Icons";
+import Search from "./search/Search";
+import { Result } from "@/hooks/useSearch";
 
 interface NavigationItemProps {
 	cls?: string;
@@ -16,13 +16,16 @@ interface NavigationItemProps {
 	hideCls?: string;
 	searchQuery?: string;
 	setHovered?: React.Dispatch<SetStateAction<boolean>>;
+	setHasSearch?: React.Dispatch<SetStateAction<boolean>>;
 	setSearchQuery?: React.Dispatch<SetStateAction<string>>;
+	setOpenPopup?: React.Dispatch<SetStateAction<boolean>>;
+	setSearchResult?: React.Dispatch<SetStateAction<Result[]>>;
 }
 
-export default function NavItems(props:NavigationItemProps) {
-    const [activeIndex,setActiveIndex] = useState<number|null>(null);
-    const [showProduct,setShowProduct] = useState<boolean>(false);
-  return (
+export default function NavItems(props: NavigationItemProps) {
+	const [activeIndex, setActiveIndex] = useState<number | null>(null);
+	const [showProduct, setShowProduct] = useState<boolean>(false);
+	return (
 		<div
 			className={cn(
 				"flex h-full gap-4 text-secondary items-center ml-8",
@@ -63,7 +66,13 @@ export default function NavItems(props:NavigationItemProps) {
 					</li>
 				</ul>
 				<div className={props.hideCls}>
-					<Search setQuery={props.setSearchQuery} query={props.searchQuery} />
+					<Search
+						setQuery={props.setSearchQuery}
+						query={props.searchQuery}
+						setHasSearch={props.setHasSearch}
+						className="md:-w-52"
+						setSearchResult={props.setSearchResult!}
+					/>
 				</div>
 			</div>
 
@@ -99,11 +108,15 @@ export default function NavItems(props:NavigationItemProps) {
 						className={`${items.variant} text-sm whitespace-nowrap flex items-center gap-2`}
 						to={`${items.href}`}
 						target={
-							items.label.toLowerCase() === "enter pharmarcy" ||
-							items.label.toLowerCase() === "sign in"
-								? "_blank"
-								: ""
+							items.label.toLowerCase() === "enter pharmarcy"? "_blank": ""
 						}
+						onClick={() => {
+							if (items.label.toLowerCase() === "sign in") {
+								props.setOpenPopup?.(true);
+								props.setHasSearch?.(false);
+								props.setSearchQuery?.("");
+							}
+						}}
 					>
 						{items.label == "Call us" && <Icons.call />}
 

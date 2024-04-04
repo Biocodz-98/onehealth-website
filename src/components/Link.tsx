@@ -1,19 +1,41 @@
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Icons } from "./Icons";
+import React, { SetStateAction } from 'react';
 
-export interface OneLinkProps{
-    index: number;
-    to:string;
-    linkCls?: string;
-    arrowCls?: string;
-    action: string;
-    strokec?: string;
+export interface OneLinkProps {
+	index: number;
+	to: string;
+	linkCls?: string;
+	arrowCls?: string;
+	actionCls?: string;
+	action: string;
+	strokec?: string;
+	target?: string;
+	hasLeadingImage?: React.ReactNode;
+	setIsResources?: React.Dispatch<SetStateAction<boolean>>;
 }
-export default function OneLink({index,to,linkCls,arrowCls,action,strokec}:OneLinkProps) {
-  return (
+export default function OneLink({
+	index,
+	to,
+	linkCls,
+	arrowCls,
+	action,
+	actionCls,
+	strokec,
+	hasLeadingImage,
+	target,
+	setIsResources,
+}: OneLinkProps) {
+	return (
 		<Link
 			to={to}
+			target={target}
+			onClick={() => {
+				if (to.toLowerCase() === "#resources") {
+					setIsResources?.(true);
+				}
+			}}
 			className={cn(
 				`border-${index == 0 ? "white" : "secondary"} text-${
 					index == 0 ? "white" : "secondary"
@@ -22,7 +44,8 @@ export default function OneLink({index,to,linkCls,arrowCls,action,strokec}:OneLi
 				linkCls
 			)}
 		>
-			<span>{action}</span>{" "}
+			{hasLeadingImage}
+			<span className={cn("", actionCls)}>{action}</span>{" "}
 			<Icons.rightArrow className={cn("", arrowCls)} strokec={strokec} />
 		</Link>
 	);

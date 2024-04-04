@@ -3,7 +3,7 @@ const process = import.meta.env;
 interface errorType {
 	[key: string]: string;
 }
-type Result = {name:string,image:string,url?:string}
+export type Result = {name:string,image:string,url?:string}
 
 export default function useSearch(searchQuery: string) {
 	const [searchResult, setSearchResult] = useState<Result[]>([]);
@@ -54,5 +54,6 @@ export default function useSearch(searchQuery: string) {
 		error,
 		loading,
 		searchResult,
+		setSearchResult
 	};
 }

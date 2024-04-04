@@ -5,8 +5,10 @@ import { Resource } from '@/data/imageData';
 import { ResourceNav } from '@/animate.data';
 import { ResourceData } from './data';
 import { ComplaintItem } from "@/app/Insurers/Compliant";
+import { cn } from '@/lib/utils';
+import OneLink from '../Link';
 
-export default function ResourcePage({isHovered,setIsHovered}:{isHovered:boolean,setIsHovered:React.Dispatch<SetStateAction<boolean>>}) {
+export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?:boolean,setIsHovered?:React.Dispatch<SetStateAction<boolean>>,resCls?:string}) {
   return (
 		<motion.div
 			animate="animate"
@@ -18,9 +20,12 @@ export default function ResourcePage({isHovered,setIsHovered}:{isHovered:boolean
 			viewport={{
 				once: true,
 			}}
-			className={`${
-				isHovered ? "flex" : "hidden"
-			}  md:flex-row flex-col gap-13 lg:left-[10%] md:w-[90%] lg:w-[80%] w-full absolute bg-white justify-between p-10 `}
+			className={cn(
+				`${
+					isHovered ? "flex" : "hidden "
+				}  md:flex-row flex-col gap-13 lg:left-[10%] md:w-[90%] lg:w-[80%] w-full absolute bg-white justify-between p-10 `,
+				resCls
+			)}
 			onMouseEnter={() => {
 				setIsHovered?.(true);
 			}}
@@ -28,22 +33,23 @@ export default function ResourcePage({isHovered,setIsHovered}:{isHovered:boolean
 				setIsHovered?.(false);
 			}}
 		>
-			<div className="first flex gap-7 md:w-[46%] items-center ">
+			<div className="first flex md:flex-row flex-col gap-7 md:w-[46%] items-center ">
 				<img
 					src={Resource}
 					alt="One health laboratory drug test image, how unilever affects drug prices"
 				/>
 				<div className="gap-10 flex flex-col">
-					<h2 className="text-3xl font-semibold font-head">
-						How exodus of PG & Unilever affects drug prices
+					<h2 className="md:text-3xl text-lg text-center md:text-start font-semibold font-head">
+						Managing Medicine Shortages Due to Pharmaceutical Companies Exiting
+						Nigeria
 					</h2>
-					<Link
+					<OneLink
 						to={"#"}
+						index={1}
 						target="_blank"
-						className="text-[#1C7A37] font-semibold font-body"
-					>
-						Read Article
-					</Link>
+						action="Get Access"
+						linkCls="text-secondary font-semibold font-body"
+					/>
 				</div>
 			</div>
 			<div className="last flex flex-col gap-3 pt-10 md:pt-0">
