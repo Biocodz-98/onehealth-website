@@ -46,7 +46,7 @@ export default function HeroCard({
 					imageCls
 				)}
 			>
-				<div className="absolute top-3 -right-0 h-full w-full">
+				<div className="absolute top-3 -right-0 h-full w-full overflow-hidden">
 					<img src={imagesrc} alt="hero image" className="w-full" />
 				</div>
 			</div>

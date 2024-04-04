@@ -1,6 +1,6 @@
 import  { useRef, useEffect } from "react";
 import { Icons } from '../Icons';
-import { PlatformData, ProductData, ResourceData } from './data';
+import { PlatformData, ProductData, ResourceData, Socials } from './data';
 import {Link} from 'react-router-dom';
 import { motion,useAnimation,useInView } from "framer-motion";
 import { Header, H1P1L, H1P1R, Scale, Footer } from "@/animate.data";
@@ -123,7 +123,7 @@ export default function FooterLinks() {
 						))}
 					</ul>
 				</motion.div>
-				<motion.div ref={resourceRef}>
+				<motion.div ref={resourceRef} >
 					<motion.h5
 						variants={H1P1L}
 						animate="animate"
@@ -134,7 +134,7 @@ export default function FooterLinks() {
 						viewport={{
 							once: true,
 						}}
-						className="text-[#3E3838]/75 relative top-2"
+						className="text-[#3E3838]/75 relative top-2 "
 					>
 						Resources
 					</motion.h5>
@@ -164,6 +164,13 @@ export default function FooterLinks() {
 								)}
 							</motion.li>
 						))}
+					<li className="socials flex flex-wrap max-w-[17rem] gap-2 mt-6">
+						{
+							Socials.map((item,index)=>(
+								<Link key={index} to={item.link} className="p-3 rounded-full bg-black" target="_blank" rel="noopener noreferrer" > {item.icon}</Link>
+							))
+						}
+					</li>
 					</ul>
 				</motion.div>
 				<div className="-order-1 md:order-last">

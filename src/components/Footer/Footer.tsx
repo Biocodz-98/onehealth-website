@@ -35,8 +35,8 @@ export default function Footer() {
 		<motion.section ref={fRef} className="bg-white relative">
 			<MaxWithWrapper>
 				<div className="lg:h-[480px] h-[95vh] md:h-[50vh] mx-auto flex bg-[#228821] relative rounded-[40px] overflow-hidden mb-12 ">
-					<div className="absolute footclipleft h-full w-full bg-[#10441E]"></div>
-					<div className="absolute footclipright h-full w-full bg-[#27634E]"></div>
+					<div className="absolute footclipleft h-full w-full bg-[#10441E]/10"></div>
+					<div className="absolute footclipright h-full w-full bg-[#27634E]/30"></div>
 					<div className="content left-[50%] top-[40%] md:top-[50%] -translate-y-[50%] -translate-x-[50%] flex items-center justify-center gap-10  flex-col absolute w-full h-full">
 						<motion.h1
 							variants={Header}
