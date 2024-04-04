@@ -101,7 +101,7 @@ export default function CareSolution() {
 				<div className="overflow-hidden relative h-fit  md:h-[37rem] lg:h-[520px]  lg:w-[83vw] w-[95vw] bg-[#117754] rounded-[45px] mt-10 mx-auto">
 					<div className="leftbg w-full h-full clip-right bg-[#114920]/75 absolute z-0"></div>
 					<div className="rightbg w-full h-full bg-[#114920]/75 clip-left absolute z-0"></div>
-					<div className="relative z-10 grid md:flex md:p-5 lg:gap-20 bg-cover items-center">
+					<div className="relative z-10 grid md:grid-cols-2 md:p-5 lg:gap-20 bg-cover items-center">
 						<CareCard
 							title="FOR INDIVIDUALS & EMPLOYERS"
 							heading="Health partner for people & companies in Nigeria."
@@ -117,17 +117,19 @@ export default function CareSolution() {
 							contextcls="gap-7 mt-0"
 							paraCls="md:text-sm lg:text-md"
 							strokec={"#ffffff"}
-							cls=" md:w-[450px] md:h-[622px]"
+							cls=" md:w-[30rem]  md:h-[622px]"
 							isDownloadable={true}
-							hrefAndriod="https://play.google.com/store/apps/details?id=com.onehealthng.onewellness"
-							hrefIOS="https://apps.apple.com/ng/app/onewellness-health-partner/id6443616382"
-							downloadActionAndriod='Andriod Download'
-							downloadActionIOS='IOS Download'
+							// hrefAndriod="https://play.google.com/store/apps/details?id=com.onehealthng.onewellness"
+							hrefAndriod="https://onelink.to/rj8abd"
+							// hrefIOS="https://apps.apple.com/ng/app/onewellness-health-partner/id6443616382"
+							hrefIOS="https://onewellnessapp.com"
+							downloadActionAndriod="Download App"
+							downloadActionIOS="For Business"
 						/>
 						<img
 							src={CareImage}
 							alt="care contact image"
-							className="object-contain h-full relative md:w-[25rem] lg:w-[35rem] md:-top-10 -right-5 -order-1 p-3 md:p-0 md:order-1"
+							className="object-contain h-full relative md:w-full lg:w-full md:-top-10 -right-5 -order-1 p-3 md:p-0 md:order-1"
 						/>
 					</div>
 				</div>

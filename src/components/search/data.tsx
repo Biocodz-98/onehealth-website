@@ -118,7 +118,7 @@ export const QuickActionsData = [
 		Image: NeedMedicalGuide1 as string,
 		action: {
 			name: "Settle your health concerns on a quick chat",
-			href: "#",
+			href: "https://wa.link/vww2zy",
 		},
 	},
 	{

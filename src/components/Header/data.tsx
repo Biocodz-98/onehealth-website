@@ -5,6 +5,8 @@ import {
 	Respin,
 	HeroINS,
 	HeroONB,
+	ResBox,
+	ResPlus,
 } from "@/data/imageData";
 
 export const MobileNavData = [
@@ -56,6 +58,18 @@ export const ResourceData = [
 		image: Respin,
 		desc: "Report adverse health reaction",
 		link: "https://primaryreporting.who-umc.org/NG",
+	},
+	{
+		title: "Get Product Recommendation",
+		image: ResBox,
+		desc: "Get the right medications just for you.",
+		link: "https://onehealthng.com/bot/sexual-health",
+	},
+	{
+		title: "Ask a Pharmacist",
+		image: ResPlus,
+		desc: "Get guidance for pressing health asks",
+		link: "https://wa.link/vww2zy",
 	},
 ];
 

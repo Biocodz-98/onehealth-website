@@ -44,7 +44,7 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 						Nigeria
 					</h2>
 					<OneLink
-						to={"#"}
+						to={"https://onehealthng.com/guides/drug-shortages"}
 						index={1}
 						target="_blank"
 						action="Get Access"

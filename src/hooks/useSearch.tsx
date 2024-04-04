@@ -1,6 +1,6 @@
 import { useEffect,useRef,useState } from "react"
 const process = import.meta.env;
-interface errorType {
+export interface errorType {
 	[key: string]: string;
 }
 export type Result = {name:string,image:string,url?:string}
