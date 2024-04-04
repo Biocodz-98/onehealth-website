@@ -20,7 +20,6 @@ export default function useSearch(searchQuery: string) {
 
 			try {
                 if(!searchQuery) return;
-                console.log("from env", process.VITE_BASE_URL);
 				const response = await fetch(
 					process.VITE_BASE_URL +
 						"/api/products/search?query=" +
