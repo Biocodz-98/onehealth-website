@@ -8,9 +8,21 @@ import { FaEye } from "react-icons/fa";
 import { Link} from "react-router-dom";
 import HeroCard from "./cards/HeroCard";
 import { H1P1L, H1P1R, Header, _Header } from "@/animate.data";
+import Spinner from "./Spinner";
 
 export default function Login() {
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+	const [isProcessing, setIsProcessing] = useState<boolean>(false);
+	const [email,setEmail] = useState<string>("");
+	const [password,setPassword] = useState<string>("");
+
+	const handleLogin = (e:React.FormEvent)=>{
+		e.preventDefault();
+		setIsProcessing(true);
+		console.log(email,password);
+		setTimeout(()=> setIsProcessing(false),3000)
+	}
+
 	return (
 		<div className="relative  overflow-y-scroll h-[80%]">
 			<div className=" relative min-h-44 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden">
@@ -68,7 +80,7 @@ export default function Login() {
 					Enter your credentials to access your account
 				</motion.p>
 				<div className="min-w-[87%] mb-16">
-					<form className="space-y-3">
+					<form className="space-y-3 relative" onSubmit={handleLogin}>
 						<motion.div
 							variants={Header}
 							animate="animate"
@@ -88,7 +100,10 @@ export default function Login() {
 								type="email"
 								name="emai"
 								id="email"
-								className="w-full outline outline-[#8DDE44] rounded-lg p-3"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								disabled={isProcessing}
+								className="w-full outline outline-[#8DDE44] rounded-lg p-3 disabled:bg-slate-300"
 							/>
 							<HiOutlineMail className="absolute right-[5%] top-[50%]" />
 						</motion.div>
@@ -111,7 +126,10 @@ export default function Login() {
 								type={isShowPassword ? "text" : "password"}
 								name="password"
 								id="password"
-								className="w-full outline outline-[#8DDE44] rounded-lg p-3"
+								value={password}
+								disabled={isProcessing}
+								onChange={(e) => setPassword(e.target.value)}
+								className="w-full outline outline-[#8DDE44] rounded-lg p-3 disabled:bg-slate-300"
 							/>
 							{!isShowPassword ? (
 								<FaEyeSlash
@@ -143,7 +161,8 @@ export default function Login() {
 								className="rounded-3xl bg-[#8DDE44] text-[#10441E] p-3 px-5 flex w-full place-content-center"
 							>
 								{" "}
-								Log into Account
+								
+								{isProcessing? <Spinner />:<span>Log into Account</span>}
 							</motion.button>
 							<motion.p
 								variants={H1P1R}
@@ -166,6 +185,7 @@ export default function Login() {
 								</Link>{" "}
 							</motion.p>
 						</div>
+						{isProcessing && <Spinner />}
 					</form>
 				</div>
 			</div>

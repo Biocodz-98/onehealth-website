@@ -39,6 +39,9 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 					alt="One health laboratory drug test image, how unilever affects drug prices"
 				/>
 				<div className="gap-10 flex flex-col">
+					<p className="w-fit p-10 rounded-lg py-2 bg-[#B1FFB8] text-[#10461F] font-bold text-sm">
+						WHITE PAPER
+					</p>
 					<h2 className="md:text-3xl text-lg text-center md:text-start font-semibold font-head">
 						Managing Medicine Shortages Due to Pharmaceutical Companies Exiting
 						Nigeria
