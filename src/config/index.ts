@@ -34,7 +34,9 @@ export const CALL_TO_ACTION = [
 		label: "Call us",
 		value: "call-us" as const,
 		icon: Icons.call,
-		href: "tel:+2348179017319",
+		// href: "tel:+2348179017319",
+		href: "#",
+
 		variant: "btn-white",
 	},
 	{

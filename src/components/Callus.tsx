@@ -96,6 +96,7 @@ export default function Callus() {
 									<FaWhatsapp className="text-2xl text-[#8DDE44]" />
 								}
 								to="https://wa.me/+2348179017319"
+								target="_blank"
 								linkCls="items-center"
 							/>
 						</div>

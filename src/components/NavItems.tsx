@@ -19,6 +19,8 @@ interface NavigationItemProps {
 	setHasSearch?: React.Dispatch<SetStateAction<boolean>>;
 	setSearchQuery?: React.Dispatch<SetStateAction<string>>;
 	setOpenPopup?: React.Dispatch<SetStateAction<boolean>>;
+	setOpenCallUs?: React.Dispatch<SetStateAction<boolean>>;
+	setOpenLogin?: React.Dispatch<SetStateAction<boolean>>;
 	setSearchResult?: React.Dispatch<SetStateAction<Result[]>>;
 }
 
@@ -112,7 +114,14 @@ export default function NavItems(props: NavigationItemProps) {
 						}
 						onClick={() => {
 							if (items.label.toLowerCase() === "sign in") {
-								props.setOpenPopup?.(true);
+								props.setOpenLogin?.(true);
+								props.setOpenCallUs?.(false);
+								props.setHasSearch?.(false);
+								props.setSearchQuery?.("");
+							}
+							if (items.label.toLowerCase() === "call us") {
+								props.setOpenCallUs?.(true);
+								props.setOpenLogin?.(false);
 								props.setHasSearch?.(false);
 								props.setSearchQuery?.("");
 							}

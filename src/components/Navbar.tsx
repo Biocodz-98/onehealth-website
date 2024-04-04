@@ -161,7 +161,8 @@ export default function Navbar() {
 										setHovered={setIsHovered}
 										setSearchQuery={setSearchQuery}
 										setHasSearch={setHasSearch}
-										setOpenPopup={setOpenLogin}
+										setOpenLogin={setOpenLogin}
+										setOpenCallUs={setOpenCallUs}
 										setSearchResult={setSearchResult}
 									/>
 								</div>
@@ -204,7 +205,15 @@ export default function Navbar() {
 					setHasSearch={setHasSearch}
 					setSearchQuery={setSearchQuery}
 				>
-					<SearchBody searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchResult={searchResult} setSearchResult={setSearchResult} setShowResourceMobile={setShowResourceMobile} loading={loading} error={error}/>
+					<SearchBody
+						searchQuery={searchQuery}
+						setSearchQuery={setSearchQuery}
+						searchResult={searchResult}
+						setSearchResult={setSearchResult}
+						setShowResourceMobile={setShowResourceMobile}
+						loading={loading}
+						error={error}
+					/>
 				</Popup>
 			)}
 
@@ -226,7 +235,7 @@ export default function Navbar() {
 					setOpenPopup={closeAllPopups}
 					popcardCls="pb-4"
 				>
-					<Callus/>
+					<Callus />
 				</Popup>
 			)}
 			{screenSize.width < 650 && showResourceMobile && (
@@ -238,7 +247,11 @@ export default function Navbar() {
 			)}
 			{showServices && (
 				<Popup titleHeader="Services" setOpenPopup={closeAllPopups}>
-					<Services searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchResult={setSearchResult}/>
+					<Services
+						searchQuery={searchQuery}
+						setSearchQuery={setSearchQuery}
+						setSearchResult={setSearchResult}
+					/>
 				</Popup>
 			)}
 		</>
