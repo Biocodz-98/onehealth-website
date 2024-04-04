@@ -164,6 +164,8 @@ export default function Navbar() {
 										setOpenLogin={setOpenLogin}
 										setOpenCallUs={setOpenCallUs}
 										setSearchResult={setSearchResult}
+										setShowServices={setShowService}
+										showServices={showServices}
 									/>
 								</div>
 							</div>

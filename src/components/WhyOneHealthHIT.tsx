@@ -69,6 +69,7 @@ export default function  WhyOneHealthHIT(props: WhyOneHealthHITProps) {
 								image={item.image}
 								heading={item.heading}
 								description={item.description}
+								
 							/>
 						))}
 					</motion.div>

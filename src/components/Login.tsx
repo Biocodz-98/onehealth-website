@@ -24,7 +24,7 @@ export default function Login() {
 	}
 
 	return (
-		<div className="relative  overflow-y-scroll h-[80%]">
+		<div className="relative  overflow-y-scroll h-[90%]">
 			<div className=" relative min-h-44 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden">
 				<div className="w-full h-full  overflow-hidden absolute ">
 					<div className="searchbgleft bg-[#D8F7DB]  w-full h-full absolute  z-0"></div>

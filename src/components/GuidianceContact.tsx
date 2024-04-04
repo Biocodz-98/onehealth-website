@@ -31,7 +31,7 @@ export default function GuidianceContact(props: GuidianceContactProps) {
 		<div
 			ref={tRef}
 			className={cn(
-				"flex flex-wrap justify-between mt-16 items-center px-5 md:px-0",
+				"flex flex-wrap justify-between mt-16 items-center px-1 md:px-0 ",
 				props.cls
 			)}
 		>
@@ -45,10 +45,22 @@ export default function GuidianceContact(props: GuidianceContactProps) {
 				viewport={{
 					once: true,
 				}}
-				className="guide-cards flex flex-wrap md:flex-nowrap relative w-fit "
+				className="guide-cards flex flex-nowrap relative w-fit "
 			>
 				{props.guidesCard.map((item, index) => (
-					<GuidesCard key={index} image={item.image} index={index} />
+					<GuidesCard
+						key={index}
+						image={item.image}
+						index={index}
+						imgCls="w-[70%] md:w-full"
+						cls={`${
+							index == 0
+								? ""
+								: index == 1
+								? "md:right-3  right-9"
+								: "md:right-6 right-[4.4rem]"
+						}`}
+					/>
 				))}
 			</motion.div>
 			<motion.div
@@ -61,17 +73,25 @@ export default function GuidianceContact(props: GuidianceContactProps) {
 				viewport={{
 					once: true,
 				}}
-				className={cn("writer-guide my-4 md:w-[60%] lg:w-[55%]",props.headerCls)}
+				className={cn(
+					"writer-guide my-4 md:w-[60%] lg:w-[55%]",
+					props.headerCls
+				)}
 			>
 				<h1
 					className={cn(
-						"font-head font-semibold text-[1.6rem] md:text-4xl leading-9 text-secondary",
+						"font-head font-semibold text-[1.4rem] md:text-4xl leading-9 text-secondary",
 						props.customH1Cls
 					)}
 				>
 					{props.headingText1}
 				</h1>
-				<h1 className={cn("font-head font-semibold text-[1.5rem]  md:pr-0 max-w-screen-2xl w-[98%] md:w-full text-wrap  md:text-4xl leading-9 text-secondary",props.customH2Cls)}>
+				<h1
+					className={cn(
+						"font-head font-semibold text-[1.4rem]  md:pr-0 max-w-screen-2xl w-[98%] md:w-full text-wrap  md:text-4xl leading-9 text-secondary",
+						props.customH2Cls
+					)}
+				>
 					{props.headingText2}
 				</h1>
 				<div className="flex flex-wrap gap-7 items-center mt-6 my-3">

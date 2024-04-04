@@ -21,7 +21,7 @@ export default function Services({
 	setSearchResult: React.Dispatch<SetStateAction<Result[]>>;
 }) {
 	return (
-		<div className="h-full overflow-y-scroll pb-16">
+		<div className="h-[90%] overflow-y-scroll pb-16">
 			<div className="flex flex-col gap-5">
 				<motion.p
 					variants={Header}
@@ -46,6 +46,7 @@ export default function Services({
 					setSearchResult={setSearchResult}
 				/>
 			</div>
+			<div className="divider md:hidden h-1 w-full bg-slate-200 mt-5"></div>
 			<div className="space-y-2 mt-10">
 				<motion.h2
 					variants={Header}
@@ -86,7 +87,8 @@ export default function Services({
 						/>
 					))}
 				</motion.div>
-				<div className="flex flex-col md:flex-row gap-5">
+				<div className="divider md:hidden h-1 w-full bg-slate-200 mt-16"></div>
+				<div className="flex flex-col md:flex-row md:gap-5 ">
 					<div className="space-y-2 md:space-x-2 mt-10 flex flex-col mb-16 w-full">
 						<motion.h2
 							variants={H1P1R}
@@ -128,6 +130,7 @@ export default function Services({
 							))}
 						</motion.div>
 					</div>
+					<div className="divider md:hidden h-1 w-full bg-slate-200"></div>
 					<div className="space-y-2 md:space-x-2 mt-10 flex flex-col mb-16 w-full">
 						<motion.h2
 							variants={H1P1L}
