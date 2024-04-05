@@ -1,6 +1,6 @@
 "use client";
 import { SetStateAction, useState } from "react";
-import { NAV_LINKS, CALL_TO_ACTION, PRODUCTS_CATEGORY } from "@/config";
+import { NAV_LINKS, CALL_TO_ACTION} from "@/config";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Icons } from "./Icons";
@@ -15,16 +15,19 @@ interface NavigationItemProps {
 	callCls?: string;
 	hideCls?: string;
 	searchQuery?: string;
+	showServices?: boolean;
 	setHovered?: React.Dispatch<SetStateAction<boolean>>;
 	setHasSearch?: React.Dispatch<SetStateAction<boolean>>;
 	setSearchQuery?: React.Dispatch<SetStateAction<string>>;
 	setOpenPopup?: React.Dispatch<SetStateAction<boolean>>;
+	setOpenCallUs?: React.Dispatch<SetStateAction<boolean>>;
+	setOpenLogin?: React.Dispatch<SetStateAction<boolean>>;
 	setSearchResult?: React.Dispatch<SetStateAction<Result[]>>;
+	setShowServices?: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export default function NavItems(props: NavigationItemProps) {
 	const [activeIndex, setActiveIndex] = useState<number | null>(null);
-	const [showProduct, setShowProduct] = useState<boolean>(false);
 	return (
 		<div
 			className={cn(
@@ -35,18 +38,18 @@ export default function NavItems(props: NavigationItemProps) {
 			<div className={cn("h-full items-center flex gap-4", props.cls1)}>
 				<ul className={cn("flex relative", props.logoCls)}>
 					<li
-						onClick={() => setShowProduct((prev) => !prev)}
+						onClick={() => props.setShowServices?.(true)}
 						className="flex gap-2 cursor-pointer items-center list-none"
 					>
 						<Icons.product className="text-secondary" />
-						<span className="text-sm">Product</span>
+						<span className="text-sm">Services</span>
 						<Icons.downArrow
 							className={`${
-								showProduct ? "rotate-180" : ""
+								props.showServices ? "rotate-180" : ""
 							}  transition-all duration-300`}
 						/>
 					</li>
-					<li
+					{/* <li
 						className={`${
 							showProduct ? "opacity-100" : "opacity-0 "
 						} bg-muted absolute left-0 top-10 transition-all duration-500 flex p-2 fade-in-75 list-none overflow-visible`}
@@ -63,7 +66,7 @@ export default function NavItems(props: NavigationItemProps) {
 								))}
 							</ul>
 						)}
-					</li>
+					</li> */}
 				</ul>
 				<div className={props.hideCls}>
 					<Search
@@ -108,11 +111,18 @@ export default function NavItems(props: NavigationItemProps) {
 						className={`${items.variant} text-sm whitespace-nowrap flex items-center gap-2`}
 						to={`${items.href}`}
 						target={
-							items.label.toLowerCase() === "enter pharmarcy"? "_blank": ""
+							items.label.toLowerCase() === "enter pharmarcy" ? "_blank" : ""
 						}
 						onClick={() => {
 							if (items.label.toLowerCase() === "sign in") {
-								props.setOpenPopup?.(true);
+								props.setOpenLogin?.(true);
+								props.setOpenCallUs?.(false);
+								props.setHasSearch?.(false);
+								props.setSearchQuery?.("");
+							}
+							if (items.label.toLowerCase() === "call us") {
+								props.setOpenCallUs?.(true);
+								props.setOpenLogin?.(false);
 								props.setHasSearch?.(false);
 								props.setSearchQuery?.("");
 							}

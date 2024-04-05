@@ -11,7 +11,7 @@ import ContactGuideMini from "@/components/ContactGuideMini";
 export default function Callus() {
   return (
 		<div className="overflow-y-scroll h-full">
-			<div className="relative  overflow-y-scroll h-[80%]">
+			<div className="relative  overflow-y-scroll h-[90%]">
 				<div className=" relative min-h-60 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden">
 					<div className="w-full h-full  overflow-hidden absolute ">
 						<div className="searchbgleft bg-[#D8F7DB]  w-full h-full absolute  z-0"></div>
@@ -56,7 +56,7 @@ export default function Callus() {
 						</div>
 					</motion.div>
 				</div>
-				<div className="flex flex-wrap justify-between items-center px-5 md:px-0">
+				<div className="flex flex-wrap justify-between items-center md:px-0">
 					<motion.div
 						variants={_Header}
 						animate="animate"
@@ -71,20 +71,21 @@ export default function Callus() {
 							"writer-guide my-4 flex w-full flex-col md:flex-row justify-between gap-4"
 						}
 					>
-						<div className="flex flex-col flex-wrap gap-10 items-start mt-6 my-3">
+						<div className="flex flex-col flex-wrap gap-5 md:gap-10 items-start mt-6 my-3">
 							{ContactGuideInfoData.map((item, index) => (
 								<ContactGuideMini
 									title={item.title}
 									Icon={item.Icon}
 									key={index}
-									titleCls="text-wrap text-sm md:text-lg"
+									titleCls="text-wrap text-sm md:text-lg "
+									cls=""
 								/>
 							))}
 						</div>
 						<div className="flex flex-col gap-4 place-content-end ">
 							<Link
 								to={"tel:+2348179017319"}
-								className="px-8 py-3 bg-[#8DDE44] flex w-fit gap-3 rounded-3xl text-#004449 font-sans font-semibold leading-5 text-nowrap"
+								className="px-8 py-3 bg-[#8DDE44] flex w-full gap-3 rounded-3xl text-#004449 font-sans font-semibold leading-5 text-nowrap"
 							>
 								<span>Call us now</span>
 								<Icons.rightArrow strokec="#004449" />
@@ -96,7 +97,8 @@ export default function Callus() {
 									<FaWhatsapp className="text-2xl text-[#8DDE44]" />
 								}
 								to="https://wa.me/+2348179017319"
-								linkCls="items-center"
+								target="_blank"
+								linkCls="items-center w-full"
 							/>
 						</div>
 					</motion.div>

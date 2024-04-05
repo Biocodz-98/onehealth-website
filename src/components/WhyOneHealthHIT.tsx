@@ -13,6 +13,7 @@ export interface WhyOneHealthHITProps {
 	sectionImage: string;
     sectionImageAlt: string;
     sectionCls?: string;
+    childCls?: string;
 	sectionList: WhyOneHealthProps[]
 	children?:React.ReactNode;
 }
@@ -69,6 +70,7 @@ export default function  WhyOneHealthHIT(props: WhyOneHealthHITProps) {
 								image={item.image}
 								heading={item.heading}
 								description={item.description}
+								
 							/>
 						))}
 					</motion.div>
@@ -84,7 +86,7 @@ export default function  WhyOneHealthHIT(props: WhyOneHealthHITProps) {
 						viewport={{
 							once: true,
 						}}
-						className="flex place-content-center gap-14 my-20 "
+						className={cn("flex place-content-center gap-14 my-20 ",props.childCls)}
 					>
 						{props.children}
 					</motion.div>

@@ -23,7 +23,7 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 			className={cn(
 				`${
 					isHovered ? "flex" : "hidden "
-				}  md:flex-row flex-col gap-13 lg:left-[10%] md:w-[90%] lg:w-[80%] w-full absolute bg-white justify-between p-10 `,
+				}  md:flex-row flex-col gap-13 lg:left-[5%] md:w-[94%] lg:w-[90%] w-full absolute bg-white justify-between p-10 `,
 				resCls
 			)}
 			onMouseEnter={() => {
@@ -33,16 +33,16 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 				setIsHovered?.(false);
 			}}
 		>
-			<div className="first flex md:flex-row flex-col gap-7 md:w-[46%] items-center ">
+			<div className="first flex md:flex-row flex-col gap-7 md:w-[60%] items-center ">
 				<img
 					src={Resource}
 					alt="One health laboratory drug test image, how unilever affects drug prices"
 				/>
-				<div className="gap-10 flex flex-col">
+				<div className="gap-10 flex flex-col ">
 					<p className="w-fit p-10 rounded-lg py-2 bg-[#B1FFB8] text-[#10461F] font-bold text-sm">
 						WHITE PAPER
 					</p>
-					<h2 className="md:text-3xl text-lg text-center md:text-start font-semibold font-head">
+					<h2 className="md:text-2xl text-lg text-center md:text-start font-semibold font-head">
 						Managing Medicine Shortages Due to Pharmaceutical Companies Exiting
 						Nigeria
 					</h2>

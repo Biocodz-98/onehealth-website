@@ -76,7 +76,6 @@ export default function CareCard({
 		"bg-[#F1FFE4]"
 			? { bgLeft: "#9bc6723e", bgRight: "#85cb4321" }
 			: { bgLeft: "#D8F7DB", bgRight: "#DEF7E1" };
-	console.log(bgClip);
 
 	return (
 		<div
