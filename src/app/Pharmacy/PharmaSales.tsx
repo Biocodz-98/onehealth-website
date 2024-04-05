@@ -13,17 +13,19 @@ export default function PharmaSales() {
 			headingText="Dispense & grow pharma sales in 3,2,1..."
 			sectionList={PharmaSalesData}
 			sectionCls="md:pb-36"
+			childCls="md:gap-14 gap-4 md:flex-row flex-col items-center"
 		>
 			<OneLink
 				index={0}
 				action="Get on board"
 				to="https://partner.onehealthng.com/pharmacy"
-				linkCls="bg-[#8DDE44] text-secondary border-[#8DDE44] "
+				linkCls="bg-[#8DDE44] text-secondary border-[#8DDE44] text-nowrap md:w-fit w-[70%]"
 			/>
 			<OneLink
 				index={1}
 				action="Sign in to portal"
 				to="https://partner.onehealthng.com/"
+				linkCls="text-nowrap md:w-fit w-[70%]"
 			/>
 		</WhyOneHealthHIT>
 	);

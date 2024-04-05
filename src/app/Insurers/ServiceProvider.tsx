@@ -16,7 +16,7 @@ export default function ServiceProvider() {
 			sectionHeaderCls="px-4 md:px-0"
 		>
 			<MaxWithWrapper>
-				<div className="flex md:flex-row flex-col md:h-[20.5rem] w-full mx-auto my-7 md:my-28  px-6 justify-around gap-10 items-center">
+				<div className="flex md:flex-row flex-col h-full  w-full mx-auto my-7 md:my-28  md:px-6 justify-around gap-10 items-center md:items-stretch">
 					{CoverageData.map((item, index) => (
 						<CareCard
 							key={index}
@@ -31,11 +31,11 @@ export default function ServiceProvider() {
 							index={0}
 							arrLength={2}
 							imageWidth={150}
-							imgcls="absolute -right-10 md:bottom-0 -bottom-3"
-							contentCls="h-full"
-							cls="h-full  w-full md:min-h-[400px]"
-							headCls="md:w-[83%]"
-							desCls="md:w-[58%]"
+							imgcls="md:absolute relative order-1 -right-10 md:bottom-0 -bottom-10 ml-auto w-[40%] "
+							contentCls="h-full gap-0"
+							cls="w-full"
+							headCls="md:w-[83%] mt-20"
+							desCls="w-[65%]"
 							extendClsLeft="display-card-clip-left-extend"
 							extendClsRight="display-card-clip-right-extend"
 						/>

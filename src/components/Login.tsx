@@ -24,14 +24,14 @@ export default function Login() {
 	}
 
 	return (
-		<div className="relative  overflow-y-scroll h-[90%]">
-			<div className=" relative min-h-44 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden">
+		<div className="relative  overflow-y-scroll h-[90%] pb-14">
+			<div className=" relative min-h-64 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden">
 				<div className="w-full h-full  overflow-hidden absolute ">
 					<div className="searchbgleft bg-[#D8F7DB]  w-full h-full absolute  z-0"></div>
 					<div className="searchbgright bg-[#DEF7E1] w-full h-full absolute  z-0"></div>
 				</div>
 				<div className=" relative z-10">
-					<div className="flex items-center flex-col mt-10">
+					<div className="flex items-center flex-col mt-16">
 						<Icons.logo />
 						<motion.p
 							variants={H1P1L}
@@ -50,7 +50,7 @@ export default function Login() {
 					</div>
 				</div>
 			</div>
-			<div className="card bg-white rounded-3xl md:max-w-[80%]   mx-auto p-5 flex flex-col items-center  w-full z-20 relative -mt-16 shadow-md space-y-4">
+			<div className="card bg-white rounded-3xl md:max-w-[80%]   mx-auto p-5 flex flex-col items-center  w-full z-20 relative -mt-28 shadow-md space-y-4">
 				<motion.h4
 					variants={H1P1L}
 					animate="animate"
@@ -223,7 +223,7 @@ export default function Login() {
 							action={item.action}
 							imagesrc={item.Image!}
 							className="md:max-w-[100%] md:max-h-[180px] w-full"
-							imageCls="md:w-full ml-1 md:ml-0"
+							imageCls="md:w-full ml-1 md:ml-0 bg-contain"
 						/>
 					))}
 				</motion.div>

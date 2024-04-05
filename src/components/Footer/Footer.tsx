@@ -48,7 +48,7 @@ export default function Footer() {
 							viewport={{
 								once: true,
 							}}
-							className="font-head text-white text-[2.1rem] md:text-5xl leading-[40px] md:leading-[64px] text-center font-semibold pt-5"
+							className="font-head text-white text-2xl md:text-3xl lg:text-5xl leading-[40px] md:leading-[64px] text-center font-semibold pt-14"
 						>
 							Get started with OneHealth
 						</motion.h1>
