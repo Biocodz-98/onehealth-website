@@ -71,6 +71,7 @@ export default function Hero() {
 			classNameImg="relative "
 			headerTextCls=" leading-10  md:leading-12 "
 			isLanding={false}
+			
 		/>
 	);
 }

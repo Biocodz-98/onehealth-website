@@ -58,7 +58,7 @@ export default function Services({
 					viewport={{
 						once: true,
 					}}
-					className="font-head font-semibold md:text-xl"
+					className="font-head font-semibold text-lg text-[#134F3A]"
 				>
 					Popular Services
 				</motion.h2>
@@ -81,15 +81,15 @@ export default function Services({
 							action={item.action}
 							imagesrc={item.Image!}
 							className="flex flex-col space-y-1 px-2 min-w-44 rounded-2xl"
-							imageCls="md:w-full ml-4 md:ml-0 order-1"
-							titleCls="text-[0.6rem] md:text-sm"
+							imageCls="md:w-full mx-1.5 md:ml-0 order-1"
+							titleCls="text-[0.6rem] md:text-[0.7rem] lg:text-xs text-[#475367]"
 							actionCls="text-[0.8rem] md:text-sm"
 						/>
 					))}
 				</motion.div>
 				<div className="divider md:hidden h-1 w-full bg-slate-200 mt-16"></div>
-				<div className="flex flex-col md:flex-row md:gap-5 ">
-					<div className="space-y-2 md:space-x-2 mt-10 flex flex-col mb-16 w-full">
+				<div className="flex flex-col lg:flex-row md:gap-5 ">
+					<div className="space-y-2 md:space-x-2 mt-10 flex flex-col mb-16 w-full items-center px-2 md:px-0">
 						<motion.h2
 							variants={H1P1R}
 							animate="animate"
@@ -100,7 +100,7 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="font-head font-semibold text-xl"
+							className="font-head font-semibold text-lg text-[#134F3A] self-start"
 						>
 							For Ecosystem Partners
 						</motion.h2>
@@ -114,7 +114,7 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="flex flex-col w-full px-2 "
+							className="flex flex-col w-full items-center"
 						>
 							{EcosystemData.map((item, index) => (
 								<HeroCard
@@ -122,10 +122,10 @@ export default function Services({
 									title={item.title}
 									imagesrc={item.Image!}
 									className=" w-full md:max-w-full md:max-h-fit grid md:grid "
-									imageCls="mr-5 ml-2.5 md:ml-0 -order-1 md:-order-2 md:flex md:flex-row  md:col-span-6 md:row-span-12"
+									imageCls="md:mr-5 ml-2.5 md:ml-0 -order-1 md:-order-2 md:flex md:flex-row col-span-5  md:col-span-6 md:row-span-12"
 									action={item.action}
-									titleGrp="md:-order-1"
-									actionCls="order-2  text-xs md:text-sm"
+									titleGrp="md:-order-1 text-[0.6rem] md:text-sm"
+									actionCls="order-2  text-[0.58rem] md:text-sm md:col-span-6 col-span-7"
 								/>
 							))}
 						</motion.div>
@@ -142,7 +142,7 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="font-head font-semibold text-xl"
+							className="font-head font-semibold text-lg text-[#134F3A]"
 						>
 							Quick Actions
 						</motion.h2>

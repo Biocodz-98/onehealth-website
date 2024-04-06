@@ -18,15 +18,15 @@ const Popup: React.FC<PopupProp> = ({
 	children,
 }) => {
 	return (
-		<div className="searched product flex flex-col p-4 fixed max-h-full w-full bg-[#10441E]/60 max-w-full z-50 h-[100vh]">
+		<div className="searched product flex flex-col md:p-4 fixed max-h-full w-full bg-[#10441E]/60 max-w-full z-30 md:z-50 h-[100vh]">
 			<div
 				className={cn(
-					"rounded-3xl bg-white min-w-[70%] md:h-[95%] h-[98%] overflow-hidden mx-auto mt-[1.5%] md:p-10 p-4 pb-[15%]",
+					"rounded-3xl bg-white md:min-w-[70%] md:w-fit w-full md:h-[95%] h-[98%] overflow-hidden mx-auto mt-[1.5%] md:p-10 p-4 pb-[15%]",
 					popcardCls
 				)}
 			>
 				<div className="flex justify-between relative my-7">
-					<h4 className="font-semibold font-head text-lg md:text-2xl">
+					<h4 className="font-semibold font-head text-2xl text-[#134F3A]">
 						{titleHeader}
 					</h4>
 					<RxCross2

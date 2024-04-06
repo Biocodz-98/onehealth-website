@@ -42,33 +42,28 @@ export default function Navbar() {
 		false,
 		false,
 		false,
-		false,
 	]);
 
 	const checkpath = (item: string) => {
 		const checker = item.trim().toLowerCase();
 		console.log(checker, "item is login", checker === "cart");
 		if (checker === "home" || location.pathname.toLowerCase() === "/") {
-			setActive([true, false, false, false, false]);
+			setActive([true, false, false, false]);
 		}
-		if (checker === "product") {
-			setActive([false, true, false, false, false]);
+		if (checker === "services") {
+			setActive([false, true, false, false]);
 		}
 		if (checker === "call us") {
-			setActive([false, false, true, false, false]);
+			setActive([false, false, true, false]);
 		}
-		if (checker === "cart") {
+		if (checker === "login") {
 			console.log("should log", item);
 			setActive([false, false, false, true, false]);
 		}
-		if (checker === "login") {
-			setActive([false, false, false, false, true]);
-		}
 		if (
 			checker !== "login" &&
-			checker !== "product" &&
+			checker !== "services" &&
 			checker !== "call us" &&
-			checker !== "cart" &&
 			checker !== "home"
 		) {
 			setActive([false, false, false, false, false]);
@@ -140,7 +135,7 @@ export default function Navbar() {
 					/>
 				</div>
 			)}
-			<div className="bg-background sticky z-50 top-0 inset-0 md:h-24 h-fit flex items-center md:mb-0 mb-5">
+			<div className="bg-background sticky md:z-50 z-30 top-0 inset-0 md:h-24 h-fit flex items-center md:mb-0 mb-5">
 				<MaxWithWrapper className="relative mx-auto w-full max-w-screen-2xl px-2.5 md:px-16 py-2">
 					<header className="relative bg-white mx-auto ">
 						<div className="border-b  border-gray-100 py-3 shadow-sm w-full">
@@ -183,7 +178,9 @@ export default function Navbar() {
 					<ResourcePage setIsHovered={setIsHovered} isHovered={isHovered} />
 				</MaxWithWrapper>
 
-				<nav className="lg:hidden fixed bottom-0 items-center flex w-full bg-slate-50 pb-3">
+				{showWhatapp && <Whatsapp />}
+			</div>
+				<nav className="lg:hidden fixed bottom-0 items-center flex w-full bg-slate-50 pb-3 z-[50]">
 					{MobileNavData.map((item, index) => (
 						<MobileNavItem
 							key={index}
@@ -198,8 +195,6 @@ export default function Navbar() {
 						/>
 					))}
 				</nav>
-				{showWhatapp && <Whatsapp />}
-			</div>
 			{hasSearch && (
 				<Popup
 					titleHeader="Search medicines, plans etc."

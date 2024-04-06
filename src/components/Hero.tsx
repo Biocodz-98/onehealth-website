@@ -89,6 +89,8 @@ export default function Hero(props:HeroProps) {
 									action={item.action}
 									imagesrc={item.Image!}
 									className={props.cardClassName}
+									actionCls="text-[0.7rem] sm:text-[0.8rem] md:text-sm"
+									titleGrp="text-[0.6rem] md:text-sm"
 								/>
 							))}
 						</div>
@@ -135,8 +137,16 @@ export default function Hero(props:HeroProps) {
 									</div>
 								</div>
 								<div className="bg-black col-span-6 row-start-1 row-end-7 rounded-3xl overflow-hidden bg-cover p-3">
-									<img src={props.textImage} alt={props.heroImageAlt} className="w-full"/>
-									<img src={props.shockImage} alt={props.heroImageAlt} className="w-full object-contain" />
+									<img
+										src={props.textImage}
+										alt={props.heroImageAlt}
+										className="w-full"
+									/>
+									<img
+										src={props.shockImage}
+										alt={props.heroImageAlt}
+										className="w-full object-contain"
+									/>
 								</div>
 								<div className="bg-[#E5F5D7] col-span-6 row-start-7 row-end-12 rounded-3xl overflow-hidden flex items-center">
 									<img src={props.productImage} alt={props.heroImageAlt} />

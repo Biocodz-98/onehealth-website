@@ -26,12 +26,23 @@ export default function MobileNavItem({
 				setActive(text);
 				if (text.toLowerCase() === "login") {
 					setOpenLogin?.(true);
+					setOpenCallUs?.(false);
+					setShowServices?.(false);
 				}
 				if (text.toLowerCase() === "call us") {
 					setOpenCallUs?.(true);
+					setOpenLogin?.(false);
+					setShowServices?.(false);
 				}
 				if (text.toLowerCase() === "services") {
 					setShowServices?.(true);
+					setOpenLogin?.(false);
+					setOpenCallUs?.(false);
+				}
+				if (text.toLowerCase() === "home") {
+					setShowServices?.(false);
+					setOpenLogin?.(false);
+					setOpenCallUs?.(false);
 				}
 			}}
 			className={`w-full flex flex-col items-center p-3${
@@ -45,7 +56,13 @@ export default function MobileNavItem({
 				fill={active ? "#3DA646" : "#101928"}
 				strokeWidth="0.5"
 			/>
-			<span className="text-sm flex flex-nowrap font-semibold">{text}</span>
+			<span
+				className={`text-sm flex flex-nowrap font-semibold text-[${
+					active ? "#3DA646" : "#101928"
+				}]`}
+			>
+				{text}
+			</span>
 		</Link>
 	);
 }

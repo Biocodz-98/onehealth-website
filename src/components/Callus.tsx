@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {motion} from "framer-motion"
 import { FaWhatsapp } from "react-icons/fa";
 import { Header, _Header } from "@/animate.data";
@@ -11,7 +10,7 @@ import ContactGuideMini from "@/components/ContactGuideMini";
 export default function Callus() {
   return (
 		<div className="overflow-y-scroll h-full">
-			<div className="relative  overflow-y-scroll h-[90%]">
+			<div className="relative  overflow-y-scroll h-[90%] pb-20 md:p-10">
 				<div className=" relative min-h-60 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden">
 					<div className="w-full h-full  overflow-hidden absolute ">
 						<div className="searchbgleft bg-[#D8F7DB]  w-full h-full absolute  z-0"></div>
@@ -83,13 +82,15 @@ export default function Callus() {
 							))}
 						</div>
 						<div className="flex flex-col gap-4 place-content-end ">
-							<Link
-								to={"tel:+2348179017319"}
-								className="px-8 py-3 bg-[#8DDE44] flex w-full gap-3 rounded-3xl text-#004449 font-sans font-semibold leading-5 text-nowrap"
-							>
-								<span>Call us now</span>
-								<Icons.rightArrow strokec="#004449" />
-							</Link>
+							<OneLink
+								index={0}
+								action="Call us now"
+								hasLeadingImage={<Icons.call strokec="#004449" />}
+								to="tel:+2348179017319"
+								target="_blank"
+								actionCls="text-[#004449]"
+								linkCls="items-center max-w-[75%] md:max-w-full w-full bg-[#8DDE44] border-[#8DDE44]"
+							/>
 							<OneLink
 								index={1}
 								action="Chat on WhatsApp"
@@ -98,7 +99,7 @@ export default function Callus() {
 								}
 								to="https://wa.me/+2348179017319"
 								target="_blank"
-								linkCls="items-center w-full"
+								linkCls="items-center max-w-[75%] w-full md:max-w-full text-nowrap"
 							/>
 						</div>
 					</motion.div>

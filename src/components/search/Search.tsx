@@ -45,7 +45,7 @@ export default function Search({
 					</button>
 					<input
 						className={cn(
-							"py-2 placeholder:text-[0.65rem] md:placeholder:text-sm focus:outline-none bg-transparent placeholder:text-slate-500 pr-1.5 w-full md:w-52 md:text-base text-sm",
+							"py-2 placeholder:text-[0.65rem] md:placeholder:text-sm focus:outline-none bg-transparent placeholder:text-slate-500 pr-1.5 w-full md:w-52 text-sm",
 							clsInput
 						)}
 						type="search"
@@ -62,7 +62,7 @@ export default function Search({
 						<button
 							type="submit"
 							className={cn(
-								"md:p-2 md:px-4 px-3 p-1 rounded-3xl ml-auto mr-2 md:mr-4 bg-[#8DDE44] text-[#134F3A] font-body text-xs md:text-base",
+								"px-6 p-2 rounded-3xl ml-auto mr-2 md:mr-4 bg-[#8DDE44] text-[#134F3A] font-body text-xs md:text-base min-w-[20%] md:min-w-[15%] w-fit",
 								clsButton
 							)}
 							onClick={(e) => {

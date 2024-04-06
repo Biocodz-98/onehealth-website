@@ -18,6 +18,7 @@ export default function Login() {
 
 	const handleLogin = (e:React.FormEvent)=>{
 		e.preventDefault();
+		if(!(Boolean(email) && Boolean(password))) return;
 		setIsProcessing(true);
 		console.log(email,password);
 		setTimeout(()=> setIsProcessing(false),3000)
@@ -161,8 +162,7 @@ export default function Login() {
 								className="rounded-3xl bg-[#8DDE44] text-[#10441E] p-3 px-5 flex w-full place-content-center"
 							>
 								{" "}
-								
-								{isProcessing? <Spinner />:<span>Log into Account</span>}
+								{isProcessing ? <Spinner /> : <span>Log into Account</span>}
 							</motion.button>
 							<motion.p
 								variants={H1P1R}
@@ -224,6 +224,8 @@ export default function Login() {
 							imagesrc={item.Image!}
 							className="md:max-w-[100%] md:max-h-[180px] w-full"
 							imageCls="md:w-full ml-1 md:ml-0 bg-contain"
+							actionCls="text-[0.7rem] md:text-sm "
+							titleGrp="md:-order-1 text-[0.6rem] md:text-sm"
 						/>
 					))}
 				</motion.div>

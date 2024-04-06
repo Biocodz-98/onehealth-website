@@ -47,7 +47,11 @@ export default function HeroCard({
 				)}
 			>
 				<div className="absolute top-3 bg-slate-100 right-0 h-full w-full overflow-hidden">
-					<img src={imagesrc} alt="hero image" className="w-fit relative right-0 ml-auto" />
+					<img
+						src={imagesrc}
+						alt="hero image"
+						className="w-fit relative right-0 ml-auto"
+					/>
 				</div>
 			</div>
 			<div
@@ -56,7 +60,11 @@ export default function HeroCard({
 					actionCls
 				)}
 			>
-				<Link to={action.href} target="_blank">
+				<Link
+					to={action.href}
+					target="_blank"
+					
+				>
 					{action.title}
 				</Link>
 				<Icons.downArrow className="-rotate-90 text-primary font-bold" />

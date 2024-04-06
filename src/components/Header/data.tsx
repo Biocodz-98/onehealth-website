@@ -27,11 +27,11 @@ export const MobileNavData = [
 		// action: "tel:+2348179017319",
 		action: "#",
 	},
-	{
-		text: "Cart",
-		icon: Icons.cart,
-		action: "#",
-	},
+	// {
+	// 	text: "Cart",
+	// 	icon: Icons.cart,
+	// 	action: "#",
+	// },
 	{
 		text: "Login",
 		icon: Icons.profile,

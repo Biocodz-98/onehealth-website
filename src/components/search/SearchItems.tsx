@@ -38,7 +38,7 @@ export default function SearchItems({
 				)}
 				<p className={cn("", midTitleCls)}>
 					{title && (
-						<h3 className="font-head font-semibold text-lg">{title}</h3>
+						<h3 className="font-head font-semibold text-base md:text-lg">{title}</h3>
 					)}
 					<p className="font-light font-body text-sm md:text-base">{name}</p>
 				</p>
