@@ -22,7 +22,7 @@ export default function Services({
 }) {
 	return (
 		<div className="h-[90%] overflow-y-scroll pb-16">
-			<div className="flex flex-col gap-5">
+			<div className="flex flex-col gap-5 ">
 				<motion.p
 					variants={Header}
 					animate="animate"
