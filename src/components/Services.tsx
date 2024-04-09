@@ -44,6 +44,7 @@ export default function Services({
 					query={searchQuery}
 					clsInput="md:w-full md:h-16 h-12"
 					setSearchResult={setSearchResult}
+					// isAutofocus={true}
 				/>
 			</div>
 			<div className="divider md:hidden h-1 w-full bg-slate-200 mt-5"></div>

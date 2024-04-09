@@ -39,6 +39,7 @@ export const CareSolutionData = [
 		heading: "Medication & pharmacy benefits for patients",
 		description: "Enrollee-friendly Pharmacy Benefit & Fulfilment Solution",
 		bgColor: "#E9FFEB",
+		alt: "Medication and Pharmacy Benefits for Enrollees - Online Pharmacy in Nigeria",
 	},
 	{
 		title: "FOR PHARMACIES",
@@ -49,6 +50,7 @@ export const CareSolutionData = [
 		description:
 			"Healthcare fulfillment to transform healthcare service provision in Nigeria",
 		bgColor: "#F1FFE4",
+		alt: "Pharmacy Fulfillment & Dispensing Services - OneHealth Pharmacy in Nigeria",
 	},
 ];
 
@@ -58,18 +60,22 @@ export const WhyOneHealthcareData = [
 		image: WhyOneHealth1,
 		description:
 			"We offer the lowest prices and discounts to give you the best deal on your medications & healthcare solutions",
+		alt: "Image highlighting lowest prices offered by OneHealth Online Pharmacy",
 	},
 	{
 		heading: "Medication Support",
 		image: WhyOneHealth2,
 		description:
 			"We manage & automate your refills, provide convenient medication support, patient follow-up and advisory.",
+
+		alt: "Image depicting medication support as part of OneHealth Nigeria services",
 	},
 	{
 		heading: "Same Day, Last Mile Care",
 		image: WhyOneHealth3,
 		description:
 			"Before work, in the evening, at home or right to your office. We deliver your quality healthcare right to your door.",
+		alt: " Image showcasing same-day last mile delivery service provided by OneHealth Online Pharmacy",
 	},
 ];
 
@@ -83,6 +89,7 @@ export const PlatformCardData = [
 		imageFooter: PlatformImgF1,
 		bgColor: "#228821",
 		bgColorSec: "#379A44",
+		alt: "Image showcasing Pillmova, the leading Pharma logistics and mobility platform in Nigeria, a product of OneHealth online pharmacy.",
 	},
 	{
 		title: "Pillfinda",
@@ -94,6 +101,7 @@ export const PlatformCardData = [
 		imageFooter: PlatformImgF2,
 		bgColor: "#EAFBDA",
 		bgColorSec: "#61AC1A",
+		alt: "Image displaying Pillfinda, the Pharma procurement and inventory intelligence solution for pharmacies in Africa | OneHealth Nigeria",
 	},
 ];
 

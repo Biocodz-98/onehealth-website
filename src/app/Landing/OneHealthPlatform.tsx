@@ -134,6 +134,7 @@ export default function OneHealthPlatform() {
 							bgColorSec={item.bgColorSec}
 							bgColor={item.bgColor}
 							index={index}
+							alt={item.alt}
 						/>
 					))}
 				</motion.div>

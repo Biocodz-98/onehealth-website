@@ -81,7 +81,7 @@ export const TestimonialCardData = [
 	},
 	{
 		image: Antimaleria,
-		title: "Maleria Medication",
+		title: "Antimaleria Medication",
 		link: "https://onehealthng.com/category/malaria-medications",
 	},
 	{

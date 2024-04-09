@@ -45,7 +45,7 @@ export default function Testimonial() {
 				transition={{ duration: 0.65, delay: 0.3 }}
 				exit={{ ...Header.exit, ...Scale.exit }}
 				src={TestimonialB}
-				alt="testimonial hero image"
+				alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
 			/>
 			<MaxWithWrapper>
 				<motion.div
@@ -107,20 +107,20 @@ export default function Testimonial() {
 					>
 						<Swiper
 							// install Swiper modules
-							modules={[Pagination,  Autoplay]}
+							modules={[Pagination, Autoplay]}
 							slidesPerView="auto"
 							breakpoints={{
 								320: {
 									slidesPerView: 2,
-									spaceBetween :4
+									spaceBetween: 4,
 								},
 								639: {
 									slidesPerView: 2,
-									spaceBetween :2,
+									spaceBetween: 2,
 								},
 								865: {
 									slidesPerView: 3,
-									spaceBetween : 4,
+									spaceBetween: 4,
 								},
 								1025: {
 									slidesPerView: 4,

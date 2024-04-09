@@ -66,6 +66,7 @@ export default function  OneHealthServiceSuits(props: OneHealthServiceSuitsProps
 						cls="md:h-[622px] md:w-[400px]"
 						arrLength={props.serviceCollections.length}
 						imageWidth={150}
+						alt={item.alt}
 					/>
 				))}
 			</div>

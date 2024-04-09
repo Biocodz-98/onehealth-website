@@ -135,13 +135,13 @@ export default function Navbar() {
 					/>
 				</div>
 			)}
-			<div className="bg-background sticky md:z-50 z-30 top-0 inset-0 md:h-24 h-fit flex items-center md:mb-0 mb-5">
+			<div className="fixed top-0 bg-background  md:z-50 z-30 inset-0 md:h-24 h-fit flex items-center md:mb-0 mb-5 ">
 				<MaxWithWrapper className="relative mx-auto w-full max-w-screen-2xl px-2.5 md:px-16 py-2">
 					<header className="relative bg-white mx-auto ">
 						<div className="border-b  border-gray-100 py-3 shadow-sm w-full">
 							<div className="flex  flex-16 items-center relative">
 								{/* mobile nav */}
-								<div className="ml-4 flex flex-col md:flex-row md:items-start items-center lg:ml-0 w-full">
+								<div className="ml-4 flex flex-col md:flex-row md:items-start items-center lg:ml-0 w-full ">
 									<NavLink to={"/"}>
 										<Icons.logo className="h-8 w-36" />
 									</NavLink>
@@ -150,7 +150,7 @@ export default function Navbar() {
 										Africa’s most reliable healthcare platform
 									</p>
 								</div>
-								<div className="hidden z-50 ld:ml-8 lg:block lg:self-stretch">
+								<div className="hidden ld:ml-8 lg:block lg:self-stretch">
 									<NavItems
 										searchQuery={searchQuery}
 										setHovered={setIsHovered}
@@ -170,6 +170,7 @@ export default function Navbar() {
 									setQuery={setSearchQuery}
 									query={searchQuery}
 									setHasSearch={setHasSearch}
+									hasSearch={hasSearch}
 									setSearchResult={setSearchResult}
 								/>
 							</div>
@@ -180,21 +181,21 @@ export default function Navbar() {
 
 				{showWhatapp && <Whatsapp />}
 			</div>
-				<nav className="lg:hidden fixed bottom-0 items-center flex w-full bg-slate-50 pb-3 z-[50]">
-					{MobileNavData.map((item, index) => (
-						<MobileNavItem
-							key={index}
-							action={item.action}
-							text={item.text}
-							Icon={item.icon}
-							active={active[index]}
-							setActive={checkpath}
-							setOpenLogin={setOpenLogin}
-							setOpenCallUs={setOpenCallUs}
-							setShowServices={setShowService}
-						/>
-					))}
-				</nav>
+			<nav className="lg:hidden fixed bottom-0 items-center flex w-full bg-slate-50 pb-3 z-[50]">
+				{MobileNavData.map((item, index) => (
+					<MobileNavItem
+						key={index}
+						action={item.action}
+						text={item.text}
+						Icon={item.icon}
+						active={active[index]}
+						setActive={checkpath}
+						setOpenLogin={setOpenLogin}
+						setOpenCallUs={setOpenCallUs}
+						setShowServices={setShowService}
+					/>
+				))}
+			</nav>
 			{hasSearch && (
 				<Popup
 					titleHeader="Search medicines, plans etc."

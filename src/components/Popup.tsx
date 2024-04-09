@@ -18,7 +18,7 @@ const Popup: React.FC<PopupProp> = ({
 	children,
 }) => {
 	return (
-		<div className="searched product flex flex-col md:p-4 fixed max-h-full w-full bg-[#10441E]/60 max-w-full z-30 md:z-50 h-[100vh]">
+		<div className="searched product flex flex-col md:p-4 fixed max-h-full w-full bg-[#10441E]/60 l z-30 md:z-50 h-[100vh]">
 			<div
 				className={cn(
 					"md:rounded-3xl rounded-tr-3xl rounded-tl-3xl bg-white md:min-w-[70%] md:w-fit w-full md:h-[95%] h-full overflow-hidden mx-auto mt-[1.5%] md:p-10 p-4 pb-[15%]",

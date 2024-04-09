@@ -32,8 +32,10 @@ export interface CareCardProps {
 	isDownloadable?: boolean;
 	downloadActionAndriod?: string;
 	downloadActionIOS?: string;
-	hrefAndriod?:string;
-	hrefIOS?:string;
+	hrefAndriod?: string;
+	hrefIOS?: string;
+	downloadableCls?: string;
+	alt?: string;
 }
 
 export default function CareCard({
@@ -64,7 +66,9 @@ export default function CareCard({
 	downloadActionAndriod,
 	downloadActionIOS,
 	hrefAndriod,
-	hrefIOS
+	hrefIOS,
+	downloadableCls,
+	alt
 }: CareCardProps) {
 	const colorIndex0 = index == 0 ? "bg-[#E9FFEB]" : "";
 	const colorIndex1 = arrLength! > 2 && index == 1 ? "bg-[#E9FFEB]" : "";
@@ -129,7 +133,7 @@ export default function CareCard({
 				</p>
 				<img
 					src={image}
-					alt="care images"
+					alt={alt}
 					width={imageWidth}
 					className={cn("", imgcls)}
 				/>
@@ -165,7 +169,7 @@ export default function CareCard({
 							/>
 						</Link>
 					) : (
-						<div className="flex gap-2">
+						<div className={cn("flex gap-2", downloadableCls)}>
 							<Link
 								to={hrefAndriod ?? "#"}
 								target="_blank"
@@ -175,7 +179,7 @@ export default function CareCard({
 								)}
 							>
 								<span>{downloadActionAndriod}</span>{" "}
-								<Icons.download
+								<Icons.rightArrow
 									className={cn("", arrowCls)}
 									strokec={strokec}
 									fill="#ffffff"
@@ -190,7 +194,7 @@ export default function CareCard({
 								)}
 							>
 								<span>{downloadActionIOS}</span>{" "}
-								<Icons.download
+								<Icons.rightArrow
 									className={cn("", arrowCls)}
 									strokec={strokec}
 									fill="#ffffff"

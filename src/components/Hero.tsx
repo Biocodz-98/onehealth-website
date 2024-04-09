@@ -106,7 +106,7 @@ export default function Hero(props:HeroProps) {
 							<img
 								src={props.heroImage}
 								alt={props.heroImageAlt}
-								className={cn("h-full w-full", props.classNameImg)}
+								className={cn("md:h-full w-full object-fit scale-100 md:scale-105", props.classNameImg)}
 								// width={504}
 								// height={500}
 							/>

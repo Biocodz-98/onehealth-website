@@ -5,9 +5,10 @@ export interface WhyOneHealthProps {
     heading:string;
     description:string;
 	cls?:string;
+	alt?:string;
 }
 
-export default function WhyOneHealthCard({image,heading,description,cls}: WhyOneHealthProps) {
+export default function WhyOneHealthCard({image,heading,description,cls,alt}: WhyOneHealthProps) {
   return (
 		<div className={cn("flex flex-col gap-8 items-center max-w-96",cls)}>
 			<div
@@ -17,7 +18,7 @@ export default function WhyOneHealthCard({image,heading,description,cls}: WhyOne
 					src={image}
 					// height={200}
 					// width={350}
-					alt="why choose one health as your number one healthcare provider image"
+					alt={alt}
 					className='w-[90%] mx-auto'
 				/>
 			</div>

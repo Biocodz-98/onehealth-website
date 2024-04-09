@@ -1,8 +1,8 @@
-import React,{SetStateAction} from 'react';
+import React, { SetStateAction } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import Search from "./search/Search";
 import SearchItems from "./search/SearchItems";
-import { Result,errorType } from '@/hooks/useSearch';
+import { Result, errorType } from "@/hooks/useSearch";
 import Trending from "./Trending";
 import HeroCard from "./cards/HeroCard";
 import OneLink from "./Link";
@@ -18,7 +18,7 @@ export default function SearchBody({
 	setSearchQuery,
 	searchResult,
 	setSearchResult,
-    setShowResourceMobile,
+	setShowResourceMobile,
 	loading,
 	error,
 }: {
@@ -30,6 +30,7 @@ export default function SearchBody({
 	error: errorType;
 	searchResult: Result[];
 }) {
+
 	return (
 		<div className=" relative h-full overflow-y-scroll">
 			<Search
@@ -38,6 +39,8 @@ export default function SearchBody({
 				query={searchQuery}
 				clsInput="md:w-full md:h-16 h-12"
 				setSearchResult={setSearchResult}
+				isAutofocus={true}
+				className="mt-2 w-[98%] mx-auto"
 			/>
 
 			<div className="py-3 flex w-full"></div>
@@ -74,7 +77,7 @@ export default function SearchBody({
 						<h2 className="font-head font-semibold md:text-xl">
 							Popular on OneHealth
 						</h2>
-						<div className="flex overflow-x-auto space-x-2 md:space-x-5 py-5 w-[80vw] mx-auto">
+						<div className="flex overflow-x-auto space-x-2 md:space-x-5 py-5 md:w-[80vw] mx-auto">
 							{PopularOnOneHealthData.map((item, index) => (
 								<HeroCard
 									key={index}
