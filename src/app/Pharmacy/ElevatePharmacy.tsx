@@ -11,7 +11,7 @@ export default function ElevatePharmacy() {
 			contentSectionCards={ElevatePharmacyData}
 			contentImage={PhoneSection}
 			contentImageAlt='Tracking your orders in real time, get live notifications , phone image'
-			imageCls='md:w-[200px] lg:w-full mx-auto'
+			imageCls='md:w-[200px] lg:w-[250px] mx-auto'
 			sectionCls='md:mb-40'
 		/>
 	);

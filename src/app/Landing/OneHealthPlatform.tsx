@@ -135,8 +135,10 @@ export default function OneHealthPlatform() {
 							bgColor={item.bgColor}
 							index={index}
 							alt={item.alt}
+							href={item.href}
 						/>
 					))}
+
 				</motion.div>
 				<div className="md:flex hidden gap-2 justify-center mt-20">
 					<p className="w-20 h-2 rounded-md bg-[#8DDE44]"></p>

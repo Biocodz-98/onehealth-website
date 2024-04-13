@@ -35,7 +35,7 @@ export default function SectionHeader(props:SectionHeaderProps) {
 			transition={{ duration: 0.65, delay: 0.3 }}
 			exit={Header.exit}
 			className={cn(
-				`text flex flex-col items-center lg:w-[70vw] gap-2 mb-4 md:text-start text-center`,
+				`text flex flex-col items-center lg:w-[70vw] gap-2 mb-4 md:text-start text-center mx-auto`,
 				props.className
 			)}
 			ref={smRef}

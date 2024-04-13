@@ -11,6 +11,7 @@ export function ComplaintItem({
 	imageCls,
 	comCls,
 	textCls,
+	alt
 }: {
 	image: string;
 	title: string;
@@ -18,6 +19,7 @@ export function ComplaintItem({
 	imageCls?: string;
 	comCls?: string;
 	textCls?: string;
+	alt?: string;
 }) {
 	return (
 		<div className={cn("flex gap-8 ", comCls)}>
@@ -26,7 +28,7 @@ export function ComplaintItem({
 					src={image}
 					// width={64}
 					// height={64}
-					alt="Expectation from your pharmacy manager; Optimized network delivery or pickup, regulatory compliance,advance technological support logistics image"
+					alt={alt}
 					className="w-full"
 				/>
 			</div>
@@ -51,7 +53,7 @@ export default function Compliant() {
 					<div className="">
 						<img
 							src={FemaleDoc}
-							alt="An elegant Female nurse, documenting patients compliants, we are compliant image"
+							alt="An image depicting a medication fulfillment manager seated, processing orders for enrollees on behalf of their health organizations."
 						/>
 					</div>
 					<div className="flex flex-col justify-between h-full">
@@ -61,6 +63,7 @@ export default function Compliant() {
 								desc={item.description}
 								image={item.image}
 								key={index}
+								alt={item.alt}
 							/>
 						))}
 					</div>

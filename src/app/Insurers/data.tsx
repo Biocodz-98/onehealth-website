@@ -4,6 +4,7 @@ export const HeroCardData = [
 	{
 		title: "INSURERS",
 		Image: HeroINS as string,
+		alt: "Onboarding image for insurers and HMOs to join pharmacy benefit management in Nigeria",
 		action: {
 			title: "Partner with us",
 			href: "https://forms.gle/WMqZerndJfihNqSt5",
@@ -12,6 +13,7 @@ export const HeroCardData = [
 	{
 		title: "HOSPITALS",
 		Image: HeroIND as string,
+		alt: "Onboarding image for hospitals and clinics to join pharmacy benefit management in Nigeria",
 		action: {
 			title: "Partner with us",
 			href: "https://forms.gle/cMrKEEi6zDg5JvHNA",
@@ -20,6 +22,7 @@ export const HeroCardData = [
 	{
 		title: "ALREADY A MEMBER",
 		Image: HeroONB as string,
+		alt: "Sign-in to the medication fulfillment platform for healthcare organizations in Nigeria",
 		action: {
 			title: "Sign In Portal",
 			href: "https://partner.onehealthng.com/",
@@ -28,21 +31,44 @@ export const HeroCardData = [
 ];
 
 export const SponsorImageList = [
-	SponsorRELIANCE,
-	SponsorHYGIA,
-	SponsorAnchorHMO,
-	SponsorAvonHMO,
-	SponsorNNPC,
-	SponsorNOVO,
-	SponsorMETOHEALTH
-]
+	{
+		image: SponsorRELIANCE,
+		alt: "RelianceHMO - Powered by OneHealth Pharmacy Benefit Management Solution for enrollee prescription fulfilment in Nigeria",
+	},
+	{
+		image: SponsorHYGIA,
+		alt: "HygeiaHMO - Powered by OneHealth Pharmacy Benefit Management Solution for enrollee prescription fulfilment in Nigeria",
+	},
+	{
+		image: SponsorAnchorHMO,
+		alt: "AnchorHMO - Powered by OneHealth Pharmacy Benefit Management Solution for enrollee prescription fulfilment in Nigeria",
+	},
+	{
+		image: SponsorAvonHMO,
+		alt: "AvonHMO - Powered by OneHealth Pharmacy Benefit Management Solution for enrollee prescription fulfilment in Nigeria",
+	},
+	{
+		image: SponsorNNPC,
+		alt: "NNPC - Powered by OneHealth Pharmacy Benefit Management Solution for enrollee prescription fulfilment in Nigeria",
+	},
+	{
+		image: SponsorNOVO,
+		alt: "NovoHealth - Powered by OneHealth Pharmacy Benefit Management Solution for enrollee prescription fulfilment in Nigeria",
+	},
+	{
+		image: SponsorMETOHEALTH,
+		alt: "MetroHealth - Powered by OneHealth Pharmacy Benefit Management Solution for enrollee prescription fulfilment in Nigeria",
+	},
+];
 
 export const ServiceProviderData = [
 	{
 		title: "QUICK ORDER",
 		image: SpillDrugContainer,
+		alt: "Timely Medication Fulfillment for Enrollees - Reducing Hospitalizations and Emergency Visits",
 		action: "Partner with us",
-		href: "https://partner.onehealthng.com/",
+		// href: "https://partner.onehealthng.com/",
+		href: "https://docs.google.com/forms/d/e/1FAIpQLSdvuMYdUa7G1zoZTUdQY8cLuxNwFBeUBgaypeb9BHr67GUE7Q/viewform",
 		heading: "Quick Fulfilment",
 		description:
 			"Timely medication supply to enrollees via pickup or delivery, reducing hospitalizations and emergency visits.",
@@ -51,8 +77,10 @@ export const ServiceProviderData = [
 	{
 		title: "TRACK ORDER",
 		image: CareInsure,
+		alt: "Order and Claim Tracking on medication fulfiment for enrollees - Ensuring Visibility into Medication Delivery Status",
 		action: "Get Pharmacy Service in 2 minutes",
-		href: "https://onehealthng.com/pharmacy",
+		// href: "https://onehealthng.com/pharmacy",
+		href: "https://docs.google.com/forms/d/e/1FAIpQLSdvuMYdUa7G1zoZTUdQY8cLuxNwFBeUBgaypeb9BHr67GUE7Q/viewform",
 		heading: "Track Orders & Claims",
 		description:
 			"The much needed visibility into claims and medication delivery status.",
@@ -61,8 +89,10 @@ export const ServiceProviderData = [
 	{
 		title: "COST SAVINGS",
 		image: CareCart,
+		alt: "Utilization cost savings - enhancing healthcare efficiency through timely follow-ups and checkups",
 		action: "Start sending orders",
-		href: "https://onehealthng.com/pharmacy",
+		// href: "https://onehealthng.com/pharmacy",
+		href: "https://docs.google.com/forms/d/e/1FAIpQLSdvuMYdUa7G1zoZTUdQY8cLuxNwFBeUBgaypeb9BHr67GUE7Q/viewform",
 		heading: "Utilization Cost Savings",
 		description:
 			"Reduce utilization and healthcare costs through on-time enrollee follow-ups, reminders and periodic checkups.",
@@ -74,8 +104,10 @@ export const CoverageData = [
 	{
 		title: "NATIONWIDE COVERAGE",
 		image: MapImage,
+		alt: "Map of Nigeria Showing Nationwide Reach - Accessing Members in 36 States from Lagos to Maiduguri, Abuja to Owerri and more",
 		action: "Partner with us",
-		href: "https://partner.onehealthng.com/",
+		// href: "https://partner.onehealthng.com/",
+		href: "https://docs.google.com/forms/d/e/1FAIpQLSdvuMYdUa7G1zoZTUdQY8cLuxNwFBeUBgaypeb9BHr67GUE7Q/viewform",
 		heading: "Reach Customers in New Markets",
 		description:
 			"From Lagos to Maiduguiri, from Abuja to Owerri, our network provides you access to your members in 36 states",
@@ -84,8 +116,10 @@ export const CoverageData = [
 	{
 		title: "COMPETITIVE TARIFFS",
 		image: HeroINS,
+		alt: "Flexible Formulary Tariff and Competitive Pricing - Updated Options Tailored to Your Needs",
 		action: "Get Pharmacy Service in 2 minutes",
-		href: "https://onehealthng.com/pharmacy",
+		// href: "https://onehealthng.com/pharmacy",
+		href: "https://docs.google.com/forms/d/e/1FAIpQLSdvuMYdUa7G1zoZTUdQY8cLuxNwFBeUBgaypeb9BHr67GUE7Q/viewform",
 		heading: "Flexible Formulary Tariff",
 		description:
 			"Updated and well-detailed formulary with tariff options that works for you.",
@@ -159,24 +193,28 @@ export const CompliantData = [
 	{
 		title: "Specialty Care for Chronic & Complex Patients",
 		image: Sheets,
+		alt: "An image illustrating how we provide special drug management and support, including free medication delivery for chronic and complex patients in Nigeria.",
 		description:
 			"Specialty drug management and support including Free medication delivery for chronic and complex patients.",
 	},
 	{
 		title: "Optimized Pharmacy Networks for Delivery or Pickup",
 		image: TrackOrder,
+		alt: "An image depicting safe and affordable access to medications through optimized pharmacy networks, including home delivery and pharmacy pickup options.",
 		description:
 			"Safe and affordable access to medications from optimized pharmacy networks encompassing home delivery and pharmacy pickup ",
 	},
 	{
 		title: "Technology & Infrastructure",
 		image: ComputerSupport,
+		alt:"An image showcasing advanced technology supporting logistics, supply chain management, and real-time tracking for efficient medication delivery.",
 		description:
 			"Advanced technology supporting logistics, supply chain management and real time tracking for efficient medication delivery.",
 	},
 	{
 		title: "Regulatory Compliance & Data Security",
 		image: AtomEditor,
+		alt:"An image illustrating full compliance with Nigerian healthcare regulations, including stringent data security measures to safeguard enrollee information.",
 		description:
 			"Fully compliant with Nigerian healthcare regulations including stringent data security measures to safeguard enrollee information.",
 	},

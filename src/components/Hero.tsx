@@ -63,7 +63,7 @@ export default function Hero(props:HeroProps) {
 								{props.badgeTag}
 							</p>
 						)}
-						<div className=" flex flex-col gap-10 px-2 md:px-0 md:w-[85%]">
+						<div className=" flex flex-col gap-10 px-2 md:px-0">
 							<h1
 								className={cn(
 									"text-wrap w-full md:text-start text-center font-bold leading-5  md:leading-12 font-head text-[2.3rem] lg:text-5xl text-primary",
@@ -91,6 +91,7 @@ export default function Hero(props:HeroProps) {
 									className={props.cardClassName}
 									actionCls="text-[0.7rem] sm:text-[0.8rem] md:text-sm"
 									titleGrp="text-[0.6rem] md:text-sm"
+									alt={item.alt}
 								/>
 							))}
 						</div>

@@ -39,7 +39,7 @@ export default function SectionCard(props:SectionCardProps) {
 				/>
 				<div
 					className={cn(
-						"content2 flex flex-col md:flex-row justify-between p-5 px-3 md:px-0 lg:px-10",
+						"content2 flex flex-col md:flex-row justify-around p-5 px-3 md:px-0 lg:px-10",
 						props.parentCls
 					)}
 				>

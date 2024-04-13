@@ -7,47 +7,60 @@ export const TrendingData = [
 	"Vitamin C",
 	"Novarsc",
 	"Klovinal",
+	"Aquaclav",
+	"Vasporin",
+	"Ciprotab",
+	"Fleming",
+	"Lonart",
+	"Nutrify",
+	"Mycoten",
 ];
 
 export const PopularOnOneHealthData = [
 	{
 		title: "#1 IN SUPPLEMENTS",
 		Image: Nutrify as string,
+		alt: "",
 		action: {
 			title: "Nutrify",
-			href: "https://onehealthng.com/pharmacy",
+			// href: "https://onehealthng.com/pharmacy",
+			href: "https://onehealthng.com/brand/Nutrify",
 		},
 	},
 	{
 		title: "#1 IN ANTIMALARIA ",
 		Image: HeroONB as string,
+		alt: "",
 		action: {
 			title: "Malaria DTP Kit",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "https://onehealthng.com/search?q=malaria+DTP",
 		},
 	},
 	{
 		title: "PERIOD PACKAGE",
 		Image: HeroONB as string,
+		alt: "",
 		action: {
 			title: "Period Princess",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "https://onehealthng.com/product/period-princess-bundle",
 		},
 	},
 	{
 		title: "TOP TRAVEL BUNDLE",
 		Image: HeroONB as string,
+		alt: "",
 		action: {
 			title: "Travel Kit",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "https://onehealthng.com/search?q=wellness+travel+kit",
 		},
 	},
 	{
 		title: "SEX PERFORMANCE",
 		Image: HeroONB as string,
+		alt: "",
 		action: {
 			title: "Pleasure box",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "https://onehealthng.com/product/ultimate-pleasure-bundle",
 		},
 	},
 ];
@@ -73,7 +86,7 @@ export const PopularServicesData = [
 		Image: HeroONB as string,
 		action: {
 			title: "Book Consult",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "https://onehealthng.com/book-doctor",
 		},
 	},
 	{
@@ -81,7 +94,7 @@ export const PopularServicesData = [
 		Image: HeroONB as string,
 		action: {
 			title: "Book Health Test",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "https://onehealthng.com/lab-test",
 		},
 	},
 ];
@@ -122,11 +135,11 @@ export const QuickActionsData = [
 		},
 	},
 	{
-		title: "Get health protection cover",
+		title: "Health cover for teams",
 		Image: NeedMedicalGuide2 as string,
 		action: {
 			name: "Cover for hospitals, medicines, labs & more",
-			href: "#",
+			href: "https://onewellnessapp.com",
 		},
 	},
 	{
@@ -142,7 +155,7 @@ export const QuickActionsData = [
 		Image: NeedMedicalGuide4 as string,
 		action: {
 			name: "Request immediate help",
-			href: "#",
+			href: "https://wa.link/lm17eg",
 		},
 	},
 ];

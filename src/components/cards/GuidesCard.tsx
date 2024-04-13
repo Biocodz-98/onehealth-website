@@ -15,7 +15,7 @@ export default function GuidesCard({image,index,imgCls,cls}:GuideCardProps) {
 		>
 			<img
 				src={image}
-				alt="24/7 Pharmacist Support - OneHealth Online Pharmacy in Nigeria"
+				alt="An image showcasing support staff for the pharmacy benefit management solution."
 				className={cn("", imgCls)}
 			/>
 		</div>

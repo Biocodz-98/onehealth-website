@@ -1,10 +1,10 @@
 import { SponsorImageList } from './data';
 import MaxWithWrapper from '@/components/MaxWithWrapper';
 
-export function ImageCard({imgSrc}:{imgSrc:string}) {
+export function ImageCard({imgSrc,alt}:{imgSrc:string,alt:string}) {
 	return (
 		<div className="px-4 h-14 md:min-w-32 max-w-36 md:max-w-44 flex place-content-center ">
-			<img src={imgSrc} alt="Proud Sponsors of onehealth organization image " />
+			<img src={imgSrc} alt={alt} />
 		</div>
 	);
 }
@@ -21,7 +21,7 @@ export default function Sponsors() {
 		 gap-5 px-10 py-10 w-full place-content-center"
 					>
 							{SponsorImageList.map((item, index) => (
-								<ImageCard imgSrc={item} key={index} />
+								<ImageCard imgSrc={item.image} alt={item.alt}  key={index} />
 							))}
 					</div>
 				</div>

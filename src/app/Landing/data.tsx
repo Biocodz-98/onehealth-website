@@ -17,7 +17,8 @@ export const HeroCardData = [
 		Image: HeroINS as string,
 		action: {
 			title: "Partner With Us",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			// href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "/insurers",
 		},
 	},
 	{
@@ -25,7 +26,8 @@ export const HeroCardData = [
 		Image: HeroONB as string,
 		action: {
 			title: "Get On Board",
-			href: "https://forms.gle/Z38NAhYRH2uXUcEZA",
+			// href: "https://forms.gle/Z38NAhYRH2uXUcEZA",
+			href: "/pharmacies",
 		},
 	},
 ];
@@ -35,7 +37,8 @@ export const CareSolutionData = [
 		title: "FOR INSURERS",
 		image: CareInsure,
 		action: "Get Started",
-		href: "https://partner.onehealthng.com/hmo",
+		// href: "https://partner.onehealthng.com/hmo",
+		href: "/insurers",
 		heading: "Medication & pharmacy benefits for patients",
 		description: "Enrollee-friendly Pharmacy Benefit & Fulfilment Solution",
 		bgColor: "#E9FFEB",
@@ -45,7 +48,8 @@ export const CareSolutionData = [
 		title: "FOR PHARMACIES",
 		image: CareCart,
 		action: "Partner with us",
-		href: "https://onehealthng.com/pharmacy",
+		// href: "https://onehealthng.com/pharmacy",
+		href: "/pharmacies",
 		heading: "Pharmacy fulfillment & dispensing",
 		description:
 			"Healthcare fulfillment to transform healthcare service provision in Nigeria",

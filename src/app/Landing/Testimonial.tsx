@@ -1,6 +1,11 @@
 import {useRef,useEffect} from 'react';
-import { TestimonialCardData, GuideCardData, ContactGuideInfoData} from "@/data/generalData";
-import {TestimonialB} from "@/data/imageData"
+import {
+	TestimonialCardData,
+	GuideCardData,
+	ContactGuideInfoData,
+	TestimonialSholaData,
+} from "@/data/generalData";
+import {TestimonialB, TestimonialDoc} from "@/data/imageData"
 import MaxWithWrapper from '../../components/MaxWithWrapper';
 import TestimonialCard from '../../components/cards/TestimonialCard';
 import { motion, useInView, useAnimation } from "framer-motion";
@@ -23,7 +28,23 @@ import GuidianceContact from '@/components/GuidianceContact';
 // register Swiper custom elements
 register();
 
-
+const Refills = ({title,body,index}:{title:string,body:string, index:number})=>{
+	return (
+		<div className="flex border-b-2 border-slate-200/50 py-3">
+			<div className="font-body text-3xl  font-semibold leading-16 border-r-2 border-slate-200/50 w-16 px-5 items-center flex">
+				{index}
+			</div>
+			<div className="px-5">
+				<h1 className="font-body md:text-xl text-[0.88rem] font-semibold leading-9">
+					{title}
+				</h1>
+				<p className="font-body md:text-base text-[0.64rem] font-semibold leading-9">
+					{body}
+				</p>
+			</div>
+		</div>
+	);
+}
 export default function Testimonial() {
 		const tRef = useRef(null);
 		const smView = useInView(tRef, { once: true });
@@ -38,15 +59,77 @@ export default function Testimonial() {
 		}, [smView]);
   return (
 		<section ref={tRef} className="mt-9 md:pt-32 flex flex-col">
-			<motion.img
+			<motion.div
 				variants={{ ...Header, ...Scale }}
 				animate={smController}
 				initial="initial"
 				transition={{ duration: 0.65, delay: 0.3 }}
 				exit={{ ...Header.exit, ...Scale.exit }}
-				src={TestimonialB}
-				alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
-			/>
+				className="relative min-h-[85vh] h-[95vh]"
+			>
+				<img
+					src={TestimonialB}
+					alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
+					className="absolute z-0 h-full w-full md:scale-100 scale-110"
+				/>
+				<div className="relative text-white flex flex-col md:flex-row h-full md:gap-0 gap-10 justify-between md:py-16 py-3">
+					<div className="w-full md:pt-10 pt-8 md:px-20 px-4 md:space-y-9 space-y-5">
+						<h1 className="font-head font-semibold text-4xl md:text-6xl text-white md:leading-16">
+							I never have to worry about my medications
+						</h1>
+						<p className="md:text-2xl text-lg font-body">
+							Shola, Yaba 29 years old.
+						</p>
+					</div>
+					<div className="w-full flex flex-col gap-10">
+						<div className="rounded-t-3xl  mt-auto flex md:gap-10 gap-4 items-center px-4">
+							<div className="md:w-32 w-28 relative md:h-36 h-24 md:rounded-t-[3rem] md:rounded-b-[3rem] rounded-t-[1.9rem] rounded-b-[1.9rem] overflow-hidden ">
+								<img
+									className="h-full w-full scale-110"
+									src={TestimonialDoc}
+									alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
+								/>
+							</div>
+							<div className="space-y-1">
+								<p className="bg-[#1D1D1F]/60 px-2 py-1 w-fit md:text-base text-[0.63rem]">
+									Shola, your medications are ready for pickup.
+								</p>
+								<p className="bg-[#1D1D1F]/60 px-2 py-1 w-fit md:text-base text-[0.63rem]">
+									I have set an auto-refill after the next 7 days
+								</p>
+								<p className="bg-[#1D1D1F]/60 px-2 py-1 w-fit md:text-base text-[0.63rem]">
+									You save 16,000 Naira on this order covered by your HMO
+								</p>
+								<p className="bg-[#1D1D1F]/60 px-2 py-1 w-fit md:text-base text-[0.63rem]">
+									For side effects & other questions, Send a DM
+								</p>
+							</div>
+						</div>
+						<div className="bg-[#1D1D1F]/75 p-5 rounded-3xl pt-7 md:w-[70%] w-[90%] mx-auto">
+							{TestimonialSholaData.map((item, index) => (
+								<Refills
+									key={index}
+									title={item.title}
+									body={item.body}
+									index={index + 1}
+								/>
+							))}
+							<div className="flex w-full justify-between px-5 items-center py-2">
+								<div className="flex font-semibold font-body gap-2">
+									<span className="text-3xl">4</span>
+									<p className="flex flex-col text-xs">
+										<span>REFILLS</span>
+										<span>LEFT</span>
+									</p>
+								</div>
+								<span className="px-3 py-2 bg-slate-200 text-[#036B26] font-medium text-sm rounded-full">
+									SUCCESS
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</motion.div>
 			<MaxWithWrapper>
 				<motion.div
 					variants={Header}
@@ -148,6 +231,7 @@ export default function Testimonial() {
 										link={item.link}
 										title={item.title}
 										index={index}
+										alt={item.alt}
 										// key={index}
 									/>
 								</SwiperSlide>

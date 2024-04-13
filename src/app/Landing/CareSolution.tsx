@@ -91,10 +91,10 @@ export default function CareSolution() {
 				headingText="A fully integrated suite of healthcare solutions driving a healthier Africa."
 				subHeadingText="As a full-service pharmacy and healthcare solutions provider, we connect individuals, providers, payers, and their enrollees with quality medications and unique health solutions that drive positive health outcomes."
 				containsNoStyles={true}
-				noStyleContentText="Online pharmacy benefits in Nigeria - Pharmacy Benefits Icon"
+				noStyleContentText="For payers and providers to access their medications for their patients"
 				noStyleHeading="Pharmacy Benefits Management"
 				noStyleImage={CareDelivery}
-				noStyleImageAlt="care delivery image"
+				noStyleImageAlt="Online pharmacy benefits in Nigeria - Pharmacy Benefits Icon"
 				serviceCollections={CareSolutionData}
 				sectionHeaderCls="px-4"
 			>

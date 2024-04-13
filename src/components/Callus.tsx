@@ -49,7 +49,7 @@ export default function Callus() {
 							<h1 className="font-head font-semibold text-[1rem] md:text-2xl leading-9 text-[#8DDE44]">
 								Have Enquiries?{" "}
 							</h1>
-							<h1 className="font-head font-semibold text-[1rem] md:text-2xl  md:pr-0 w-full text-wrap leading-9 text-secondary">
+							<h1 className="font-head font-semibold text-xl md:text-2xl  md:pr-0 w-full text-wrap leading-9 text-secondary">
 								Speak with our in-house pharmacy support team
 							</h1>
 						</div>

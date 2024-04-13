@@ -69,17 +69,19 @@ export default function Navbar() {
 			setActive([false, false, false, false, false]);
 		}
 	};
+
+	const { error, searchResult, loading, setSearchResult } =
+		useSearch(searchQuery);
+
+
 	const closeAllPopups = () => {
 		setShowResourceMobile(false);
 		setOpenCallUs(false);
 		setOpenLogin(false);
 		setHasSearch(false);
 		setShowService(false);
+		setSearchResult([])
 	};
-
-	const { error, searchResult, loading, setSearchResult } =
-		useSearch(searchQuery);
-	console.log(searchResult);
 
 	//pop in whatsapp
 	useEffect(() => {
@@ -136,9 +138,9 @@ export default function Navbar() {
 				</div>
 			)}
 			<div className="fixed top-0 bg-background  md:z-50 z-30 inset-0 md:h-24 h-fit flex items-center md:mb-0 mb-5 ">
-				<MaxWithWrapper className="relative mx-auto w-full max-w-screen-2xl px-2.5 md:px-16 py-2">
-					<header className="relative bg-white mx-auto ">
-						<div className="border-b  border-gray-100 py-3 shadow-sm w-full">
+				<MaxWithWrapper className="relative max-w-screen-2xl w-full  py-2 px-2.5 md:px-0">
+					<header className="relative bg-white mx-auto w-full px-2.5 md:px-16 shadow-sm">
+						<div className="border-b  border-gray-100 py-3  w-full">
 							<div className="flex  flex-16 items-center relative">
 								{/* mobile nav */}
 								<div className="ml-4 flex flex-col md:flex-row md:items-start items-center lg:ml-0 w-full ">

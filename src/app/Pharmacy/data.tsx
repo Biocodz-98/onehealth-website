@@ -24,7 +24,8 @@ export const PhamaCustomerData = [
 		title: "QUICK",
 		image: SpillDrugContainer,
 		action: "Get Onboard",
-		href: "https://onehealthng.com/pharmacy",
+		// href: "https://onehealthng.com/pharmacy",
+		href: "https://docs.google.com/forms/d/e/1FAIpQLScSD2POuwZhfQlP22whd8AAgCoj7SAYs64SvqciC0p4j2truw/viewform",
 		heading: "Swift Fulfillment & Real-Time Tracking",
 		description:
 			"Efficiently meet & deliver prescription orders with quick fulfillment and live tracking, empowering your pharmacy to exceed customer expectations.",
@@ -34,7 +35,8 @@ export const PhamaCustomerData = [
 		title: "AFFORDABLE",
 		image: CareCart,
 		action: "Join Our Network",
-		href: "https://partner.onehealthng.com/",
+		// href: "https://partner.onehealthng.com/",
+		href: "https://docs.google.com/forms/d/e/1FAIpQLScSD2POuwZhfQlP22whd8AAgCoj7SAYs64SvqciC0p4j2truw/viewform",
 		heading: "Affordable Medication Prices",
 		description:
 			"Provide quality medications at competitive prices, enabling your pharmacy to offer affordability without compromising on excellence",
@@ -44,7 +46,8 @@ export const PhamaCustomerData = [
 		title: "EASY CLAIMS",
 		image: CareInsure,
 		action: "Start Processing Orders",
-		href: "https://onehealthng.com/pharmacy",
+		// href: "https://onehealthng.com/pharmacy",
+		href: "https://docs.google.com/forms/d/e/1FAIpQLScSD2POuwZhfQlP22whd8AAgCoj7SAYs64SvqciC0p4j2truw/viewform",
 		heading: "Simplified payouts & reconciliation",
 		description:
 			"Simplified claims and reconciliation, freeing up your time to focus on what you do best – fulfilling orders and boosting your pharmacy's revenue",

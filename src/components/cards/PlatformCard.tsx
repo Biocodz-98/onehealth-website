@@ -111,7 +111,7 @@ export default function PlatformCard({
 				/>
 			</div>
 			<div className={`border-4 ${index==0?"border-slate-200/15":"border-slate-900/15"} absolute z-0 h-[260px] w-[450px] rounded-tl-lg left-20 bottom-2`}></div>
-			<div className="border-4 border-black relative h-[260px] w-[450px] rounded-tl-lg overflow-hidden z-20 -bottom-2 left-7">
+			<div className={`border-4 ${index==0?"border-black":"border-transparent"} relative h-[260px] w-[450px] rounded-tl-lg overflow-hidden z-20 -bottom-2 left-7`}>
 				<img
 					src={image2}
 					alt={alt}

@@ -47,7 +47,7 @@ export default function Services({
 					// isAutofocus={true}
 				/>
 			</div>
-			<div className="divider md:hidden h-1 w-full bg-slate-200 mt-5"></div>
+			<div className="divider h-1 w-full bg-slate-200 mt-5"></div>
 			<div className="space-y-2 mt-10">
 				<motion.h2
 					variants={Header}
@@ -73,7 +73,7 @@ export default function Services({
 					viewport={{
 						once: true,
 					}}
-					className="flex overflow-x-auto space-x-3 md:space-x-5 py-5 w-[80vw] mx-auto"
+					className="flex overflow-x-auto space-x-3 md:space-x-5 py-5 md:w-[80vw] mx-auto"
 				>
 					{PopularServicesData.map((item, index) => (
 						<HeroCard
@@ -88,7 +88,7 @@ export default function Services({
 						/>
 					))}
 				</motion.div>
-				<div className="divider md:hidden h-1 w-full bg-slate-200 mt-16"></div>
+				<div className="divider  h-1 w-full bg-slate-200 mt-16"></div>
 				<div className="flex flex-col lg:flex-row md:gap-5 ">
 					<div className="space-y-2 md:space-x-2 mt-10 flex flex-col mb-16 w-full items-center px-2 md:px-0">
 						<motion.h2
@@ -115,7 +115,7 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="flex flex-col w-full items-center"
+							className="flex flex-col w-full items-center space-y-8"
 						>
 							{EcosystemData.map((item, index) => (
 								<HeroCard
@@ -131,7 +131,7 @@ export default function Services({
 							))}
 						</motion.div>
 					</div>
-					<div className="divider md:hidden h-1 w-full bg-slate-200"></div>
+					<div className="divider md:hidden  h-1 w-full bg-slate-200"></div>
 					<div className="space-y-2 md:space-x-2 mt-10 flex flex-col mb-16 w-full">
 						<motion.h2
 							variants={H1P1L}
@@ -157,7 +157,7 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="flex flex-col "
+							className="flex flex-col"
 						>
 							{QuickActionsData.map((item, index) => (
 								<SearchItems

@@ -4,7 +4,7 @@ import { ReliableItems1, ReliableItems2 } from "./data";
 
 function ReliableItems({number,desc,index}:{number:string,desc:string,index?:number}){
     return (
-			<div className={`flex flex-col place-content-center h-fit  my-4 `}>
+			<div className={`flex flex-col place-content-center h-fit gap-3 `}>
 				<p
 					className={`font-bold text-[2.5rem] flex items-center font-body h-10 pl-10 border-l-4  ${
 						index == 0
@@ -33,23 +33,23 @@ export default function Reliable() {
 					A reliable pharmacy at every corner of the country
 				</h2>
 				<div className="flex md:flex-row flex-col w-full place-content-center items-center justify-around mt-20">
-					<div className="items1">
+					<div className="items1 flex flex-col gap-10">
 						{ReliableItems1.map((item, index) => (
 							<ReliableItems
 								key={index}
 								number={item.number}
 								desc={item.description}
-                                index={index}
+								index={index}
 							/>
 						))}
 					</div>
 					<div className="map">
 						<img
 							src={MapImage}
-							alt="Coverage of the entire 36 states in Nigeria with our healthcare delivery Image"
+							alt="Map showing Coverage of the entire 36 states in Nigeria with our healthcare delivery Image"
 						/>
 					</div>
-					<div className="items2">
+					<div className="items2 flex flex-col gap-10">
 						{ReliableItems2.map((item, index) => (
 							<ReliableItems
 								key={index}

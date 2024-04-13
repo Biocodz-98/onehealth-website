@@ -11,6 +11,7 @@ export interface HeroCardProps {
 	actionCls?: string;
 	titleGrp?: string;
 	className?: string;
+	alt?: string;
 }
 export default function HeroCard({
 	title,
@@ -21,6 +22,7 @@ export default function HeroCard({
 	titleCls,
 	actionCls,
 	titleGrp,
+	alt
 }: HeroCardProps) {
 	return (
 		<div
@@ -46,13 +48,13 @@ export default function HeroCard({
 					imageCls
 				)}
 			>
-				<div className="absolute top-3 bg-slate-100 right-0 h-full w-full overflow-hidden">
+				{/* <div className="absolute bg-slate-100 right-0 h-full w-full overflow-hidden"> */}
 					<img
 						src={imagesrc}
-						alt="hero image"
-						className="w-fit relative right-0 ml-auto"
+						alt={alt}
+						className="w-full h-full scale-75 aspect-square object-contain relative -right-[25%] md:-right-[30%] ml-auto -bottom-5"
 					/>
-				</div>
+				{/* </div> */}
 			</div>
 			<div
 				className={cn(

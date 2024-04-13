@@ -52,13 +52,13 @@ export default function GuidianceContact(props: GuidianceContactProps) {
 						key={index}
 						image={item.image}
 						index={index}
-						imgCls="w-[70%] md:w-full"
+						imgCls="w-[70%] md:w-full max-h-28"
 						cls={`${
 							index == 0
 								? ""
 								: index == 1
 								? "md:right-3  right-9"
-								: "md:right-6 right-[4.4rem]"
+								: "md:right-7 right-[4.6rem]"
 						}`}
 					/>
 				))}

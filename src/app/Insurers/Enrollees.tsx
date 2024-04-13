@@ -10,7 +10,7 @@ export default function Enrollees() {
 			subHeadingText="Deliver innovative, cost-efficient PBM solutions designed to continuously improve member quality of care, while containing cost."
 			contentSectionCards={EnrolleesData}
 			contentImage={HomeScreen}
-			contentImageAlt="Tracking your orders in real time, get live notifications , phone image"
+			contentImageAlt="An image showcasing the dashboard where you can make requests of all sizes, live track your orders, and access 24/7 member support."
 			parentCls=" px-2 flex flex-col md:flex-col pb-0 "
 			clsContent2="flex flex-wrap "
 			imageWCls=" min-h-[11rem] md:min-h-[32rem] mt-10 h-full relative overflow-hidden w-[90%] mx-auto md:w-full"

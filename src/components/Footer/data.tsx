@@ -37,15 +37,18 @@ export const GSO1 = [
 export const ProductData = [
 	{
 		title: "Pharmacy Benefit Management",
-		link: "https://partner.onehealthng.com/",
+		// link: "https://partner.onehealthng.com/",
+		link: "/insurers",
 	},
 	{
 		title: "Pharmacy Provider Network",
-		link: "https://partner.onehealthng.com/",
+		// link: "https://partner.onehealthng.com/",
+		link: "/pharmacies",
 	},
 	{
 		title: "Online Pharmacy",
-		link: "https://forms.gle/Z38NAhYRH2uXUcEZA",
+		// link: "https://forms.gle/Z38NAhYRH2uXUcEZA",
+		link: "https://onehealthng.com/pharmacy",
 	},
 	{
 		title: "OneWellness",
@@ -72,7 +75,7 @@ export const PlatformData = [
 	},
 	{
 		title: "Get Health Cover",
-		link: "#",
+		link: "https://onelink.to/rj8abd",
 	},
 	{
 		title: "His Health",

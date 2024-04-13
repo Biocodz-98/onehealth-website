@@ -38,6 +38,7 @@ export default function ServiceProvider() {
 							desCls="w-[65%]"
 							extendClsLeft="display-card-clip-left-extend"
 							extendClsRight="display-card-clip-right-extend"
+							alt={item.alt}
 						/>
 					))}
 				</div>

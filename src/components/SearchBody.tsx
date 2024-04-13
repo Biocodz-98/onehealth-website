@@ -63,7 +63,7 @@ export default function SearchBody({
 				)}
 			{searchResult.length === 0 && (
 				<>
-					<div className="space-y-2">
+					<div className="space-y-6">
 						<h2 className="font-head font-semibold text-xl">
 							Trending searches
 						</h2>
@@ -73,11 +73,12 @@ export default function SearchBody({
 							))}
 						</div>
 					</div>
+					<div className="divider h-1 w-full bg-slate-200 mt-10"></div>
 					<div className="space-y-2 mt-10">
 						<h2 className="font-head font-semibold md:text-xl">
 							Popular on OneHealth
 						</h2>
-						<div className="flex overflow-x-auto space-x-2 md:space-x-5 py-5 md:w-[80vw] mx-auto">
+						<div className="flex overflow-x-auto space-x-2 md:space-x-5 py-5 mx-auto">
 							{PopularOnOneHealthData.map((item, index) => (
 								<HeroCard
 									key={index}
@@ -92,6 +93,7 @@ export default function SearchBody({
 							))}
 						</div>
 					</div>
+					<div className="divider h-1 w-full bg-slate-200 mt-10"></div>
 					<div className="max-h-14 w-[80%] h-12 flex items-center rounded-3xl overflow-hidden  relative mt-10  mx-auto md:hidden">
 						<div className="w-full h-full  overflow-hidden absolute z-10 bg-[#E9FFEB] cursor-pointer">
 							<div className="searchbgleft bg-[#D8F7DB]  w-full h-full absolute  z-0"></div>
