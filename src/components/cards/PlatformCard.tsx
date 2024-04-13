@@ -115,7 +115,7 @@ export default function PlatformCard({
 				<img
 					src={image2}
 					alt={alt}
-					className="relative object-cover pl-6 w-full h-full absolute] -left-7 top-0"
+					className={`relative object-cover pl-6 w-full h-full -left-7 ${index==1?"-left-[14%]":""} top-0`}
 				/>
 			</div>
 		</div>

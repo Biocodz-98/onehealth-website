@@ -21,7 +21,7 @@ export default function PharmaSales() {
 			<OneLink
 				index={0}
 				action="Get on board"
-				to="https://partner.onehealthng.com/pharmacy"
+				to="https://docs.google.com/forms/d/e/1FAIpQLScSD2POuwZhfQlP22whd8AAgCoj7SAYs64SvqciC0p4j2truw/viewform"
 				linkCls="bg-[#8DDE44] text-base text-secondary border-[#8DDE44] text-nowrap md:w-fit w-[70%] px-5 py-3"
 			/>
 			<OneLink

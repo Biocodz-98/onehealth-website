@@ -28,7 +28,7 @@ export const PopularOnOneHealthData = [
 		},
 	},
 	{
-		title: "#1 IN ANTIMALARIA ",
+		title: "#1 IN ANTI-MALARIA ",
 		Image: HeroONB as string,
 		alt: "",
 		action: {
@@ -104,7 +104,8 @@ export const EcosystemData = [
 		Image: HeroONB as string,
 		action: {
 			title: "Pharmacy fulfilment network",
-			href: "https://onehealthng.com/pharmacy",
+			// href: "https://onehealthng.com/pharmacy",
+			href: "/insurers",
 		},
 	},
 	{
@@ -112,7 +113,8 @@ export const EcosystemData = [
 		Image: HeroINS as string,
 		action: {
 			title: "Pharmacy Benefit solution",
-			href: "https://onelink.to/rj8abd",
+			// href: "https://onelink.to/rj8abd",
+			href: "/pharmacies",
 		},
 	},
 	{

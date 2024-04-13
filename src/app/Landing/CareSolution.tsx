@@ -119,7 +119,7 @@ export default function CareSolution() {
 							paraCls="md:text-sm lg:text-md"
 							imgcls="w-[60%] -mt-5 m md:mt-0"
 							strokec={"#ffffff"}
-							cls=" md:w-[30rem]  md:h-[622px] md:mx-4 "
+							cls=" md:w-[30rem] max-h-[622px]  md:h-[622px] md:mx-4 "
 							isDownloadable={true}
 							// hrefAndriod="https://play.google.com/store/apps/details?id=com.onehealthng.onewellness"
 							hrefAndriod="https://onelink.to/rj8abd"

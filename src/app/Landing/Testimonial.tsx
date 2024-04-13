@@ -30,12 +30,12 @@ register();
 
 const Refills = ({title,body,index}:{title:string,body:string, index:number})=>{
 	return (
-		<div className="flex border-b-2 border-slate-200/50 py-3">
-			<div className="font-body text-3xl  font-semibold leading-16 border-r-2 border-slate-200/50 w-16 px-5 items-center flex">
+		<div className="flex border-b-2 border-slate-200/50 md:py-3 py-2">
+			<div className="font-body text-xl md:text-3xl  font-semibold leading-16 border-r-2 border-slate-200/50 md:w-16 w-8 md:px-5 px-1 items-center flex">
 				{index}
 			</div>
-			<div className="px-5">
-				<h1 className="font-body md:text-xl text-[0.88rem] font-semibold leading-9">
+			<div className="md:px-5 px-2">
+				<h1 className="font-body md:text-xl text-[0.8rem] font-semibold leading-9">
 					{title}
 				</h1>
 				<p className="font-body md:text-base text-[0.64rem] font-semibold leading-9">
@@ -58,22 +58,22 @@ export default function Testimonial() {
 			}
 		}, [smView]);
   return (
-		<section ref={tRef} className="mt-9 md:pt-32 flex flex-col">
+		<section ref={tRef} className="md:mt-32 mt-20 flex flex-col ">
 			<motion.div
 				variants={{ ...Header, ...Scale }}
 				animate={smController}
 				initial="initial"
 				transition={{ duration: 0.65, delay: 0.3 }}
 				exit={{ ...Header.exit, ...Scale.exit }}
-				className="relative min-h-[85vh] h-[95vh]"
+				className="relative w-full md:min-h-[95vh] min-h-[100vh] md:h-[95vh] h-[115vh] p-0 overflow-y-hidden"
 			>
 				<img
 					src={TestimonialB}
 					alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
-					className="absolute z-0 h-full w-full md:scale-100 scale-110"
+					className="absolute z-0 h-full w-full md:scale-100 scale-125"
 				/>
-				<div className="relative text-white flex flex-col md:flex-row h-full md:gap-0 gap-10 justify-between md:py-16 py-3">
-					<div className="w-full md:pt-10 pt-8 md:px-20 px-4 md:space-y-9 space-y-5">
+				<div className="relative text-white flex flex-col md:flex-row h-full  md:gap-0 gap-10 justify-between md:py-16 py-5 ">
+					<div className="w-full md:pt-10 md:px-20 px-4 md:space-y-9 space-y-5">
 						<h1 className="font-head font-semibold text-4xl md:text-6xl text-white md:leading-16">
 							I never have to worry about my medications
 						</h1>
@@ -81,9 +81,9 @@ export default function Testimonial() {
 							Shola, Yaba 29 years old.
 						</p>
 					</div>
-					<div className="w-full flex flex-col gap-10">
-						<div className="rounded-t-3xl  mt-auto flex md:gap-10 gap-4 items-center px-4">
-							<div className="md:w-32 w-28 relative md:h-36 h-24 md:rounded-t-[3rem] md:rounded-b-[3rem] rounded-t-[1.9rem] rounded-b-[1.9rem] overflow-hidden ">
+					<div className="w-full flex flex-col gap-10 self-end">
+						<div className="rounded-t-3xl   flex md:gap-10 gap-4 items-center px-4">
+							<div className="md:w-32 w-28 relative md:h-36 h-28 md:rounded-t-[3rem] md:rounded-b-[3rem] rounded-t-[1.9rem] rounded-b-[1.9rem] overflow-hidden ">
 								<img
 									className="h-full w-full scale-110"
 									src={TestimonialDoc}
@@ -105,7 +105,7 @@ export default function Testimonial() {
 								</p>
 							</div>
 						</div>
-						<div className="bg-[#1D1D1F]/75 p-5 rounded-3xl pt-7 md:w-[70%] w-[90%] mx-auto">
+						<div className="bg-[#1D1D1F]/75 p-5 rounded-3xl pt-7 md:w-[65%] w-[70%] ml-auto md:mr-16">
 							{TestimonialSholaData.map((item, index) => (
 								<Refills
 									key={index}
@@ -114,10 +114,10 @@ export default function Testimonial() {
 									index={index + 1}
 								/>
 							))}
-							<div className="flex w-full justify-between px-5 items-center py-2">
+							<div className="flex w-full justify-between px-2 md:px-5 items-center py-2">
 								<div className="flex font-semibold font-body gap-2">
-									<span className="text-3xl">4</span>
-									<p className="flex flex-col text-xs">
+									<span className="text-xl md:text-3xl">4</span>
+									<p className="flex flex-col text-[0.7rem] md:text-xs">
 										<span>REFILLS</span>
 										<span>LEFT</span>
 									</p>
