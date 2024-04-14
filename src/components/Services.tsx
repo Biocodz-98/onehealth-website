@@ -38,6 +38,8 @@ export default function Services({
 					We provide high-quality and reliable health services in your
 					pocket—care whenever you need, for prevention or when sick.
 				</motion.p>
+				<div className='px-1'>
+
 				<Search
 					hasSearchButton={true}
 					setQuery={setSearchQuery}
@@ -46,6 +48,7 @@ export default function Services({
 					setSearchResult={setSearchResult}
 					// isAutofocus={true}
 				/>
+				</div>
 			</div>
 			<div className="divider h-1 w-full bg-slate-200 mt-5"></div>
 			<div className="space-y-2 mt-10">
@@ -85,6 +88,7 @@ export default function Services({
 							imageCls="md:w-full mx-1.5 md:ml-0 order-1"
 							titleCls="text-[0.6rem] md:text-[0.7rem] lg:text-xs text-[#475367]"
 							actionCls="text-[0.8rem] md:text-sm"
+							newPage={item.action.newPage}
 						/>
 					))}
 				</motion.div>
@@ -127,6 +131,7 @@ export default function Services({
 									action={item.action}
 									titleGrp="md:-order-1 text-[0.6rem] md:text-sm"
 									actionCls="order-2  text-[0.58rem] md:text-sm md:col-span-6 col-span-7"
+									newPage={item.action.newPage}
 								/>
 							))}
 						</motion.div>

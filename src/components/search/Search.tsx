@@ -32,13 +32,13 @@ export default function Search({
 		<div
 			onClick={() => setHasSearch?.(true)}
 			className={cn(
-				"shadow-lg border border-slate-150 rounded-lg bg-slate-200 focus-within:border-none focus-within:shadow-none focus-within:outline-none",
+				"shadow-lg border border-slate-150 rounded-lg bg-slate-200 focus-within:border-none focus-within:shadow-none focus-within:outline-none focus-within:ring-2 ring-0",
 				className
 			)}
 		>
 			{!hasSearch && (
-				<form className=" focus-within:outline-none">
-					<div className="rounded-lg flex items-center bg-slate-50 focus-within:outline focus-within:outline-primary focus-within:ring-2 focus-within:ring-primary border-transparent focus-within:scale-100">
+				<form className=" focus-within:outline-none border-none bg-transparent ring-0">
+					<div className="rounded-lg flex items-center bg-slate-50 focus-within:outline focus-within:outline-primary focus-within:ring-2 focus-within:ring-primary border-transparent focus-within:scale-100 p-2 border-none">
 						<button
 							type="submit"
 							className="p-1.5"
@@ -53,7 +53,7 @@ export default function Search({
 						<input
 							ref={ref}
 							className={cn(
-								"py-2 placeholder:text-[0.65rem] md:placeholder:text-sm focus:outline-none  bg-transparent placeholder:text-slate-500 pr-1.5 w-full md:w-52 text-sm",
+								"py-2 placeholder:text-sm md:placeholder:text-sm focus:outline-none  bg-transparent placeholder:text-slate-500 pr-1.5 w-full md:w-52 text-base",
 								clsInput
 							)}
 							type="search"
@@ -71,7 +71,7 @@ export default function Search({
 							<button
 								type="submit"
 								className={cn(
-									"px-6 p-2 rounded-3xl ml-auto mr-2 md:mr-4 bg-[#8DDE44] text-[#134F3A] font-body text-xs md:text-base min-w-[20%] md:min-w-[15%] w-fit",
+									"px-6 p-2 rounded-3xl ml-auto mr-2 md:mr-4 bg-[#8DDE44] text-[#134F3A] font-body text-xs font-medium md:text-base min-w-[20%] md:min-w-[15%] w-fit",
 									clsButton
 								)}
 								onClick={(e) => {

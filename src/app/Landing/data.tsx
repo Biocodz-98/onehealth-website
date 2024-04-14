@@ -10,6 +10,7 @@ export const HeroCardData = [
 		action: {
 			title: "Enter Pharmacy",
 			href: "https://onehealthng.com/pharmacy",
+			newPage: false,
 		},
 	},
 	{
@@ -19,6 +20,7 @@ export const HeroCardData = [
 			title: "Partner With Us",
 			// href: "https://forms.gle/WMqZerndJfihNqSt5",
 			href: "/insurers",
+			newPage: true,
 		},
 	},
 	{
@@ -28,6 +30,7 @@ export const HeroCardData = [
 			title: "Get On Board",
 			// href: "https://forms.gle/Z38NAhYRH2uXUcEZA",
 			href: "/pharmacies",
+			newPage: true,
 		},
 	},
 ];

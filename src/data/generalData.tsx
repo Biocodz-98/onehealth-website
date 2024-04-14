@@ -89,7 +89,7 @@ export const TestimonialCardData = [
 	{
 		image: Antimaleria,
 		alt: "Anti-malarial medication from OneHealth online pharmacy in Nigeria.",
-		title: "Anti-maleria",
+		title: "Anti-Maleria",
 		link: "https://onehealthng.com/category/malaria-medications",
 	},
 	{

@@ -4,17 +4,21 @@ export const HeroCardData = [
 	{
 		title: "NEW PHARMACIES",
 		Image: HeroONB as string,
+		alt: "Pharmacy Fulfillment & Distribution Network: Register your pharmacy to make more pharmacy sales.",
 		action: {
 			title: "Get Onboard",
 			href: "https://forms.gle/Z38NAhYRH2uXUcEZA",
+			newPage: false,
 		},
 	},
 	{
 		title: "LIVE PHARMACIES",
 		Image: HeroINS as string,
+		alt: "Pharmacy Fulfillment & Distribution Network: Login to the OneHealth Pharmacy fulfilment portal to dispense new orders",
 		action: {
 			title: "Sign In Portal",
 			href: "https://partner.onehealthng.com/",
+			newPage: false,
 		},
 	},
 ];
@@ -23,6 +27,8 @@ export const PhamaCustomerData = [
 	{
 		title: "QUICK",
 		image: SpillDrugContainer,
+		alt:
+			"Efficient Pharmacy Prescription Order Fulfillment with Quick Delivery and Live Tracking - OneHealth Pharmacy Fulfilment & Distribution Network.",
 		action: "Get Onboard",
 		// href: "https://onehealthng.com/pharmacy",
 		href: "https://docs.google.com/forms/d/e/1FAIpQLScSD2POuwZhfQlP22whd8AAgCoj7SAYs64SvqciC0p4j2truw/viewform",
@@ -34,6 +40,8 @@ export const PhamaCustomerData = [
 	{
 		title: "AFFORDABLE",
 		image: CareCart,
+		alt:
+			"Quality Medications at Competitive Prices for Your Pharmacy - OneHealth pharmacy fulfilment & distribution network.",
 		action: "Join Our Network",
 		// href: "https://partner.onehealthng.com/",
 		href: "https://docs.google.com/forms/d/e/1FAIpQLScSD2POuwZhfQlP22whd8AAgCoj7SAYs64SvqciC0p4j2truw/viewform",
@@ -45,6 +53,8 @@ export const PhamaCustomerData = [
 	{
 		title: "EASY CLAIMS",
 		image: CareInsure,
+		alt:
+			"Simplified Claims and Reconciliation - OneHealth Pharmacy Fulfilment and Distribution Network",
 		action: "Start Processing Orders",
 		// href: "https://onehealthng.com/pharmacy",
 		href: "https://docs.google.com/forms/d/e/1FAIpQLScSD2POuwZhfQlP22whd8AAgCoj7SAYs64SvqciC0p4j2truw/viewform",
@@ -91,7 +101,8 @@ export const PharmaSalesData = [
 	{
 		heading: "Onboard",
 		image: SignUpPharmacy,
-		imageAlt: "Onboard into onehealth fast and easy in minutes Image",
+		imageAlt:
+			"Onboard Your Pharmacy in Minutes - OneHealth Pharmacy Fulfilment and Distribution Network",
 		description:
 			"Submit a few information about your pharmacy and get onboard in minutes",
 	},
@@ -99,14 +110,15 @@ export const PharmaSalesData = [
 		heading: "Verify",
 		image: VerifyPharmacy,
 		imageAlt:
-			"Get verified on onehealth with complete information(documents) image",
+			"Verify Compliance and Capacity - Join OneHealth Pharmacy Fulfilment and Distribution Network",
 		description:
 			"Get verified for compliance and capacity to deliver on expectations",
 	},
 	{
 		heading: "Dispense",
 		image: DispensePharmacy,
-		imageAlt: "dispensing orders with our robust network of logistics Image",
+		imageAlt:
+			"Dispense Orders, Grow Sales - Join OneHealth Pharmacy Fulfilment and Distribution Network",
 		description:
 			"Start dispensing orders on the pharmacy fulfillment portal and grow weekly sales",
 	},

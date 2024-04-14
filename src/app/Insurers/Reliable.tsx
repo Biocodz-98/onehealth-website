@@ -21,18 +21,19 @@ function ReliableItems({number,desc,index}:{number:string,desc:string,index?:num
 }
 export default function Reliable() {
   return (
-		<section className="p-10 pt-16 relative bg-[#F1FCF2] pb-36">
+		<section className="md:p-10 p-4 pt-16 relative bg-[#F1FCF2] pb-36">
 			<img
+				loading="lazy"
 				src={PharmaSalesPills}
 				alt="why one health image of a capsule container with pills"
 				className="absolute right-0  w-[40%] top-0"
 			/>
-			<MaxWithWrapper>
+			<MaxWithWrapper className='px-0 md:px-16'>
 				<p className="section-tag mx-auto uppercase">We 🚚 go the mile</p>
-				<h2 className="text-secondary font-semibold md:leading-[60px] text-2xl  md:text-[2.5rem] font-head w-fit mx-auto my-8">
+				<h2 className="text-secondary font-semibold md:leading-[60px] text-2xl md:text-[2.5rem] font-head w-fit mx-auto my-8 md:text-start text-center">
 					A reliable pharmacy at every corner of the country
 				</h2>
-				<div className="flex md:flex-row flex-col w-full place-content-center items-center justify-around mt-20">
+				<div className="flex md:flex-row flex-col w-full place-content-center items-center justify-around mt-20 gap-14">
 					<div className="items1 flex flex-col gap-10">
 						{ReliableItems1.map((item, index) => (
 							<ReliableItems
@@ -45,6 +46,7 @@ export default function Reliable() {
 					</div>
 					<div className="map">
 						<img
+							loading="lazy"
 							src={MapImage}
 							alt="Map showing Coverage of the entire 36 states in Nigeria with our healthcare delivery Image"
 						/>

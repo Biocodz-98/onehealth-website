@@ -14,8 +14,9 @@ export default function GuidesCard({image,index,imgCls,cls}:GuideCardProps) {
 			)}
 		>
 			<img
+				loading="lazy"
 				src={image}
-				alt="An image showcasing support staff for the pharmacy benefit management solution."
+				alt="An image showcasing support staff for the OneHealth pharmacy fulfilment and distribution network"
 				className={cn("", imgCls)}
 			/>
 		</div>

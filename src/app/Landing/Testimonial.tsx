@@ -96,6 +96,7 @@ export default function Testimonial() {
 						<div className="rounded-t-3xl   flex md:gap-10 gap-4 items-center px-4">
 							<div className="md:w-32 w-28 relative md:h-36 h-28 md:rounded-t-[3rem] md:rounded-b-[3rem] rounded-t-[1.9rem] rounded-b-[1.9rem] overflow-hidden ">
 								<img
+									loading="lazy"
 									className="h-full w-full scale-110"
 									src={TestimonialDoc}
 									alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
@@ -116,7 +117,7 @@ export default function Testimonial() {
 								</p>
 							</div>
 						</div>
-						<div className="bg-[#1D1D1F]/75 p-5 rounded-3xl pt-7 md:w-[65%] w-[70%] ml-auto md:mr-16">
+						<div className="bg-[#1D1D1F]/75 p-5 rounded-3xl pt-7 md:w-[65%] w-[70%] ml-auto mr-4 md:mr-16">
 							{TestimonialSholaData.map((item, index) => (
 								<Refills
 									key={index}
@@ -266,7 +267,6 @@ export default function Testimonial() {
 						headingText2="Speak with our in-house care team"
 						guidesCard={GuideCardData}
 						contactGuideMini={ContactGuideInfoData}
-						
 					/>
 					{/* <div className="flex justify-between mt-16 items-center">
 						<div className="guide-cards flex relative w-fit">

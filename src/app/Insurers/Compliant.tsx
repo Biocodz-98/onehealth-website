@@ -22,9 +22,10 @@ export function ComplaintItem({
 	alt?: string;
 }) {
 	return (
-		<div className={cn("flex gap-4 ", comCls)}>
-			<div className={cn("image py-5 w-16 h-16", imageCls)}>
+		<div className={cn("flex gap-4", comCls)}>
+			<div className={cn("image w-14 h-14 min-w-14 ", imageCls)}>
 				<img
+					loading="lazy"
 					src={image}
 					// width={64}
 					// height={64}
@@ -52,11 +53,12 @@ export default function Compliant() {
 				<div className="grid md:grid-cols-2 gap-20 my-16">
 					<div className="">
 						<img
+							loading="lazy"
 							src={FemaleDoc}
 							alt="An image depicting a medication fulfillment manager seated, processing orders for enrollees on behalf of their health organizations."
 						/>
 					</div>
-					<div className="flex flex-col justify-between h-full">
+					<div className="flex flex-col justify-between h-full gap-5">
 						{CompliantData.map((item, index) => (
 							<ComplaintItem
 								title={item.title}

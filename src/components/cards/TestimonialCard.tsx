@@ -17,6 +17,7 @@ export default function TestimonialCard({title,image,link,index,alt}:Testimonial
 			</h2>
 			<div className="w-24 h-24 rounded-full bg-slate-200/50 bg-cover overflow-hidden">
 				<img
+					loading="lazy"
 					src={image}
 					alt={alt}
 					className={`object-cover ${index == 0 ? "scale-100" : ""}`}

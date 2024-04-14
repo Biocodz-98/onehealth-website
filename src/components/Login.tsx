@@ -226,6 +226,7 @@ export default function Login() {
 							imageCls="md:w-full ml-1 md:ml-0 bg-contain"
 							actionCls="text-[0.7rem] md:text-sm "
 							titleGrp="md:-order-1 text-[0.6rem] md:text-sm"
+							newPage={item.action.newPage}
 						/>
 					))}
 				</motion.div>

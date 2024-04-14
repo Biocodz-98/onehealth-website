@@ -129,13 +129,15 @@ export default function CareSolution() {
 							downloadActionIOS="For Business"
 							downloadableCls="flex-col md:flex-row w-full md:gap-2 gap-4"
 						/>
-						<div className='max-h-[550px] md:max-h-[622px]'>
-
-						<img
-							src={CareImage}
-							alt="Online Pharmacy in Nigeria - Your All-in-One Health Partner | OneHealth Nigeria"
-							className={"object-contain relative md:w-full lg:w-full md:-top-10 md:-right-5  p-3 md:p-0 md:order-1 md:scale-100 scale-105 -top-8"}
-						/>
+						<div className="max-h-[550px] md:max-h-[622px]">
+							<img
+								loading="lazy"
+								src={CareImage}
+								alt="Online Pharmacy in Nigeria - Your All-in-One Health Partner | OneHealth Nigeria"
+								className={
+									"object-contain relative md:w-full lg:w-full md:-top-10 md:-right-5  p-3 md:p-0 md:order-1 md:scale-100 scale-105 -top-8"
+								}
+							/>
 						</div>
 					</div>
 				</div>

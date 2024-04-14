@@ -80,6 +80,7 @@ export const LoginCardData = [
 		action: {
 			title: "Sign in to portal",
 			href: "https://onehealthng.com/pharmacy",
+			newPage:true
 		},
 	},
 	{
@@ -87,7 +88,8 @@ export const LoginCardData = [
 		Image: HeroINS as string,
 		action: {
 			title: "Sign in to portal",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "https://partner.onehealthng.com",
+			newPage:false
 		},
 	},
 ];

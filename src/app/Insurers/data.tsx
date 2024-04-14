@@ -8,6 +8,7 @@ export const HeroCardData = [
 		action: {
 			title: "Partner with us",
 			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			newPage:false
 		},
 	},
 	{
@@ -17,6 +18,7 @@ export const HeroCardData = [
 		action: {
 			title: "Partner with us",
 			href: "https://forms.gle/cMrKEEi6zDg5JvHNA",
+			newPage:false
 		},
 	},
 	{
@@ -26,6 +28,7 @@ export const HeroCardData = [
 		action: {
 			title: "Sign In Portal",
 			href: "https://partner.onehealthng.com/",
+			newPage:false
 		},
 	},
 ];

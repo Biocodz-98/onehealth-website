@@ -46,7 +46,11 @@ export default function  OneHealthServiceSuits(props: OneHealthServiceSuitsProps
 				{props.containsNoStyles && (
 					<div className="item-1 w-[20.5rem] mx-4 md:mx-0">
 						<div className="h-18 w-fit p-3 bg-[#F1FFE4] rounded-full">
-							<img src={props.noStyleImage} alt={props.noStyleImageAlt} />
+							<img
+								loading="lazy"
+								src={props.noStyleImage}
+								alt={props.noStyleImageAlt}
+							/>
 						</div>
 						<h1 className="font-head font-bold text-4xl leading-10 text-start mt-5">
 							{props.noStyleHeading}

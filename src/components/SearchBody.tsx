@@ -89,6 +89,7 @@ export default function SearchBody({
 									imageCls="md:w-full ml-4 md:ml-0 order-1"
 									titleCls="text-[0.6rem] md:text-sm"
 									actionCls="text-[0.8rem] md:text-sm"
+									newPage={item.action.newPage}
 								/>
 							))}
 						</div>
@@ -122,6 +123,7 @@ export default function SearchBody({
 									imageCls="mr-5"
 									linkCls="py-5"
 									midTitleCls="mr-auto"
+									newPage={item.action.newPage}
 								/>
 							))}
 						</div>
@@ -129,7 +131,7 @@ export default function SearchBody({
 				</>
 			)}
 			{searchResult.length > 0 && (
-				<div className=" overflow-y-scroll h-full">
+				<div className=" overflow-y-scroll w-full">
 					<div className="numsearch mb-5">
 						<p className="font-semibold text-xl md:text-2xl font-body">
 							{searchResult.length} result for &quot;{searchQuery}&quot;
@@ -150,11 +152,12 @@ export default function SearchBody({
 							<div className="searchbgright bg-[#DEF7E1] w-full h-full absolute  z-0"></div>
 						</div>
 
-						<div className="content w-full h-full flex flex-col items-center relative z-10 p-4  md:p-5 space-y-4">
+						<div className="content md:min-w-[75vw] w-full h-full flex flex-col items-center relative z-10 p-4  md:p-5 space-y-4">
 							<h4 className="font-head font-semibold">
 								Don’t see what you’re looking for
 							</h4>
 							<img
+								loading="lazy"
 								src={SpillDrugContainer}
 								alt="Image of searched onehealth pills"
 								className="md:w-32 w-24"

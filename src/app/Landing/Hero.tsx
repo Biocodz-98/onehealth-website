@@ -66,7 +66,7 @@ export default function Hero() {
 			wrapperWidth="md:px-4 "
 			cardClassName="p-4"
 			className="grid md:flex flex-col md:flex-col justify-between lg:flex-row  overflow-visible md:pb-32 lg:px-28 md:mt-24 mt-32"
-			className1="order-first gap-8 md:gap-14 md:pl-0  px-2 md:px-0 w-full relative lg:w-[65%]"
+			className1="order-first gap-8 md:gap-14 md:pl-0  px-2 md:px-0 w-full relative lg:w-[65%] md:top-10 top-16"
 			className2="h-[490px] lg:h-[500px] w-full mb-10 md:mb-0 pb-5 md:pb-0 order-last px-5 lg:px-0 md:max-w-[500px] relative max-h-[520px] object-fit"
 			classNameImg="relative "
 			headerTextCls=" leading-10  md:leading-12 "

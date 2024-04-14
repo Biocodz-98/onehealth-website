@@ -54,6 +54,7 @@ import sponsorNOVO from "../../public/sponsorNOVO.svg";
 import sponsorRELIANCE from "../../public/sponsorReliance.svg";
 import mapImage from "../../public/map.webp";
 import homeScreen from "../../public/HomeScreen.svg";
+import homeScreenMobile from "../../public/homeScreenMobile.jpg";
 import atomEditor from "../../public/atomEditor.svg";
 import computerSupport from "../../public/computerSupport.svg";
 import trackingOrder from "../../public/trackOrder.svg";
@@ -145,6 +146,7 @@ export const SponsorRELIANCE = sponsorRELIANCE as string;
 
 export const MapImage = mapImage as string;
 export const HomeScreen = homeScreen as string;
+export const HomeScreenMobile = homeScreenMobile as string;
 
 export const AtomEditor = atomEditor as string;
 export const Sheets = sheets as string;

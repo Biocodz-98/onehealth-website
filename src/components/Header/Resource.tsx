@@ -35,9 +35,10 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 		>
 			<div className="first flex lg:flex-row flex-col gap-7 md:w-[65%] items-center ">
 				<img
+					loading="lazy"
 					src={Resource}
 					alt="One health laboratory drug test image, how unilever affects drug prices"
-					className='md:w-[80%] lg:w-[50%]'
+					className="md:w-[80%] lg:w-[50%]"
 				/>
 				<div className="gap-10 flex flex-col lg:w-[45%] ">
 					<p className="w-fit p-10 rounded-lg py-2 bg-[#B1FFB8] text-[#10461F] font-bold text-sm">

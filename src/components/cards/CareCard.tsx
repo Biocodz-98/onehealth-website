@@ -132,6 +132,7 @@ export default function CareCard({
 					{title}
 				</p>
 				<img
+					loading="lazy"
 					src={image}
 					alt={alt}
 					width={imageWidth}
