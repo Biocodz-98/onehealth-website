@@ -23,7 +23,7 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 			className={cn(
 				`${
 					isHovered ? "flex" : "hidden "
-				}  md:flex-row flex-col gap-13 lg:left-[5%] md:w-[94%] lg:w-[90%] w-full absolute bg-white justify-between p-10 `,
+				}  md:flex-row flex-col gap-13 lg:left-[2%] md:w-[94%] lg:w-[94%] w-full absolute bg-white justify-between p-10 `,
 				resCls
 			)}
 			onMouseEnter={() => {
@@ -33,13 +33,13 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 				setIsHovered?.(false);
 			}}
 		>
-			<div className="first flex lg:flex-row flex-col gap-7 md:w-[60%] items-center ">
+			<div className="first flex lg:flex-row flex-col gap-7 md:w-[65%] items-center ">
 				<img
 					src={Resource}
 					alt="One health laboratory drug test image, how unilever affects drug prices"
-					className='md:w-[80%] lg:w-[65%]'
+					className='md:w-[80%] lg:w-[50%]'
 				/>
-				<div className="gap-10 flex flex-col ">
+				<div className="gap-10 flex flex-col lg:w-[45%] ">
 					<p className="w-fit p-10 rounded-lg py-2 bg-[#B1FFB8] text-[#10461F] font-bold text-sm">
 						WHITE PAPER
 					</p>
@@ -73,12 +73,12 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 								title={item.title}
 								desc={item.desc}
 								image={item.image}
-								imageCls="w-12 py-2"
+								imageCls="w-6 py-2"
 								comCls="w-full items-start"
 								textCls="space-y-1"
 							/>
 						</Link>
-						<div className="md:hidden divider w-full h-1.5 bg-gray-200"></div>
+						<div className=" divider w-full h-0.5 bg-gray-200"></div>
 					</>
 				))}
 			</div>

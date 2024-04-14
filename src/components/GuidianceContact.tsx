@@ -31,7 +31,7 @@ export default function GuidianceContact(props: GuidianceContactProps) {
 		<div
 			ref={tRef}
 			className={cn(
-				"flex flex-wrap justify-between mt-16 items-center px-1 md:px-0 ",
+				"flex flex-wrap justify-between mt-16 items-center px-1 md:px-0 mx-auto",
 				props.cls
 			)}
 		>

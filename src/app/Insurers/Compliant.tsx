@@ -22,7 +22,7 @@ export function ComplaintItem({
 	alt?: string;
 }) {
 	return (
-		<div className={cn("flex gap-8 ", comCls)}>
+		<div className={cn("flex gap-4 ", comCls)}>
 			<div className={cn("image py-5 w-16 h-16", imageCls)}>
 				<img
 					src={image}

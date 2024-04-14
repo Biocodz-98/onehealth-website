@@ -114,6 +114,11 @@ export default function Navbar() {
 		};
 	}, []);
 
+	//scroll to top on router change
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [location.pathname]);
+
 	return (
 		<>
 			{hasAdvertisement && (
@@ -137,9 +142,9 @@ export default function Navbar() {
 					/>
 				</div>
 			)}
-			<div className="fixed top-0 bg-background  md:z-50 z-30 inset-0 md:h-24 h-fit flex items-center md:mb-0 mb-5 ">
-				<MaxWithWrapper className="relative max-w-screen-2xl w-full  py-2 px-2.5 md:px-0">
-					<header className="relative bg-white mx-auto w-full px-2.5 md:px-16 shadow-sm">
+			<div className="fixed top-0 bg-background  md:z-50 z-30 inset-0 h-fit flex items-end md:mb-0 mb-5 ">
+				<MaxWithWrapper className="relative max-w-screen-2xl w-full  pt-2 px-2.5 md:px-0">
+					<header className="relative bg-white mx-auto w-full py-1 px-2.5 md:px-16 shadow-sm">
 						<div className="border-b  border-gray-100 py-3  w-full">
 							<div className="flex  flex-16 items-center relative">
 								{/* mobile nav */}

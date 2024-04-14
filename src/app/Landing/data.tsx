@@ -100,7 +100,7 @@ export const PlatformCardData = [
 		description:
 			"Pharma procurement, inventory intelligence for pharmacies in Africa",
 		action: "Learn more",
-		href: "https://pillmova.com/",
+		href: "https://pillfinda.co/",
 		imageHeader: PlatformImgH2,
 		imageFooter: PlatformImgF2,
 		bgColor: "#EAFBDA",

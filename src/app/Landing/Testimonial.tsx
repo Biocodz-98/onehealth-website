@@ -5,11 +5,11 @@ import {
 	ContactGuideInfoData,
 	TestimonialSholaData,
 } from "@/data/generalData";
-import {TestimonialB, TestimonialDoc} from "@/data/imageData"
+import {TestimonialB, TestimonialBMobile, TestimonialDoc} from "@/data/imageData"
 import MaxWithWrapper from '../../components/MaxWithWrapper';
 import TestimonialCard from '../../components/cards/TestimonialCard';
 import { motion, useInView, useAnimation } from "framer-motion";
-import { H1P1L,H1P1R, Header, Scale } from "@/animate.data";
+import { H1P1L,H1P1R, Header } from "@/animate.data";
 import { Pagination,Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -60,19 +60,30 @@ export default function Testimonial() {
   return (
 		<section ref={tRef} className="md:mt-32 mt-20 flex flex-col ">
 			<motion.div
-				variants={{ ...Header, ...Scale }}
+				variants={Header}
 				animate={smController}
 				initial="initial"
 				transition={{ duration: 0.65, delay: 0.3 }}
-				exit={{ ...Header.exit, ...Scale.exit }}
-				className="relative w-full md:min-h-[95vh] min-h-[100vh] md:h-[95vh] h-[115vh] p-0 overflow-y-hidden"
+				exit={Header.exit}
+				className="relative w-full md:min-h-[115vh] min-h-[100vh] md:h-[100vh] h-[115vh] p-0 overflow-y-hidden "
 			>
 				<img
+					loading="lazy"
+					// srcSet={`${TestimonialBMobile} 320w, ${TestimonialBMobile}  768w, ${TestimonialB}  1200w`}
+					// sizes="(max-width: 320px) 280px, (max-width: 768px) 720px, 1000px"
 					src={TestimonialB}
 					alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
-					className="absolute z-0 h-full w-full md:scale-100 scale-125"
+					className="absolute z-0 h-full w-full object-cover hidden md:flex "
 				/>
-				<div className="relative text-white flex flex-col md:flex-row h-full  md:gap-0 gap-10 justify-between md:py-16 py-5 ">
+				<img
+					loading="lazy"
+					// srcSet={`${TestimonialBMobile} 320w, ${TestimonialBMobile}  768w, ${TestimonialB}  1200w`}
+					// sizes="(max-width: 320px) 280px, (max-width: 768px) 720px, 1000px"
+					src={TestimonialBMobile}
+					alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
+					className="absolute z-0 h-full w-full object-cover md:hidden "
+				/>
+				<div className="relative text-white flex flex-col md:flex-row h-full  md:gap-0 gap-10 justify-between md:py-8 py-5 ">
 					<div className="w-full md:pt-10 md:px-20 px-4 md:space-y-9 space-y-5">
 						<h1 className="font-head font-semibold text-4xl md:text-6xl text-white md:leading-16">
 							I never have to worry about my medications
@@ -141,7 +152,7 @@ export default function Testimonial() {
 					viewport={{
 						once: true,
 					}}
-					className="pb-20 lg:px-20 border-b border-slate-200"
+					className="pb-20 border-b border-slate-200"
 				>
 					<div className="mt-28">
 						<div className="flex flex-col items-center relative">
@@ -255,6 +266,7 @@ export default function Testimonial() {
 						headingText2="Speak with our in-house care team"
 						guidesCard={GuideCardData}
 						contactGuideMini={ContactGuideInfoData}
+						
 					/>
 					{/* <div className="flex justify-between mt-16 items-center">
 						<div className="guide-cards flex relative w-fit">

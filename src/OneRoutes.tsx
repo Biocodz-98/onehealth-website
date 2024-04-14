@@ -13,6 +13,7 @@ export default function OneRoutes() {
 		<AnimatePresence>
 		<Header/>
 		<Routes>
+			
 			<Route path="/" element={<Root/>}/>
 			<Route path="/pharmacies" element={<Pharmacy/>}/>
 			<Route path="/insurers" element={<Insurers/>}/>
