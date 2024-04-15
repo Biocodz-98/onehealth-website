@@ -168,7 +168,7 @@ export default function Testimonial() {
 								viewport={{
 									once: true,
 								}}
-								className="px-3 py-2 text-slate-600 font-sans text-sm leading-5 bg-slate-200 rounded-full w-fit relative z-10"
+								className="px-3 py-2 text-slate-600 font-sans text-sm leading-5 bg-slate-200 rounded-full w-fit relative z-10 font-semibold"
 							>
 								OUR PHARMACY
 							</motion.p>
@@ -184,7 +184,7 @@ export default function Testimonial() {
 							viewport={{
 								once: true,
 							}}
-							className="font-head font-semibold md:text-4xl text-3xl text-secondary leading-[43px] md:leading-[64px] mt-7 text-center"
+							className="font-head font-semibold md:text-4xl text-[1.9rem] text-secondary leading-[43px] md:leading-[64px] mt-7 text-center"
 						>
 							Better care for all health categories
 						</motion.p>

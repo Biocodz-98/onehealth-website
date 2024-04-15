@@ -66,7 +66,7 @@ export default function OneHealthPlatform() {
 						viewport={{
 							once: true,
 						}}
-						className="px-4 py-2 bg-[#F0F2F5] rounded-[40px] w-fit"
+						className="px-4 py-2 bg-[#F0F2F5] rounded-[40px] w-fit font-semibold"
 					>
 						THE ONEHEALTH PLATFORM
 					</motion.p>
@@ -80,7 +80,7 @@ export default function OneHealthPlatform() {
 						viewport={{
 							once: true,
 						}}
-						className="text-secondary md:leading-[72px] font-semibold font-head text-center md:text-5xl text-[2.23rem] leading-[52px]"
+						className="text-secondary md:leading-[72px] font-semibold font-head text-center md:text-5xl text-[1.9rem] leading-[52px]"
 					>
 						Our products powering positive health experience
 					</motion.h1>
