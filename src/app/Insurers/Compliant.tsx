@@ -66,6 +66,8 @@ export default function Compliant() {
 								image={item.image}
 								key={index}
 								alt={item.alt}
+								comCls='w-full'
+								imageCls="w-14 md:w-[2rem] min-w-12 py-2"
 							/>
 						))}
 					</div>

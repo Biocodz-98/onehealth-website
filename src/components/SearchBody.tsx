@@ -1,5 +1,6 @@
 import React, { SetStateAction } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import Search from "./search/Search";
 import SearchItems from "./search/SearchItems";
 import { Result, errorType } from "@/hooks/useSearch";
@@ -69,7 +70,12 @@ export default function SearchBody({
 						</h2>
 						<div className="flex flex-wrap items-center gap-2.5">
 							{TrendingData.map((item, index) => (
-								<Trending key={index} title={item} setQuery={setSearchQuery} />
+								<Link
+									to={`https://onehealthng.com/search?q=${item.trim().replace(" ","+")}`}
+									key={index}
+								>
+									<Trending title={item} setQuery={setSearchQuery} />
+								</Link>
 							))}
 						</div>
 					</div>

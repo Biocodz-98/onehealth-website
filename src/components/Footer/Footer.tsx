@@ -101,7 +101,7 @@ export default function Footer() {
 					</div>
 					<div></div>
 				</div>
-				<div className=" flex flex-col lg:grid lg:grid-cols-11 gap-6 w-full">
+				<div className=" flex flex-col lg:grid lg:grid-cols-11 gap-6 w-full ">
 					<Subsriber />
 					<FooterLinks />
 				</div>

@@ -23,7 +23,7 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 			className={cn(
 				`${
 					isHovered ? "flex" : "hidden "
-				}  md:flex-row flex-col gap-13 lg:left-[2%] md:w-[94%] lg:w-[94%] w-full absolute bg-white justify-between p-10 `,
+				}  md:flex-row flex-col gap-13 lg:left-[2%] md:w-[94%] lg:w-[94%] w-full absolute bg-white justify-between p-10 md:py-3 `,
 				resCls
 			)}
 			onMouseEnter={() => {
@@ -79,7 +79,7 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 								textCls="space-y-1"
 							/>
 						</Link>
-						<div className=" divider w-full h-0.5 bg-gray-200"></div>
+						<div className=" divider w-full h-[0.08rem] bg-gray-200"></div>
 					</>
 				))}
 			</div>

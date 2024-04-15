@@ -32,25 +32,33 @@ export default function useNavbar() {
 		const checker = item.trim().toLowerCase();
 		console.log(checker, "item is login", checker === "cart");
 		if (checker === "home" || location.pathname.toLowerCase() === "/") {
-			setActive([true, false, false, false]);
+			setActive([true, false, false, false,false,false]);
 		}
 		if (checker === "services") {
-			setActive([false, true, false, false]);
+			setActive([false, true, false, false, false, false]);
 		}
 		if (checker === "call us") {
-			setActive([false, false, true, false]);
+			setActive([false, false, true, false, false, false]);
 		}
 		if (checker === "login") {
-			console.log("should log", item);
-			setActive([false, false, false, true, false]);
+			setActive([false, false, false, true, false, false, false]);
+		}
+		if (checker === "/pharmacies") {
+			setActive([false, false, false, false, true, false, false]);
+		}
+		if (checker === "/insurers") {
+			setActive([false, false, false, false, false, true, false]);
 		}
 		if (
 			checker !== "login" &&
 			checker !== "services" &&
 			checker !== "call us" &&
-			checker !== "home"
+			checker !== "home" && 
+			checker !== "/pharmacies" && 
+			checker !== "/insurers"  
+
 		) {
-			setActive([false, false, false, false, false]);
+			setActive([false, false, false, false, false,false,false]);
 		}
 	};
 

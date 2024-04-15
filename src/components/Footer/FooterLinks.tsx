@@ -37,7 +37,7 @@ export default function FooterLinks() {
 			exit={Header.exit}
 			className="col-span-7 bg-slate-100/75 w-[95vw] md:max-w-screen-2xl md:w-full md:rounded-[20px]"
 		>
-			<div className="flex md:flex-row  flex-wrap gap-12  justify-between p-4 md:p-3 lg:p-8 text-[#3E3838] text-sm font-medium">
+			<div className="flex md:flex-row  flex-wrap gap-12  justify-between p-4 md:p-3 lg:p-8 text-[#3E3838] text-sm font-medium ">
 				<motion.div
 					variants={Scale}
 					animate="animate"
@@ -180,7 +180,7 @@ export default function FooterLinks() {
 						</li>
 					</ul>
 				</motion.div>
-				<div className="-order-1 md:order-last">
+				<div className="-order-1 md:order-last ">
 					<Link to={"/"}>
 						<Icons.logo />
 					</Link>
@@ -221,7 +221,7 @@ export default function FooterLinks() {
 						</Link>
 					</motion.li>
 				</ul>
-				<div className="text-nowrap">&copy; 2024withOneHealth</div>
+				<div className="text-nowrap">&copy; 2024 with OneHealth</div>
 			</div>
 		</motion.div>
 	);
