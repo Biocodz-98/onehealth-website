@@ -5,8 +5,9 @@ export interface HeroCardProps {
 	title: string;
 	imagesrc?: string;
 	Image?: string;
-	action: { title: string; href: string,newPage?:boolean };
+	action: { title: string; href: string; newPage?: boolean };
 	imageCls?: string;
+	iCls?: string;
 	titleCls?: string;
 	actionCls?: string;
 	titleGrp?: string;
@@ -25,6 +26,7 @@ export default function HeroCard({
 	titleGrp,
 	alt,
 	newPage,
+	iCls,
 }: HeroCardProps) {
 	return (
 		<div
@@ -55,7 +57,10 @@ export default function HeroCard({
 					loading="eager"
 					src={imagesrc}
 					alt={alt}
-					className="w-full h-full scale-75 aspect-square object-contain relative -right-[25%] md:-right-[30%] ml-auto -bottom-5"
+					className={cn(
+						"w-full h-full scale-75 aspect-square object-contain relative -right-[25%] md:-right-[30%] ml-auto -bottom-5",
+						iCls
+					)}
 				/>
 				{/* </div> */}
 			</div>
@@ -65,7 +70,7 @@ export default function HeroCard({
 					actionCls
 				)}
 			>
-				<Link to={action.href} target={`${newPage == true? "" : "_blank"}`}>
+				<Link to={action.href} target={`${newPage == true ? "" : "_blank"}`}>
 					{action.title}
 				</Link>
 				<Icons.downArrow className="-rotate-90 text-primary font-bold" />

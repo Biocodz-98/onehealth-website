@@ -91,7 +91,7 @@ export default function SearchBody({
 									title={item.title}
 									action={item.action}
 									imagesrc={item.Image!}
-									className="flex flex-col space-y-1 px-2 rounded-2xl min-w-44"
+									className="flex flex-col space-y-1 px-2 rounded-xl min-w-44"
 									imageCls="md:w-full ml-4 md:ml-0 order-1"
 									titleCls="text-[0.6rem] md:text-sm"
 									actionCls="text-[0.8rem] md:text-sm"

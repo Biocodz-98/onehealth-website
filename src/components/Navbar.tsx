@@ -155,7 +155,7 @@ export default function Navbar() {
 					setOpenPopup={closeAllPopups}
 					setHasSearch={setHasSearch}
 					setSearchQuery={setSearchQuery}
-					popcardCls="md:pb-0 md:px-10 md:py-0"
+					// popcardCls="md:pb-0 md:px-10 md:py-0"
 				>
 					<Login />
 				</Popup>

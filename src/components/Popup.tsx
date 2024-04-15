@@ -35,7 +35,7 @@ const Popup: React.FC<PopupProp> = ({
 							setHasSearch?.(false);
 							setOpenPopup(false);
 						}}
-						className="absolute text-4xl text-[#0E3528] right-0 hover:cursor-pointer bg-[#F1FFE4] p-2 rounded-full"
+						className="absolute text-4xl text-[#0E3528] right-0 hover:cursor-pointer bg-[#F1FFE4] p-2 rounded-full font-extrabold"
 					/>
 				</div>
 				{children}
