@@ -63,7 +63,7 @@ export default function Hero(props:HeroProps) {
 								{props.badgeTag}
 							</p>
 						)}
-						<div className=" flex flex-col gap-10 md:px-0">
+						<div className=" flex flex-col gap-4 md:gap-10 md:px-0">
 							<h1
 								className={cn(
 									"text-wrap w-full md:text-start text-center font-bold leading-5  md:leading-12 font-head text-[2.3rem] lg:text-5xl text-primary",
@@ -78,7 +78,7 @@ export default function Hero(props:HeroProps) {
 						</div>
 						<div
 							className={cn(
-								"cards flex gap-2 w-full md:flex-row flex-col flex-wrap  md:overflow-visible py-5 md:py-0 md:mt-5 lg:mt-0 px-2 md:px-0",
+								"cards flex gap-1.5 w-full md:flex-row flex-col flex-wrap  md:overflow-visible  md:py-0 md:mt-5 m-0 lg:mt-0 pr-1 md:px-0 pb-6",
 								props.hcCls
 							)}
 						>
@@ -88,7 +88,8 @@ export default function Hero(props:HeroProps) {
 									title={item.title}
 									action={item.action}
 									imagesrc={item.Image!}
-									className={props.cardClassName}
+									className={`${props.cardClassName} px-2 py-2 rounded-xl md:rounded-3xl md:p-3 md:px-5`}
+									imageCls="h-20"
 									actionCls="text-[0.7rem] sm:text-[0.8rem] md:text-sm"
 									titleGrp="text-[0.6rem] md:text-sm"
 									alt={item.alt}

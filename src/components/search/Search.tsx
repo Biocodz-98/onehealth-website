@@ -38,7 +38,7 @@ export default function Search({
 		>
 			{!hasSearch && (
 				<form className=" focus-within:outline-none border-none bg-transparent ring-0">
-					<div className="rounded-lg flex items-center bg-slate-50 focus-within:outline focus-within:outline-primary focus-within:ring-2 focus-within:ring-primary border-transparent focus-within:scale-100 p-2 border-none">
+					<div className="rounded-lg flex items-center bg-slate-50 focus-within:outline focus-within:outline-primary focus-within:ring-2 focus-within:ring-primary border-transparent focus-within:scale-100 p-1 border-none">
 						<button
 							type="submit"
 							className="p-1.5"

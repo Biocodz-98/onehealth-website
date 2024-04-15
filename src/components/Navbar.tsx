@@ -69,8 +69,8 @@ export default function Navbar() {
 				</div>
 			)}
 			<div className="fixed top-0 bg-background  md:z-50 z-30 inset-0 h-fit flex items-end md:mb-0 mb-5 ">
-				<MaxWithWrapper className="relative max-w-screen-2xl w-full  pt-2 px-0 md:px-0">
-					<header className="relative bg-white mx-auto w-full pb-0 py-1 px-2.5 md:px-16 shadow-sm">
+				<MaxWithWrapper className="relative max-w-screen-2xl w-full  md:pt-2 px-0 md:px-0">
+					<header className="relative bg-white mx-auto w-full pb-0 py-0 md:py-1 px-2.5 md:px-16 shadow-sm">
 						<div className="border-b  border-gray-100 py-3  w-full">
 							<div className="flex  flex-16 items-center relative">
 								{/* mobile nav */}

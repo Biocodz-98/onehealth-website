@@ -23,7 +23,7 @@ export function ComplaintItem({
 }) {
 	return (
 		<div className={cn("flex gap-4", comCls)}>
-			<div className={cn("image w-14 h-14 min-w-14 ", imageCls)}>
+			<div className={cn("image md:w-9 md:h-9 md:min-w-9 w-8 ", imageCls)}>
 				<img
 					loading="lazy"
 					src={image}

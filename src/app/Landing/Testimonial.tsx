@@ -30,15 +30,15 @@ register();
 
 const Refills = ({title,body,index}:{title:string,body:string, index:number})=>{
 	return (
-		<div className="flex border-b-2 border-slate-200/50 md:py-3 py-2">
-			<div className="font-body text-xl md:text-3xl  font-semibold leading-16 border-r-2 border-slate-200/50 md:w-16 w-8 md:px-5 px-1 items-center flex">
+		<div className="flex border-b-2 border-slate-200/50 md:py-3 py-1">
+			<div className="font-body text-xl md:text-3xl  font-semibold leading-16 border-r-2 border-slate-200/50 md:w-16 w-6 md:px-5 px-1 items-center flex">
 				{index}
 			</div>
-			<div className="md:px-5 px-2">
-				<h1 className="font-body md:text-xl text-[0.8rem] font-semibold leading-9">
+			<div className="md:px-5 pl-2">
+				<h1 className="font-body md:text-xl text-[0.7rem] font-semibold md:leading-9 leading-5">
 					{title}
 				</h1>
-				<p className="font-body md:text-base text-[0.64rem] font-semibold leading-9">
+				<p className="font-body md:text-base text-[0.64rem] font-semibold md:leading-9 leading-5">
 					{body}
 				</p>
 			</div>
@@ -83,7 +83,7 @@ export default function Testimonial() {
 					alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
 					className="absolute z-0 h-full w-full object-cover md:hidden "
 				/>
-				<div className="relative text-white flex flex-col md:flex-row h-full  md:gap-0 gap-10 justify-between md:py-8 py-5 ">
+				<div className="relative text-white flex flex-col md:flex-row h-full  md:gap-0 gap-10 justify-between md:py-8 pt-5 pb-2 ">
 					<div className="w-full md:pt-10 md:px-20 px-4 md:space-y-9 space-y-5">
 						<h1 className="font-head font-semibold text-4xl md:text-6xl text-white md:leading-16">
 							I never have to worry about my medications
@@ -92,51 +92,52 @@ export default function Testimonial() {
 							Shola, Yaba 29 years old.
 						</p>
 					</div>
-					<div className="w-full flex flex-col gap-10 self-end">
-						<div className="rounded-t-3xl   flex md:gap-10 gap-4 items-center px-4">
-							<div className="md:w-32 w-28 relative md:h-36 h-28 md:rounded-t-[3rem] md:rounded-b-[3rem] rounded-t-[1.9rem] rounded-b-[1.9rem] overflow-hidden ">
-								<img
-									loading="lazy"
-									className="h-full w-full scale-110"
-									src={TestimonialDoc}
-									alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
-								/>
-							</div>
-							<div className="space-y-1">
-								<p className="bg-[#1D1D1F]/60 px-2 py-1 w-fit md:text-base text-[0.63rem]">
+					<div className=" w-[90%] mx-auto md:w-full flex gap-3 self-end bg-red">
+						<div className="md:w-32 w-16 relative md:h-36 h-20 md:rounded-[3rem]  rounded-[.7rem] overflow-hidden ">
+							<img
+								loading="lazy"
+								className="h-full w-full scale-110 object-cover"
+								src={TestimonialDoc}
+								alt="Testimonial image featuring Shola from Yaba, 29, expressing satisfaction with OneHealth online pharmacy in Nigeria, emphasizing worry-free medication management and quick delivery"
+							/>
+						</div>
+						<div className="flex flex-col gap-3">
+							<div className="md:space-y-1 space-y-0.5">
+								<p className="bg-[#1D1D1F]/60 md:px-2 md:py-1 px-0.5 py-0.5 w-fit md:text-base text-[0.6rem]">
 									Shola, your medications are ready for pickup.
 								</p>
-								<p className="bg-[#1D1D1F]/60 px-2 py-1 w-fit md:text-base text-[0.63rem]">
+								<p className="bg-[#1D1D1F]/60 md:px-2 md:py-1 px-0.5 py-0.5 w-fit md:text-base text-[0.6rem]">
 									I have set an auto-refill after the next 7 days
 								</p>
-								<p className="bg-[#1D1D1F]/60 px-2 py-1 w-fit md:text-base text-[0.63rem]">
+								<p className="bg-[#1D1D1F]/60 md:px-2 md:py-1 px-0.5 py-0.5 w-fit md:text-base text-[0.6rem]">
 									You save 16,000 Naira on this order covered by your HMO
 								</p>
-								<p className="bg-[#1D1D1F]/60 px-2 py-1 w-fit md:text-base text-[0.63rem]">
+								<p className="bg-[#1D1D1F]/60 md:px-2 md:py-1 px-0.5 py-0.5 w-fit md:text-base text-[0.6rem]">
 									For side effects & other questions, Send a DM
 								</p>
 							</div>
-						</div>
-						<div className="bg-[#1D1D1F]/75 p-5 rounded-3xl pt-7 md:w-[65%] w-[70%] ml-auto mr-4 md:mr-16">
-							{TestimonialSholaData.map((item, index) => (
-								<Refills
-									key={index}
-									title={item.title}
-									body={item.body}
-									index={index + 1}
-								/>
-							))}
-							<div className="flex w-full justify-between px-2 md:px-5 items-center py-2">
-								<div className="flex font-semibold font-body gap-2">
-									<span className="text-xl md:text-3xl">4</span>
-									<p className="flex flex-col text-[0.7rem] md:text-xs">
-										<span>REFILLS</span>
-										<span>LEFT</span>
-									</p>
+
+							<div className="bg-[#1D1D1F]/75 md:p-5 p-2 rounded-3xl md:pt-7">
+								{TestimonialSholaData.map((item, index) => (
+									<Refills
+										key={index}
+										title={item.title}
+										body={item.body}
+										index={index + 1}
+									/>
+								))}
+								<div className="flex w-full justify-between px-2 md:px-5 items-center py-2">
+									<div className="flex font-semibold font-body gap-2">
+										<span className="text-xl md:text-3xl">4</span>
+										<p className="flex flex-col text-[0.6rem] md:text-xs">
+											<span>REFILLS</span>
+											<span>LEFT</span>
+										</p>
+									</div>
+									<span className="md:px-3 md:py-2 py-1 px-1.5 bg-slate-200 text-[#036B26] font-medium text-xs md:text-sm rounded-full">
+										SUCCESS
+									</span>
 								</div>
-								<span className="px-3 py-2 bg-slate-200 text-[#036B26] font-medium text-sm rounded-full">
-									SUCCESS
-								</span>
 							</div>
 						</div>
 					</div>

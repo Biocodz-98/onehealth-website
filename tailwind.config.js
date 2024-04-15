@@ -97,6 +97,11 @@ module.exports = {
 						opacity: "0",
 					},
 				},
+
+				fadeIn: {
+					from: { opacity: 0 },
+					to: { opacity: 1 },
+				},
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -105,6 +110,7 @@ module.exports = {
 				typewriter: "typewriter 2s steps(11) forwards",
 				caret:
 					"typewriter 2s steps(11) forwards, blink 1s steps(11) infinite 2s",
+				fade: "fadeIn .8s ease-in-out",
 			},
 		},
 	},

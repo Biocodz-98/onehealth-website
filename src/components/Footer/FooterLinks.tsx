@@ -123,7 +123,7 @@ export default function FooterLinks() {
 						))}
 					</ul>
 				</motion.div>
-				<motion.div ref={resourceRef} >
+				<motion.div ref={resourceRef}>
 					<motion.h5
 						variants={H1P1L}
 						animate="animate"
@@ -164,17 +164,26 @@ export default function FooterLinks() {
 								)}
 							</motion.li>
 						))}
-					<li className="socials flex flex-wrap max-w-[17rem] gap-2 mt-6">
-						{
-							Socials.map((item,index)=>(
-								<Link key={index} to={item.link} className="p-3 rounded-full bg-black" target="_blank" rel="noopener noreferrer" > {item.icon}</Link>
-							))
-						}
-					</li>
+						<li className="socials flex flex-wrap max-w-[17rem] gap-2 mt-6">
+							{Socials.map((item, index) => (
+								<Link
+									key={index}
+									to={item.link}
+									className="p-3 rounded-full bg-black"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									{" "}
+									{item.icon}
+								</Link>
+							))}
+						</li>
 					</ul>
 				</motion.div>
 				<div className="-order-1 md:order-last">
-					<Icons.logo />
+					<Link to={"/"}>
+						<Icons.logo />
+					</Link>
 				</div>
 			</div>
 			<div className="flex w-full justify-between p-4 md:p-7 text-[text-[#3E3838] font-semibold text-sm">
