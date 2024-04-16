@@ -11,7 +11,9 @@ export default function SearchItems({
 	linkCls,
 	imageCls,
 	midTitleCls,
-	newPage
+	newPage,
+	titleCls,
+	pCls
 }: {
 	name: string;
 	title?: string;
@@ -22,6 +24,8 @@ export default function SearchItems({
 	midTitleCls?: string;
 	url: string;
 	newPage?: boolean;
+	titleCls?: string;
+	pCls?: string;
 }) {
 	return (
 		<div
@@ -42,11 +46,11 @@ export default function SearchItems({
 				)}
 				<p className={cn("", midTitleCls)}>
 					{title && (
-						<h3 className="font-head font-semibold text-base md:text-lg">
+						<h3 className={cn("font-head font-semibold text-base md:text-lg",titleCls)}>
 							{title}
 						</h3>
 					)}
-					<p className="font-light font-body text-sm md:text-base">{name}</p>
+					<p className={cn("font-light font-body text-sm md:text-base",pCls)}>{name}</p>
 				</p>
 				<span className="bg-[#F1FFE4] rounded-full p-3 ml-auto">
 					<Icons.rightArrow className="text-[#0E3528]" />

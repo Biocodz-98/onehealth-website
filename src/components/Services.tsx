@@ -126,7 +126,7 @@ export default function Services({
 									title={item.title}
 									imagesrc={item.Image!}
 									className=" w-full md:max-w-full md:max-h-fit grid md:grid rounded-xl md:py-1 md:px-2.5"
-									imageCls="md:mr-5 ml-2.5 md:ml-0 -order-1 md:-order-2 md:flex md:flex-row col-span-5  md:col-span-4 md:row-span-12 md:h-28 w-fit md:w-fit"
+									imageCls="md:mr-5 ml-2.5 md:ml-0 -order-1 md:-order-2 md:flex md:flex-row col-span-5  md:col-span-4 md:row-span-12 md:h-24 w-fit md:w-fit"
 									iCls="object-contain -right-0 md:-right-0 -bottom-0 scale-100"
 									action={item.action}
 									titleGrp="md:-order-1 text-[0.6rem] md:text-sm"
@@ -173,8 +173,9 @@ export default function Services({
 									image={item.Image!}
 									cls="flex flex-col space-y-1 px-2"
 									imageCls="mr-5"
-									linkCls="py-5 md:gap-1"
+									linkCls="py-4 md:gap-1"
 									midTitleCls="mr-auto"
+									pCls="md:text-[0.85rem]"
 								/>
 							))}
 						</motion.div>
