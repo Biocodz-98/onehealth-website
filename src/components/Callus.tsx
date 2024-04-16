@@ -9,7 +9,7 @@ import ContactGuideMini from "@/components/ContactGuideMini";
 
 export default function Callus() {
   return (
-		<div className="overflow-y-scroll h-full">
+		<div className="overflow-y-scroll h-full w-full lg:w-[65vw] 2xl:w-[40vw] max-w-screen-2xl mx-auto">
 			<div className="relative  overflow-y-scroll h-[90%] pb-20 md:p-10">
 				<div className=" relative min-h-60 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden">
 					<div className="w-full h-full  overflow-hidden absolute ">
@@ -35,7 +35,7 @@ export default function Callus() {
 									image={item.image}
 									index={index}
 									imgCls="w-[70%] md:w-full"
-									cls={`${
+									cls={`max-w-32 ${
 										index == 0
 											? ""
 											: index == 1

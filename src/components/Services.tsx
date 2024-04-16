@@ -21,7 +21,7 @@ export default function Services({
 	setSearchResult: React.Dispatch<SetStateAction<Result[]>>;
 }) {
 	return (
-		<div className="h-[90%] overflow-y-scroll pb-16">
+		<div className="h-[90%] overflow-y-scroll  pb-16 lg:w-[65vw] 2xl:w-[40vw] max-w-screen-2xl">
 			<div className="flex flex-col gap-5 ">
 				<motion.p
 					variants={Header}
@@ -38,16 +38,15 @@ export default function Services({
 					We provide high-quality and reliable health services in your
 					pocket—care whenever you need, for prevention or when sick.
 				</motion.p>
-				<div className='px-1'>
-
-				<Search
-					hasSearchButton={true}
-					setQuery={setSearchQuery}
-					query={searchQuery}
-					clsInput="md:w-full md:h-16 h-12"
-					setSearchResult={setSearchResult}
-					// isAutofocus={true}
-				/>
+				<div className="px-1">
+					<Search
+						hasSearchButton={true}
+						setQuery={setSearchQuery}
+						query={searchQuery}
+						clsInput="md:w-full md:h-16 h-12"
+						setSearchResult={setSearchResult}
+						// isAutofocus={true}
+					/>
 				</div>
 			</div>
 			<div className="divider h-1 w-full bg-slate-200 mt-5"></div>
@@ -76,7 +75,7 @@ export default function Services({
 					viewport={{
 						once: true,
 					}}
-					className="flex overflow-x-auto space-x-3 md:space-x-5 py-5 md:w-[80vw] mx-auto"
+					className="flex overflow-x-auto space-x-3 md:space-x-5 py-5 md:w-full mx-auto"
 				>
 					{PopularServicesData.map((item, index) => (
 						<HeroCard
@@ -119,18 +118,19 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="flex flex-col w-full items-center space-y-8"
+							className="flex flex-col w-full items-center space-y-8 md:space-y-7"
 						>
 							{EcosystemData.map((item, index) => (
 								<HeroCard
 									key={index}
 									title={item.title}
 									imagesrc={item.Image!}
-									className=" w-full md:max-w-full md:max-h-fit grid md:grid "
-									imageCls="md:mr-5 ml-2.5 md:ml-0 -order-1 md:-order-2 md:flex md:flex-row col-span-5  md:col-span-6 md:row-span-12"
+									className=" w-full md:max-w-full md:max-h-fit grid md:grid rounded-xl md:py-1 md:px-2.5"
+									imageCls="md:mr-5 ml-2.5 md:ml-0 -order-1 md:-order-2 md:flex md:flex-row col-span-5  md:col-span-4 md:row-span-12 md:h-28 w-fit md:w-fit"
+									iCls="object-contain -right-0 md:-right-0 -bottom-0 scale-100"
 									action={item.action}
 									titleGrp="md:-order-1 text-[0.6rem] md:text-sm"
-									actionCls="order-2  text-[0.58rem] md:text-sm md:col-span-6 col-span-7"
+									actionCls="order-2  text-[0.58rem] md:text-sm md:col-span-8 col-span-7"
 									newPage={item.action.newPage}
 								/>
 							))}
@@ -173,7 +173,7 @@ export default function Services({
 									image={item.Image!}
 									cls="flex flex-col space-y-1 px-2"
 									imageCls="mr-5"
-									linkCls="py-5"
+									linkCls="py-5 md:gap-1"
 									midTitleCls="mr-auto"
 								/>
 							))}

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-import React, { SetStateAction } from "react";
+import React, { SetStateAction,useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 export default function MobileNavItem({
 	Icon,
 	text,
@@ -19,6 +21,11 @@ export default function MobileNavItem({
 	setShowServices?: React.Dispatch<SetStateAction<boolean>>;
 	setActive: (item: string) => void;
 }) {
+	const location = useLocation();
+	useEffect(() => {
+		const text = location.pathname == "/"?"home":location.pathname; console.log(text);
+		setActive(text);
+	}, [location.pathname]);
 	return (
 		<Link
 			to={action}

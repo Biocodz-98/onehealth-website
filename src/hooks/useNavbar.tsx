@@ -1,6 +1,6 @@
-import {useEffect,useState} from 'react'
+import { useEffect, useState } from "react";
 import useSearch from "@/hooks/useSearch";
-import {useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function useNavbar() {
 	const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -20,19 +20,23 @@ export default function useNavbar() {
 	});
 	const [hasAdvertisement, setHasAdvertisement] = useState<boolean>(false); //use for displaying advertisement on the screen (default false - no advertisement)
 
-	const [searchQuery,setSearchQuery] = useState<string>(""); //change search query to string
-    const location = useLocation();
+	const [searchQuery, setSearchQuery] = useState<string>(""); //change search query to string
+	const location = useLocation();
 	//mobile devices
 	const [active, setActive] = useState<boolean[]>([false, false, false, false]);
 
 	const { error, searchResult, loading, setSearchResult } =
-			useSearch(searchQuery);
+		useSearch(searchQuery);
 
 	const checkpath = (item: string) => {
 		const checker = item.trim().toLowerCase();
-		console.log(checker, "item is login", checker === "cart");
-		if (checker === "home" || location.pathname.toLowerCase() === "/") {
-			setActive([true, false, false, false,false,false]);
+		const assignHome = location.pathname.toLowerCase() == "/" ? "home" : location.pathname;
+		console.log(checker, "item is login", checker === assignHome, assignHome);
+		if (checker === "home") {
+			setActive([true, false, false, false, false, false]);
+		}
+		if (checker == assignHome) {
+			setActive([true, false, false, false, false, false]);
 		}
 		if (checker === "services") {
 			setActive([false, true, false, false, false, false]);
@@ -53,12 +57,11 @@ export default function useNavbar() {
 			checker !== "login" &&
 			checker !== "services" &&
 			checker !== "call us" &&
-			checker !== "home" && 
-			checker !== "/pharmacies" && 
-			checker !== "/insurers"  
-
+			(checker !== "home" || checker !== assignHome) &&
+			checker !== "/pharmacies" &&
+			checker !== "/insurers"
 		) {
-			setActive([false, false, false, false, false,false,false]);
+			setActive([false, false, false, false, false, false, false]);
 		}
 	};
 
@@ -105,9 +108,9 @@ export default function useNavbar() {
 	//scroll to top on router change
 	useEffect(() => {
 		window.scrollTo(0, 0);
-		closeAllPopups()
-		checkpath(location.pathname);
-		console.log(location.pathname)
+		closeAllPopups();
+		checkpath(location.pathname=="/"?"home":location.pathname);
+		console.log(location.pathname);
 	}, [location.pathname]);
 	return {
 		closeAllPopups,
@@ -137,6 +140,6 @@ export default function useNavbar() {
 		error,
 		searchResult,
 		loading,
-        setSearchResult
+		setSearchResult,
 	};
 }

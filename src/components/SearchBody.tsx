@@ -33,7 +33,7 @@ export default function SearchBody({
 }) {
 
 	return (
-		<div className=" relative h-full overflow-y-scroll">
+		<div className=" relative h-full overflow-y-scroll lg:w-[65vw] 2xl:w-[40vw] max-w-screen-2xl">
 			<Search
 				hasSearchButton={true}
 				setQuery={setSearchQuery}
@@ -71,7 +71,9 @@ export default function SearchBody({
 						<div className="flex flex-wrap items-center gap-2.5">
 							{TrendingData.map((item, index) => (
 								<Link
-									to={`https://onehealthng.com/search?q=${item.trim().replace(" ","+")}`}
+									to={`https://onehealthng.com/search?q=${item
+										.trim()
+										.replace(" ", "+")}`}
 									key={index}
 								>
 									<Trending title={item} setQuery={setSearchQuery} />
@@ -91,9 +93,9 @@ export default function SearchBody({
 									title={item.title}
 									action={item.action}
 									imagesrc={item.Image!}
-									className="flex flex-col space-y-1 px-2 rounded-xl min-w-44"
+									className="flex flex-col space-y-1 px-2 rounded-xl min-w-44 w-fit md:w-full"
 									imageCls="md:w-full ml-4 md:ml-0 order-1"
-									titleCls="text-[0.6rem] md:text-sm"
+									titleCls="text-[0.6rem] md:text-xs"
 									actionCls="text-[0.8rem] md:text-sm"
 									newPage={item.action.newPage}
 								/>
@@ -158,7 +160,7 @@ export default function SearchBody({
 							<div className="searchbgright bg-[#DEF7E1] w-full h-full absolute  z-0"></div>
 						</div>
 
-						<div className="content md:min-w-[75vw] w-full h-full flex flex-col items-center relative z-10 p-4  md:p-5 space-y-4">
+						<div className="content md:min-w-full w-full h-full flex flex-col items-center relative z-10 p-4  md:p-5 space-y-4">
 							<h4 className="font-head font-semibold">
 								Don’t see what you’re looking for
 							</h4>

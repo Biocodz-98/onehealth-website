@@ -25,7 +25,7 @@ export default function Login() {
 	}
 
 	return (
-		<div className="relative  overflow-y-scroll h-[90%] md:w-[70vw] pb-14 mx-auto">
+		<div className="relative  overflow-y-scroll h-[90%] w-full lg:w-[65vw] 2xl:w-[40vw] max-w-screen-2xl pb-14 mx-auto">
 			<div className=" relative min-h-64 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden min-w-[87%]  mx-auto ">
 				<div className="w-full h-full overflow-hidden absolute ">
 					<div className="searchbgleft bg-[#D8F7DB]  w-full h-full absolute  z-0"></div>
@@ -214,7 +214,7 @@ export default function Login() {
 					viewport={{
 						once: true,
 					}}
-					className="flex gap-4 items-center flex-col md:flex-row  w-full"
+					className="flex md:gap-4 items-center flex-col xs:flex-row sm:flex-row   w-full" //flex-col md:flex-row
 				>
 					{LoginCardData.map((item, index) => (
 						<HeroCard
@@ -227,11 +227,11 @@ export default function Login() {
 							// actionCls="text-[0.7rem] md:text-sm "
 							titleGrp="md:-order-1 text-[0.6rem] md:text-sm"
 							newPage={item.action.newPage}
-							className="flex flex-col space-y-1 px-2 rounded-xl min-w-44 w-full md:max-w-full md:py-2 py-1"
-							imageCls="w-full ml-0 order-1 md:w-full"
-							titleCls="text-[0.8rem] md:text-sm"
-							actionCls="text-[0.8rem] md:text-sm"
-							iCls="md:-right-[40%] -right-[45%]"
+							className="flex flex-col space-y-1 px-2 rounded-lg md:rounded-xl md:min-w-44 w-full md:max-w-full md:py-2 py-1 pl-4 xs:pl-2.5"
+							imageCls="w-[98%]  mx-0 order-1 md:w-full md:h-32 h-20 "
+							titleCls="text-[0.6rem] md:text-sm"
+							actionCls="text-[0.6rem] md:text-sm"
+							iCls="md:-right-[40%] -right-[45%] -bottom-0 object-contain scale-100"
 						/>
 					))}
 				</motion.div>
