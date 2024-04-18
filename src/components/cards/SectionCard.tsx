@@ -7,6 +7,8 @@ export interface SectionCardProps {
 	headingText: string;
 	subHeadingText: string;
 	contentImage: string;
+	contentImageMobile?: string;
+	imageClsMobile?: string;
 	contentImageAlt: string;
 	contentSectionCards: SectionCardMiniProps[];
 	clsContent2?: string;
@@ -20,7 +22,12 @@ export interface SectionCardProps {
 
 export default function SectionCard(props:SectionCardProps) {
   return (
-		<section className={cn("relative  w-full min-h-[88.5vh] h-fit mb-20 flex flex-col items-center px-4 md:px-0",props.sectionCls)}>
+		<section
+			className={cn(
+				"relative  w-full min-h-[88.5vh] h-fit mb-20 flex flex-col items-center px-4 md:px-0",
+				props.sectionCls
+			)}
+		>
 			<div className="bg-[#228821] z-0 absolute rounded-3xl md:rounded-[6rem] lg:rounded-[160px] w-[99.6%] h-full mx-auto overflow-hidden">
 				<div className="section-card-clip-right bg-[#27634E61] absolute z-10 w-full h-full rounded-3xl md:rounded-[6rem] lg:rounded-[160px] "></div>
 				<div className="section-card-clip-left bg-[#10441E1C] absolute z-10 w-full h-full rounded-3xl md:rounded-[6rem] lg:rounded-[160px]"></div>
@@ -39,11 +46,11 @@ export default function SectionCard(props:SectionCardProps) {
 				/>
 				<div
 					className={cn(
-						"content2 flex flex-col md:flex-row justify-between p-5 px-3 md:px-0 lg:px-10",
+						"content2 flex flex-col md:flex-row justify-around p-5 px-3 md:px-0 lg:px-10",
 						props.parentCls
 					)}
 				>
-					<div className={cn("cards grid md:grid-cols-2", props.clsContent2)}>
+					<div className={cn("cards grid md:grid-cols-2 place-content-center", props.clsContent2)}>
 						{props.contentSectionCards.map((item, index) => (
 							<SectionCardMini
 								key={index}
@@ -57,10 +64,22 @@ export default function SectionCard(props:SectionCardProps) {
 					<div className={cn("image", props.imageWCls)}>
 						<div className={cn("", props.borderClip)}></div>
 						<img
+							loading="lazy"
 							src={props.contentImage}
 							alt={props.contentImageAlt}
-							className={cn("", props.imageCls)}
+							className={cn(
+								`${props.contentImageMobile ? "hidden md:block" : ""}`,
+								props.imageCls
+							)}
 						/>
+						{props.contentImageMobile && (
+							<img
+								loading="lazy"
+								src={props.contentImageMobile}
+								alt={props.contentImageAlt}
+								className={cn("md:hidden", props.imageClsMobile)}
+							/>
+						)}
 					</div>
 				</div>
 			</div>

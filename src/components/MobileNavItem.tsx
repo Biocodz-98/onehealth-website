@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-import React, { SetStateAction } from "react";
+import React, { SetStateAction,useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 export default function MobileNavItem({
 	Icon,
 	text,
@@ -19,6 +21,11 @@ export default function MobileNavItem({
 	setShowServices?: React.Dispatch<SetStateAction<boolean>>;
 	setActive: (item: string) => void;
 }) {
+	const location = useLocation();
+	useEffect(() => {
+		const text = location.pathname == "/"?"home":location.pathname; console.log(text);
+		setActive(text);
+	}, [location.pathname]);
 	return (
 		<Link
 			to={action}
@@ -26,12 +33,23 @@ export default function MobileNavItem({
 				setActive(text);
 				if (text.toLowerCase() === "login") {
 					setOpenLogin?.(true);
+					setOpenCallUs?.(false);
+					setShowServices?.(false);
 				}
 				if (text.toLowerCase() === "call us") {
 					setOpenCallUs?.(true);
+					setOpenLogin?.(false);
+					setShowServices?.(false);
 				}
 				if (text.toLowerCase() === "services") {
 					setShowServices?.(true);
+					setOpenLogin?.(false);
+					setOpenCallUs?.(false);
+				}
+				if (text.toLowerCase() === "home") {
+					setShowServices?.(false);
+					setOpenLogin?.(false);
+					setOpenCallUs?.(false);
 				}
 			}}
 			className={`w-full flex flex-col items-center p-3${
@@ -45,7 +63,13 @@ export default function MobileNavItem({
 				fill={active ? "#3DA646" : "#101928"}
 				strokeWidth="0.5"
 			/>
-			<span className="text-sm flex flex-nowrap font-semibold">{text}</span>
+			<span
+				className={`text-sm flex flex-nowrap font-semibold text-[${
+					active ? "#3DA646" : "#101928"
+				}]`}
+			>
+				{text}
+			</span>
 		</Link>
 	);
 }

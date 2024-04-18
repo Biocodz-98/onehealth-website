@@ -17,6 +17,7 @@ export default function Background(props:BGProps) {
 		>
 			<div className="relative w-full overflow-hidden object-cover">
 				<img
+					loading="lazy"
 					src={HeroBGR}
 					className={cn(
 						"h-[90vh] w-full absolute -right-28 top-5  object-cover ",
@@ -27,6 +28,7 @@ export default function Background(props:BGProps) {
 					height={400}
 				/>
 				<img
+					loading="lazy"
 					src={HeroBGL}
 					className={cn(
 						"h-full w-full absolute top-48  object-cover",

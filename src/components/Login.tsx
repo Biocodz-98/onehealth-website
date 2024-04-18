@@ -18,19 +18,20 @@ export default function Login() {
 
 	const handleLogin = (e:React.FormEvent)=>{
 		e.preventDefault();
+		if(!(Boolean(email) && Boolean(password))) return;
 		setIsProcessing(true);
 		console.log(email,password);
 		setTimeout(()=> setIsProcessing(false),3000)
 	}
 
 	return (
-		<div className="relative  overflow-y-scroll h-[90%] pb-14">
-			<div className=" relative min-h-64 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden">
-				<div className="w-full h-full  overflow-hidden absolute ">
+		<div className="relative  overflow-y-scroll h-[90%] w-full lg:w-[65vw] 2xl:w-[40vw] max-w-screen-2xl pb-14 mx-auto">
+			<div className=" relative min-h-64 h-fit bg-[#E9FFEB] rounded-3xl overflow-hidden min-w-[87%]  mx-auto ">
+				<div className="w-full h-full overflow-hidden absolute ">
 					<div className="searchbgleft bg-[#D8F7DB]  w-full h-full absolute  z-0"></div>
 					<div className="searchbgright bg-[#DEF7E1] w-full h-full absolute  z-0"></div>
 				</div>
-				<div className=" relative z-10">
+				<div className=" relative z-10 ">
 					<div className="flex items-center flex-col mt-16">
 						<Icons.logo />
 						<motion.p
@@ -161,8 +162,7 @@ export default function Login() {
 								className="rounded-3xl bg-[#8DDE44] text-[#10441E] p-3 px-5 flex w-full place-content-center"
 							>
 								{" "}
-								
-								{isProcessing? <Spinner />:<span>Log into Account</span>}
+								{isProcessing ? <Spinner /> : <span>Log into Account</span>}
 							</motion.button>
 							<motion.p
 								variants={H1P1R}
@@ -214,7 +214,7 @@ export default function Login() {
 					viewport={{
 						once: true,
 					}}
-					className="flex gap-4 items-center flex-col md:flex-row  w-full"
+					className="flex md:gap-4 items-center flex-col xs:flex-row sm:flex-row   w-full" //flex-col md:flex-row
 				>
 					{LoginCardData.map((item, index) => (
 						<HeroCard
@@ -222,8 +222,16 @@ export default function Login() {
 							title={item.title}
 							action={item.action}
 							imagesrc={item.Image!}
-							className="md:max-w-[100%] md:max-h-[180px] w-full"
-							imageCls="md:w-full ml-1 md:ml-0 bg-contain"
+							// className="md:max-w-60 md:max-h-[180px] w-full"
+							// imageCls="md:w-full ml-1 md:ml-0 bg-contain"
+							// actionCls="text-[0.7rem] md:text-sm "
+							titleGrp="md:-order-1 text-[0.6rem] md:text-sm"
+							newPage={item.action.newPage}
+							className="flex flex-col space-y-1 px-2 rounded-lg md:rounded-xl md:min-w-44 w-full md:max-w-full md:py-2 py-1 pl-4 xs:pl-2.5"
+							imageCls="w-[98%]  mx-0 order-1 md:w-full md:h-32 h-20 "
+							titleCls="text-[0.6rem] md:text-sm"
+							actionCls="text-[0.6rem] md:text-sm"
+							iCls="md:-right-[40%] -right-[45%] -bottom-0 object-contain scale-100"
 						/>
 					))}
 				</motion.div>

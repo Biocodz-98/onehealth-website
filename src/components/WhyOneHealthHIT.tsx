@@ -7,15 +7,17 @@ import { Header, Scale } from "@/animate.data";
 import { cn } from "@/lib/utils";
 
 export interface WhyOneHealthHITProps {
-	
 	tag: string;
 	headingText: string;
 	sectionImage: string;
-    sectionImageAlt: string;
-    sectionCls?: string;
-    childCls?: string;
-	sectionList: WhyOneHealthProps[]
-	children?:React.ReactNode;
+	sectionImageAlt: string;
+	sectionCls?: string;
+	childCls?: string;
+	secCls?: string;
+	listCls?: string;
+	listChildCls?: string;
+	sectionList: WhyOneHealthProps[];
+	children?: React.ReactNode;
 }
 
 export default function  WhyOneHealthHIT(props: WhyOneHealthHITProps) {
@@ -51,7 +53,7 @@ export default function  WhyOneHealthHIT(props: WhyOneHealthHITProps) {
 			/>
 			<MaxWithWrapper>
 				<div className="flex flex-col gap-10">
-					<SectionHeaderMini tag={props.tag} headingText={props.headingText} />
+					<SectionHeaderMini tag={props.tag} headingText={props.headingText} secCls={props.secCls} />
 					<motion.div
 						variants={Header}
 						animate={smController1}
@@ -62,7 +64,7 @@ export default function  WhyOneHealthHIT(props: WhyOneHealthHITProps) {
 						viewport={{
 							once: true,
 						}}
-						className="cards flex flex-wrap justify-center lg:justify-start gap-16 lg:gap-4 mx-auto "
+						className={cn("cards flex flex-wrap justify-center lg:justify-start gap-16 lg:gap-4 mx-auto",props.listCls)}
 					>
 						{props.sectionList.map((item, index) => (
 							<WhyOneHealthCard
@@ -70,7 +72,8 @@ export default function  WhyOneHealthHIT(props: WhyOneHealthHITProps) {
 								image={item.image}
 								heading={item.heading}
 								description={item.description}
-								
+								alt={item.alt}
+								cls={props.listChildCls}
 							/>
 						))}
 					</motion.div>

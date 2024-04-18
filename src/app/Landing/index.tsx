@@ -12,6 +12,7 @@ export default function index() {
 			animate={{ opacity: 1,  scaleZ: 1 }}
 			transition={{ duration: 0.75, ease: "easeOut" }}
 			exit={{ opacity: 1, scaleZ: -10 }}
+			className=""
 		>
 			<Hero />
 			<CareSolution />

@@ -71,25 +71,29 @@ export default function Footer() {
 						<div className="flex w-full ">
 							<div className="relative left-0 z-10 w-full h-full">
 								<img
+									loading="lazy"
 									src={GetStartedLeft1}
-									alt="get started footer images"
+									alt="Pharmacy products - OneHealth online pharmacy in Nigeria."
 									className="absolute -bottom-44 md:-bottom-24 left-14"
 								/>
 								<img
+									loading="lazy"
 									src={GetStartedLeft2}
-									alt="get started footer images"
+									alt="Pharmacy products - OneHealth online pharmacy in Nigeria."
 									className="absolute -top-9 md:-top-24"
 								/>
 								<img
+									loading="lazy"
 									src={GetStartedLeft3}
-									alt="get started footer images"
+									alt="Drugs for sale - OneHealth online pharmacy in Nigeria."
 									className="absolute -bottom-14 left-4"
 								/>
 							</div>
 							<div className="relative z-10 w-80  h-full ">
 								<img
+									loading="lazy"
 									src={GetStartedRight}
-									alt="get started footer images"
+									alt="Drugs for sale - OneHealth online pharmacy in Nigeria."
 									className="absolute w-full -left-9 top-9 md:-top-[83px] scale-[128%]"
 								/>
 							</div>
@@ -97,7 +101,7 @@ export default function Footer() {
 					</div>
 					<div></div>
 				</div>
-				<div className=" flex flex-col lg:grid lg:grid-cols-11 gap-6 w-full">
+				<div className=" flex flex-col lg:grid lg:grid-cols-11 gap-6 w-full ">
 					<Subsriber />
 					<FooterLinks />
 				</div>

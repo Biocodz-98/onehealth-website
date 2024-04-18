@@ -14,18 +14,21 @@ export default function PharmaSales() {
 			sectionList={PharmaSalesData}
 			sectionCls="md:pb-36"
 			childCls="md:gap-14 gap-4 md:flex-row flex-col items-center"
+			secCls="w-[95%] ml-auto"
+			listCls="w-[95%] mx-auto md:justify-between lg:justify-between px-4 "
+			listChildCls="w-full"
 		>
 			<OneLink
 				index={0}
 				action="Get on board"
-				to="https://partner.onehealthng.com/pharmacy"
-				linkCls="bg-[#8DDE44] text-secondary border-[#8DDE44] text-nowrap md:w-fit w-[70%]"
+				to="https://docs.google.com/forms/d/e/1FAIpQLScSD2POuwZhfQlP22whd8AAgCoj7SAYs64SvqciC0p4j2truw/viewform"
+				linkCls="bg-[#8DDE44] text-base text-secondary border-[#8DDE44] text-nowrap md:w-fit w-[70%] px-5 py-3"
 			/>
 			<OneLink
 				index={1}
 				action="Sign in to portal"
 				to="https://partner.onehealthng.com/"
-				linkCls="text-nowrap md:w-fit w-[70%]"
+				linkCls="text-nowrap md:w-fit w-[70%] text-base px-5 py-3"
 			/>
 		</WhyOneHealthHIT>
 	);

@@ -63,7 +63,7 @@ export default function Hero(props:HeroProps) {
 								{props.badgeTag}
 							</p>
 						)}
-						<div className=" flex flex-col gap-10 px-2 md:px-0 md:w-[85%]">
+						<div className=" flex flex-col gap-4 md:gap-10 md:px-0">
 							<h1
 								className={cn(
 									"text-wrap w-full md:text-start text-center font-bold leading-5  md:leading-12 font-head text-[2.3rem] lg:text-5xl text-primary",
@@ -78,7 +78,7 @@ export default function Hero(props:HeroProps) {
 						</div>
 						<div
 							className={cn(
-								"cards flex gap-2 w-full md:flex-row flex-col flex-wrap  md:overflow-visible py-5 md:py-0 md:mt-5 lg:mt-0 px-2 md:px-0",
+								"cards flex gap-1.5 w-full md:flex-row flex-col flex-wrap  md:overflow-visible  md:py-0 md:mt-5 m-0 lg:mt-0 pr-1 md:px-0 pb-6",
 								props.hcCls
 							)}
 						>
@@ -88,7 +88,12 @@ export default function Hero(props:HeroProps) {
 									title={item.title}
 									action={item.action}
 									imagesrc={item.Image!}
-									className={props.cardClassName}
+									className={`${props.cardClassName} px-2 py-2 rounded-xl md:rounded-3xl md:p-3 md:px-5`}
+									imageCls="h-20"
+									actionCls="text-[0.7rem] sm:text-[0.8rem] md:text-sm"
+									titleGrp="text-[0.6rem] md:text-sm"
+									alt={item.alt}
+									newPage={item.action.newPage}
 								/>
 							))}
 						</div>
@@ -102,9 +107,13 @@ export default function Hero(props:HeroProps) {
 					>
 						{!props.isLanding ? (
 							<img
+								loading="eager"
 								src={props.heroImage}
 								alt={props.heroImageAlt}
-								className={cn("h-full w-full", props.classNameImg)}
+								className={cn(
+									"md:h-full w-full object-fit scale-100 md:scale-105",
+									props.classNameImg
+								)}
 								// width={504}
 								// height={500}
 							/>
@@ -112,12 +121,14 @@ export default function Hero(props:HeroProps) {
 							<div className="grid gap-3 col-span-2 h-full w-full">
 								<div className="col-span-7 row-start-1 row-end-12 rounded-3xl relative">
 									<img
+										loading="lazy"
 										src={props.motherImage}
 										alt={props.heroImageAlt}
 										className="h-full w-full"
 									/>
 									<div className="absolute bottom-7 flex items-center gap-1 px-1 left-[7%]">
 										<img
+											loading="lazy"
 											src={props.sholaImage}
 											alt={props.heroImageAlt}
 											className=""
@@ -135,11 +146,25 @@ export default function Hero(props:HeroProps) {
 									</div>
 								</div>
 								<div className="bg-black col-span-6 row-start-1 row-end-7 rounded-3xl overflow-hidden bg-cover p-3">
-									<img src={props.textImage} alt={props.heroImageAlt} className="w-full"/>
-									<img src={props.shockImage} alt={props.heroImageAlt} className="w-full object-contain" />
+									<img
+										loading="lazy"
+										src={props.textImage}
+										alt={props.heroImageAlt}
+										className="w-full"
+									/>
+									<img
+										loading="lazy"
+										src={props.shockImage}
+										alt={props.heroImageAlt}
+										className="w-full object-contain"
+									/>
 								</div>
 								<div className="bg-[#E5F5D7] col-span-6 row-start-7 row-end-12 rounded-3xl overflow-hidden flex items-center">
-									<img src={props.productImage} alt={props.heroImageAlt} />
+									<img
+										loading="lazy"
+										src={props.productImage}
+										alt={props.heroImageAlt}
+									/>
 								</div>
 							</div>
 						)}

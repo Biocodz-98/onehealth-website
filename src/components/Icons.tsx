@@ -64,7 +64,7 @@ export const Icons = {
 			viewBox="0 0 256 256"
 			id="Flat"
 			xmlns="http://www.w3.org/2000/svg"
-			stroke="#000000"
+			stroke={props.strokec || "#0E3528"}
 			stroke-width="15"
 		>
 			<g id="SVGRepo_bgCarrier" stroke-width="0"></g>

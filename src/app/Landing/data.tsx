@@ -10,6 +10,7 @@ export const HeroCardData = [
 		action: {
 			title: "Enter Pharmacy",
 			href: "https://onehealthng.com/pharmacy",
+			newPage: false,
 		},
 	},
 	{
@@ -17,7 +18,9 @@ export const HeroCardData = [
 		Image: HeroINS as string,
 		action: {
 			title: "Partner With Us",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			// href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "/insurers",
+			newPage: true,
 		},
 	},
 	{
@@ -25,7 +28,9 @@ export const HeroCardData = [
 		Image: HeroONB as string,
 		action: {
 			title: "Get On Board",
-			href: "https://forms.gle/Z38NAhYRH2uXUcEZA",
+			// href: "https://forms.gle/Z38NAhYRH2uXUcEZA",
+			href: "/pharmacies",
+			newPage: true,
 		},
 	},
 ];
@@ -35,20 +40,24 @@ export const CareSolutionData = [
 		title: "FOR INSURERS",
 		image: CareInsure,
 		action: "Get Started",
-		href: "https://partner.onehealthng.com/hmo",
+		// href: "https://partner.onehealthng.com/hmo",
+		href: "/insurers",
 		heading: "Medication & pharmacy benefits for patients",
 		description: "Enrollee-friendly Pharmacy Benefit & Fulfilment Solution",
 		bgColor: "#E9FFEB",
+		alt: "Medication and Pharmacy Benefits for Enrollees - Online Pharmacy in Nigeria",
 	},
 	{
 		title: "FOR PHARMACIES",
 		image: CareCart,
 		action: "Partner with us",
-		href: "https://onehealthng.com/pharmacy",
+		// href: "https://onehealthng.com/pharmacy",
+		href: "/pharmacies",
 		heading: "Pharmacy fulfillment & dispensing",
 		description:
 			"Healthcare fulfillment to transform healthcare service provision in Nigeria",
 		bgColor: "#F1FFE4",
+		alt: "Pharmacy Fulfillment & Dispensing Services - OneHealth Pharmacy in Nigeria",
 	},
 ];
 
@@ -58,18 +67,22 @@ export const WhyOneHealthcareData = [
 		image: WhyOneHealth1,
 		description:
 			"We offer the lowest prices and discounts to give you the best deal on your medications & healthcare solutions",
+		alt: "Image highlighting lowest prices offered by OneHealth Online Pharmacy",
 	},
 	{
 		heading: "Medication Support",
 		image: WhyOneHealth2,
 		description:
 			"We manage & automate your refills, provide convenient medication support, patient follow-up and advisory.",
+
+		alt: "Image depicting medication support as part of OneHealth Nigeria services",
 	},
 	{
 		heading: "Same Day, Last Mile Care",
 		image: WhyOneHealth3,
 		description:
 			"Before work, in the evening, at home or right to your office. We deliver your quality healthcare right to your door.",
+		alt: " Image showcasing same-day last mile delivery service provided by OneHealth Online Pharmacy",
 	},
 ];
 
@@ -83,17 +96,19 @@ export const PlatformCardData = [
 		imageFooter: PlatformImgF1,
 		bgColor: "#228821",
 		bgColorSec: "#379A44",
+		alt: "Image showcasing Pillmova, the leading Pharma logistics and mobility platform in Nigeria, a product of OneHealth online pharmacy.",
 	},
 	{
 		title: "Pillfinda",
 		description:
 			"Pharma procurement, inventory intelligence for pharmacies in Africa",
 		action: "Learn more",
-		href: "https://pillmova.com/",
+		href: "https://pillfinda.co/",
 		imageHeader: PlatformImgH2,
 		imageFooter: PlatformImgF2,
 		bgColor: "#EAFBDA",
 		bgColorSec: "#61AC1A",
+		alt: "Image displaying Pillfinda, the Pharma procurement and inventory intelligence solution for pharmacies in Africa | OneHealth Nigeria",
 	},
 ];
 

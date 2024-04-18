@@ -37,7 +37,7 @@ export default function FooterLinks() {
 			exit={Header.exit}
 			className="col-span-7 bg-slate-100/75 w-[95vw] md:max-w-screen-2xl md:w-full md:rounded-[20px]"
 		>
-			<div className="flex md:flex-row  flex-wrap gap-12  justify-between p-4 md:p-3 lg:p-8 text-[#3E3838] text-sm font-medium">
+			<div className="flex md:flex-row  flex-wrap gap-12  justify-between p-4 md:p-3 lg:p-8 text-[#3E3838] text-sm font-medium ">
 				<motion.div
 					variants={Scale}
 					animate="animate"
@@ -123,7 +123,7 @@ export default function FooterLinks() {
 						))}
 					</ul>
 				</motion.div>
-				<motion.div ref={resourceRef} >
+				<motion.div ref={resourceRef}>
 					<motion.h5
 						variants={H1P1L}
 						animate="animate"
@@ -164,17 +164,26 @@ export default function FooterLinks() {
 								)}
 							</motion.li>
 						))}
-					<li className="socials flex flex-wrap max-w-[17rem] gap-2 mt-6">
-						{
-							Socials.map((item,index)=>(
-								<Link key={index} to={item.link} className="p-3 rounded-full bg-black" target="_blank" rel="noopener noreferrer" > {item.icon}</Link>
-							))
-						}
-					</li>
+						<li className="socials flex flex-wrap max-w-[17rem] gap-2 mt-6">
+							{Socials.map((item, index) => (
+								<Link
+									key={index}
+									to={item.link}
+									className="p-3 rounded-full bg-black"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									{" "}
+									{item.icon}
+								</Link>
+							))}
+						</li>
 					</ul>
 				</motion.div>
-				<div className="-order-1 md:order-last">
-					<Icons.logo />
+				<div className="-order-1 md:order-last ">
+					<Link to={"/"}>
+						<Icons.logo />
+					</Link>
 				</div>
 			</div>
 			<div className="flex w-full justify-between p-4 md:p-7 text-[text-[#3E3838] font-semibold text-sm">
@@ -212,7 +221,7 @@ export default function FooterLinks() {
 						</Link>
 					</motion.li>
 				</ul>
-				<div className="text-nowrap">&copy; 2024withOneHealth</div>
+				<div className="text-nowrap">&copy; 2024 with OneHealth</div>
 			</div>
 		</motion.div>
 	);

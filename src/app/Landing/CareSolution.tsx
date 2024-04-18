@@ -94,14 +94,14 @@ export default function CareSolution() {
 				noStyleContentText="For payers and providers to access their medications for their patients"
 				noStyleHeading="Pharmacy Benefits Management"
 				noStyleImage={CareDelivery}
-				noStyleImageAlt="care delivery image"
+				noStyleImageAlt="Online pharmacy benefits in Nigeria - Pharmacy Benefits Icon"
 				serviceCollections={CareSolutionData}
 				sectionHeaderCls="px-4"
 			>
-				<div className="overflow-hidden relative h-fit  md:h-[37rem] lg:h-[520px]  lg:w-[83vw] w-[95vw] bg-[#117754] rounded-[45px] mt-10 mx-auto">
+				<div className="overflow-hidden relative h-fit  md:h-[37rem] lg:h-[520px]  lg:w-[83vw] w-[95vw] bg-[#114920]/95 rounded-[45px] mt-10 mx-auto">
 					<div className="leftbg w-full h-full clip-right bg-[#114920]/75 absolute z-0"></div>
 					<div className="rightbg w-full h-full bg-[#114920]/75 clip-left absolute z-0"></div>
-					<div className="relative z-10 grid md:grid-cols-2 md:p-5 lg:gap-20 bg-cover items-center">
+					<div className="relative z-10 grid md:grid-cols-2 md:p-5 lg:gap-20 bg-cover items-center md:pt-5 pt-8 ">
 						<CareCard
 							title="FOR INDIVIDUALS & EMPLOYERS"
 							heading="Health partner for people & companies in Nigeria."
@@ -110,14 +110,16 @@ export default function CareSolution() {
 							href="https://onewellnessapp.com/"
 							action="Learn more"
 							showBackground={false}
-							headCls="-mt-16 text-white md:text-2xl lg:text-[1.9rem]"
+							headCls="md:-mt-16 -mt-12 text-white md:text-2xl lg:text-[1.9rem] leading-9 "
 							desCls="text-white"
-							linkCls="border-white text-white"
+							linkCls="border-white text-white min-w-[62%] md:min-w-fit md:py-2 md:px-3 py-3 px-5"
 							arrowCls="text-white"
 							contextcls="gap-7 mt-0"
+							contentCls="md:gap-20 gap-16"
 							paraCls="md:text-sm lg:text-md"
+							imgcls="w-[60%] -mt-5 m md:mt-0"
 							strokec={"#ffffff"}
-							cls=" md:w-[30rem]  md:h-[622px]"
+							cls=" md:w-[30rem] max-h-[622px]  md:h-[622px] md:mx-4"
 							isDownloadable={true}
 							// hrefAndriod="https://play.google.com/store/apps/details?id=com.onehealthng.onewellness"
 							hrefAndriod="https://onelink.to/rj8abd"
@@ -125,12 +127,18 @@ export default function CareSolution() {
 							hrefIOS="https://onewellnessapp.com"
 							downloadActionAndriod="Download App"
 							downloadActionIOS="For Business"
+							downloadableCls="flex-col md:flex-row w-full md:gap-2 gap-4"
 						/>
-						<img
-							src={CareImage}
-							alt="care contact image"
-							className="object-contain h-full relative md:w-full lg:w-full md:-top-10 -right-5 -order-1 p-3 md:p-0 md:order-1"
-						/>
+						<div className="max-h-[550px] md:max-h-[622px]">
+							<img
+								loading="lazy"
+								src={CareImage}
+								alt="Online Pharmacy in Nigeria - Your All-in-One Health Partner | OneHealth Nigeria"
+								className={
+									"object-contain relative md:w-full lg:w-full md:-top-10 md:-right-5  p-3 md:p-0 md:order-1 md:scale-100 scale-105 -top-8"
+								}
+							/>
+						</div>
 					</div>
 				</div>
 			</OneHealthServiceSuits>

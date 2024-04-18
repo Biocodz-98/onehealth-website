@@ -1,5 +1,6 @@
 "use client";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { NAV_LINKS, CALL_TO_ACTION} from "@/config";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -27,7 +28,11 @@ interface NavigationItemProps {
 }
 
 export default function NavItems(props: NavigationItemProps) {
-	const [activeIndex, setActiveIndex] = useState<number | null>(null);
+	const [activeIndex, setActiveIndex] = useState<string>("");
+	const location = useLocation();
+	useEffect(()=>{
+		setActiveIndex(location.pathname)
+	},[location.pathname])
 	return (
 		<div
 			className={cn(
@@ -41,7 +46,7 @@ export default function NavItems(props: NavigationItemProps) {
 						onClick={() => props.setShowServices?.(true)}
 						className="flex gap-2 cursor-pointer items-center list-none"
 					>
-						<Icons.product className="text-secondary" />
+						<Icons.productMobile className="text-secondary" />
 						<span className="text-sm">Services</span>
 						<Icons.downArrow
 							className={`${
@@ -83,11 +88,11 @@ export default function NavItems(props: NavigationItemProps) {
 				{NAV_LINKS.map((items, index) => (
 					<li
 						className={`bg-slate-150 hover:bg-slate-200 px-3 py-2 rounded-full text-sm list-none transition-all duration-300 ${
-							activeIndex == index ? "bg-slate-200" : ""
+							activeIndex == items.href ? "bg-slate-200" : ""
 						}`}
 						key={index}
 						onClick={() => {
-							setActiveIndex(index);
+							setActiveIndex(items.href);
 							if (items.label?.toLowerCase() === "resources") {
 								props.setHovered?.((prev) => !prev);
 							}

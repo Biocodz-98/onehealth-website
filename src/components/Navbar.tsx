@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
 import MaxWithWrapper from "./MaxWithWrapper";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink,} from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 import { Icons } from "./Icons";
 import NavItems from "./NavItems";
@@ -8,114 +7,43 @@ import Search from "./search/Search";
 import { MobileNavData } from "./Header/data";
 import Whatsapp from "./Whatsapp";
 import MobileNavItem from "./MobileNavItem";
-import useSearch from "@/hooks/useSearch";
 import ResourcePage from "./Header/Resource";
 import Popup from "./Popup";
 import Login from "./Login";
 import Services from "./Services";
 import Callus from "./Callus";
 import SearchBody from "./SearchBody";
+import useNavbar from "@/hooks/useNavbar";
 
 export default function Navbar() {
-	const location = useLocation();
-	const [isHovered, setIsHovered] = useState<boolean>(false);
-	const [hasSearch, setHasSearch] = useState<boolean>(false);
-	const [openLogin, setOpenLogin] = useState<boolean>(false);
-	const [callUs, setOpenCallUs] = useState<boolean>(false);
-	const [showResourceMobile, setShowResourceMobile] = useState<boolean>(false);
-	const [showServices, setShowService] = useState<boolean>(false);
-
-	const [showWhatapp, setShowWhatapp] = useState<boolean>(false);
-	const [screenSize, setScreenSize] = useState<{
-		height: number;
-		width: number;
-	}>({
-		width: window.innerWidth,
-		height: window.innerHeight,
-	});
-	const [hasAdvertisement, setHasAdvertisement] = useState<boolean>(false); //use for displaying advertisement on the screen (default false - no advertisement)
-	const [searchQuery, setSearchQuery] = useState<string>(""); //change search query to string
-
-	//mobile devices
-	const [active, setActive] = useState<boolean[]>([
-		false,
-		false,
-		false,
-		false,
-		false,
-	]);
-
-	const checkpath = (item: string) => {
-		const checker = item.trim().toLowerCase();
-		console.log(checker, "item is login", checker === "cart");
-		if (checker === "home" || location.pathname.toLowerCase() === "/") {
-			setActive([true, false, false, false, false]);
-		}
-		if (checker === "product") {
-			setActive([false, true, false, false, false]);
-		}
-		if (checker === "call us") {
-			setActive([false, false, true, false, false]);
-		}
-		if (checker === "cart") {
-			console.log("should log", item);
-			setActive([false, false, false, true, false]);
-		}
-		if (checker === "login") {
-			setActive([false, false, false, false, true]);
-		}
-		if (
-			checker !== "login" &&
-			checker !== "product" &&
-			checker !== "call us" &&
-			checker !== "cart" &&
-			checker !== "home"
-		) {
-			setActive([false, false, false, false, false]);
-		}
-	};
-	const closeAllPopups = () => {
-		setShowResourceMobile(false);
-		setOpenCallUs(false);
-		setOpenLogin(false);
-		setHasSearch(false);
-		setShowService(false);
-	};
-
-	const { error, searchResult, loading, setSearchResult } =
-		useSearch(searchQuery);
-	console.log(searchResult);
-
-	//pop in whatsapp
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setShowWhatapp(true);
-
-			// Attempt to play alert sound
-			// const alertSound = new Audio(WhatappSound);
-			// alertSound.play().catch((error) => {
-			// 	console.error("Failed to play alert sound:", error.message);
-			// });
-		}, 4000);
-
-		return () => clearTimeout(timer);
-	}, []);
-
-	//handle screen sizes
-	useEffect(() => {
-		const handleResize = () => {
-			setScreenSize({
-				width: window.innerWidth,
-				height: window.innerHeight,
-			});
-		};
-
-		window.addEventListener("resize", handleResize);
-
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
+	
+	const {
+		screenSize,
+		searchQuery,
+		hasAdvertisement,
+		setIsHovered,
+		setHasSearch,
+		setOpenCallUs,
+		setSearchQuery,
+		setOpenLogin,
+		openLogin,
+		setShowResourceMobile,
+		showResourceMobile,
+		showServices,
+		setShowService,
+		hasSearch,
+		setHasAdvertisement,
+		isHovered,
+		showWhatapp,
+		active,
+		checkpath,
+		closeAllPopups,
+		callUs,
+		error,
+		loading,
+		searchResult,
+		setSearchResult
+	} = useNavbar();
 
 	return (
 		<>
@@ -140,13 +68,13 @@ export default function Navbar() {
 					/>
 				</div>
 			)}
-			<div className="bg-background sticky z-50 top-0 inset-0 md:h-24 h-fit flex items-center md:mb-0 mb-5">
-				<MaxWithWrapper className="relative mx-auto w-full max-w-screen-2xl px-2.5 md:px-16 py-2">
-					<header className="relative bg-white mx-auto ">
-						<div className="border-b  border-gray-100 py-3 shadow-sm w-full">
+			<div className="fixed top-0 bg-background  md:z-50 z-30 inset-0 h-fit flex items-end md:mb-0 mb-5 ">
+				<MaxWithWrapper className="relative max-w-screen-2xl w-full  md:pt-2 px-0 md:px-0">
+					<header className="relative bg-white mx-auto w-full pb-0 py-0 md:py-1 px-2.5 md:px-16 shadow-sm border-b  border-gray-100">
+						<div className="py-3  w-full">
 							<div className="flex  flex-16 items-center relative">
 								{/* mobile nav */}
-								<div className="ml-4 flex flex-col md:flex-row md:items-start items-center lg:ml-0 w-full">
+								<div className="ml-4 flex flex-col md:flex-row md:items-start items-center lg:ml-0 w-full ">
 									<NavLink to={"/"}>
 										<Icons.logo className="h-8 w-36" />
 									</NavLink>
@@ -155,7 +83,7 @@ export default function Navbar() {
 										Africa’s most reliable healthcare platform
 									</p>
 								</div>
-								<div className="hidden z-50 ld:ml-8 lg:block lg:self-stretch">
+								<div className="hidden ld:ml-8 lg:block lg:self-stretch">
 									<NavItems
 										searchQuery={searchQuery}
 										setHovered={setIsHovered}
@@ -175,6 +103,7 @@ export default function Navbar() {
 									setQuery={setSearchQuery}
 									query={searchQuery}
 									setHasSearch={setHasSearch}
+									hasSearch={hasSearch}
 									setSearchResult={setSearchResult}
 								/>
 							</div>
@@ -183,29 +112,30 @@ export default function Navbar() {
 					<ResourcePage setIsHovered={setIsHovered} isHovered={isHovered} />
 				</MaxWithWrapper>
 
-				<nav className="lg:hidden fixed bottom-0 items-center flex w-full bg-slate-50 pb-3">
-					{MobileNavData.map((item, index) => (
-						<MobileNavItem
-							key={index}
-							action={item.action}
-							text={item.text}
-							Icon={item.icon}
-							active={active[index]}
-							setActive={checkpath}
-							setOpenLogin={setOpenLogin}
-							setOpenCallUs={setOpenCallUs}
-							setShowServices={setShowService}
-						/>
-					))}
-				</nav>
 				{showWhatapp && <Whatsapp />}
 			</div>
+			<nav className="lg:hidden fixed bottom-0 items-center flex w-full bg-slate-50 pb-3 z-[50]">
+				{MobileNavData.map((item, index) => (
+					<MobileNavItem
+						key={index}
+						action={item.action}
+						text={item.text}
+						Icon={item.icon}
+						active={active[index]}
+						setActive={checkpath}
+						setOpenLogin={setOpenLogin}
+						setOpenCallUs={setOpenCallUs}
+						setShowServices={setShowService}
+					/>
+				))}
+			</nav>
 			{hasSearch && (
 				<Popup
 					titleHeader="Search medicines, plans etc."
 					setOpenPopup={closeAllPopups}
 					setHasSearch={setHasSearch}
 					setSearchQuery={setSearchQuery}
+					// popcardCls="md:pb-0 md:px-10 md:py-0"
 				>
 					<SearchBody
 						searchQuery={searchQuery}
@@ -225,7 +155,7 @@ export default function Navbar() {
 					setOpenPopup={closeAllPopups}
 					setHasSearch={setHasSearch}
 					setSearchQuery={setSearchQuery}
-					popcardCls="md:pb-0 md:px-10 md:py-0"
+					// popcardCls="md:pb-0 md:px-10 md:py-0"
 				>
 					<Login />
 				</Popup>

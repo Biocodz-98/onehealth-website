@@ -19,7 +19,12 @@ export interface OneHealthServiceSuitsProps {
 }
 export default function  OneHealthServiceSuits(props: OneHealthServiceSuitsProps) {
 	return (
-		<section className={cn("flex items-center flex-col pt-16 my-3 pb-24 md:pb-36 md:pt-32",props.sectionCls)}>
+		<section
+			className={cn(
+				"flex items-center flex-col pt-16 my-3 pb-24 md:pb-36 md:pt-32",
+				props.sectionCls
+			)}
+		>
 			{/* <div className="text flex flex-col items-center w-[70vw] gap-2 mb-4">
 				<p className="font-sans bg-[#F0F2F5] font-semibold text-sm leading-5 text-slate-600 w-fit p-2 px-4 rounded-full">
 					{props.tag}
@@ -41,7 +46,11 @@ export default function  OneHealthServiceSuits(props: OneHealthServiceSuitsProps
 				{props.containsNoStyles && (
 					<div className="item-1 w-[20.5rem] mx-4 md:mx-0">
 						<div className="h-18 w-fit p-3 bg-[#F1FFE4] rounded-full">
-							<img src={props.noStyleImage} alt={props.noStyleImageAlt} />
+							<img
+								loading="lazy"
+								src={props.noStyleImage}
+								alt={props.noStyleImageAlt}
+							/>
 						</div>
 						<h1 className="font-head font-bold text-4xl leading-10 text-start mt-5">
 							{props.noStyleHeading}
@@ -63,9 +72,10 @@ export default function  OneHealthServiceSuits(props: OneHealthServiceSuitsProps
 						showBackground={true}
 						key={index}
 						index={index}
-						cls="md:h-[622px] md:w-[400px]"
+						cls="md:w-[400px] grow"
 						arrLength={props.serviceCollections.length}
 						imageWidth={150}
+						alt={item.alt}
 					/>
 				))}
 			</div>

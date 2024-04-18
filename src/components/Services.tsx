@@ -21,8 +21,8 @@ export default function Services({
 	setSearchResult: React.Dispatch<SetStateAction<Result[]>>;
 }) {
 	return (
-		<div className="h-[90%] overflow-y-scroll pb-16">
-			<div className="flex flex-col gap-5">
+		<div className="h-[90%] overflow-y-scroll  pb-16 lg:w-[65vw] 2xl:w-[40vw] max-w-screen-2xl">
+			<div className="flex flex-col gap-5 ">
 				<motion.p
 					variants={Header}
 					animate="animate"
@@ -38,15 +38,18 @@ export default function Services({
 					We provide high-quality and reliable health services in your
 					pocket—care whenever you need, for prevention or when sick.
 				</motion.p>
-				<Search
-					hasSearchButton={true}
-					setQuery={setSearchQuery}
-					query={searchQuery}
-					clsInput="md:w-full md:h-16 h-12"
-					setSearchResult={setSearchResult}
-				/>
+				<div className="px-1">
+					<Search
+						hasSearchButton={true}
+						setQuery={setSearchQuery}
+						query={searchQuery}
+						clsInput="md:w-full md:h-16 h-12"
+						setSearchResult={setSearchResult}
+						// isAutofocus={true}
+					/>
+				</div>
 			</div>
-			<div className="divider md:hidden h-1 w-full bg-slate-200 mt-5"></div>
+			<div className="divider h-1 w-full bg-slate-200 mt-5"></div>
 			<div className="space-y-2 mt-10">
 				<motion.h2
 					variants={Header}
@@ -58,7 +61,7 @@ export default function Services({
 					viewport={{
 						once: true,
 					}}
-					className="font-head font-semibold md:text-xl"
+					className="font-head font-semibold text-lg text-[#134F3A]"
 				>
 					Popular Services
 				</motion.h2>
@@ -72,7 +75,7 @@ export default function Services({
 					viewport={{
 						once: true,
 					}}
-					className="flex overflow-x-auto space-x-3 md:space-x-5 py-5 w-[80vw] mx-auto"
+					className="flex overflow-x-auto space-x-3 md:space-x-5 py-5 md:w-full mx-auto"
 				>
 					{PopularServicesData.map((item, index) => (
 						<HeroCard
@@ -81,15 +84,16 @@ export default function Services({
 							action={item.action}
 							imagesrc={item.Image!}
 							className="flex flex-col space-y-1 px-2 min-w-44 rounded-2xl"
-							imageCls="md:w-full ml-4 md:ml-0 order-1"
-							titleCls="text-[0.6rem] md:text-sm"
+							imageCls="md:w-full mx-1.5 md:ml-0 order-1"
+							titleCls="text-[0.6rem] md:text-[0.7rem] lg:text-xs text-[#475367]"
 							actionCls="text-[0.8rem] md:text-sm"
+							newPage={item.action.newPage}
 						/>
 					))}
 				</motion.div>
-				<div className="divider md:hidden h-1 w-full bg-slate-200 mt-16"></div>
-				<div className="flex flex-col md:flex-row md:gap-5 ">
-					<div className="space-y-2 md:space-x-2 mt-10 flex flex-col mb-16 w-full">
+				<div className="divider  h-1 w-full bg-slate-200 mt-16"></div>
+				<div className="flex flex-col lg:flex-row md:gap-5 ">
+					<div className="space-y-2 md:space-x-2 mt-10 flex flex-col mb-16 w-full items-center px-2 md:px-0">
 						<motion.h2
 							variants={H1P1R}
 							animate="animate"
@@ -100,7 +104,7 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="font-head font-semibold text-xl"
+							className="font-head font-semibold text-lg text-[#134F3A] self-start"
 						>
 							For Ecosystem Partners
 						</motion.h2>
@@ -114,23 +118,25 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="flex flex-col w-full px-2 "
+							className="flex flex-col w-full items-center space-y-8 md:space-y-7"
 						>
 							{EcosystemData.map((item, index) => (
 								<HeroCard
 									key={index}
 									title={item.title}
 									imagesrc={item.Image!}
-									className=" w-full md:max-w-full md:max-h-fit grid md:grid "
-									imageCls="mr-5 ml-2.5 md:ml-0 -order-1 md:-order-2 md:flex md:flex-row  md:col-span-6 md:row-span-12"
+									className=" w-full md:max-w-full md:max-h-fit grid md:grid rounded-xl md:py-1 md:px-2.5"
+									imageCls="md:mr-5 ml-2.5 md:ml-0 -order-1 md:-order-2 md:flex md:flex-row col-span-5  md:col-span-4 md:row-span-12 md:h-24 w-fit md:w-fit"
+									iCls="object-contain -right-0 md:-right-0 -bottom-0 scale-100"
 									action={item.action}
-									titleGrp="md:-order-1"
-									actionCls="order-2  text-xs md:text-sm"
+									titleGrp="md:-order-1 text-[0.6rem] md:text-sm"
+									actionCls="order-2  text-[0.58rem] md:text-sm md:col-span-8 col-span-7"
+									newPage={item.action.newPage}
 								/>
 							))}
 						</motion.div>
 					</div>
-					<div className="divider md:hidden h-1 w-full bg-slate-200"></div>
+					<div className="divider md:hidden  h-1 w-full bg-slate-200"></div>
 					<div className="space-y-2 md:space-x-2 mt-10 flex flex-col mb-16 w-full">
 						<motion.h2
 							variants={H1P1L}
@@ -142,7 +148,7 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="font-head font-semibold text-xl"
+							className="font-head font-semibold text-lg text-[#134F3A]"
 						>
 							Quick Actions
 						</motion.h2>
@@ -156,7 +162,7 @@ export default function Services({
 							viewport={{
 								once: true,
 							}}
-							className="flex flex-col "
+							className="flex flex-col"
 						>
 							{QuickActionsData.map((item, index) => (
 								<SearchItems
@@ -167,8 +173,9 @@ export default function Services({
 									image={item.Image!}
 									cls="flex flex-col space-y-1 px-2"
 									imageCls="mr-5"
-									linkCls="py-5"
+									linkCls="py-4 md:gap-1"
 									midTitleCls="mr-auto"
+									pCls="md:text-[0.85rem]"
 								/>
 							))}
 						</motion.div>

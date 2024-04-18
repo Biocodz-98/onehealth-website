@@ -11,6 +11,7 @@ export function ComplaintItem({
 	imageCls,
 	comCls,
 	textCls,
+	alt
 }: {
 	image: string;
 	title: string;
@@ -18,15 +19,17 @@ export function ComplaintItem({
 	imageCls?: string;
 	comCls?: string;
 	textCls?: string;
+	alt?: string;
 }) {
 	return (
-		<div className={cn("flex gap-8 ", comCls)}>
-			<div className={cn("image py-5 w-16 h-16", imageCls)}>
+		<div className={cn("flex gap-4", comCls)}>
+			<div className={cn("image md:w-9 md:h-9 md:min-w-9 w-8 ", imageCls)}>
 				<img
+					loading="lazy"
 					src={image}
 					// width={64}
 					// height={64}
-					alt="Expectation from your pharmacy manager; Optimized network delivery or pickup, regulatory compliance,advance technological support logistics image"
+					alt={alt}
 					className="w-full"
 				/>
 			</div>
@@ -50,17 +53,21 @@ export default function Compliant() {
 				<div className="grid md:grid-cols-2 gap-20 my-16">
 					<div className="">
 						<img
+							loading="lazy"
 							src={FemaleDoc}
-							alt="An elegant Female nurse, documenting patients compliants, we are compliant image"
+							alt="An image depicting a medication fulfillment manager seated, processing orders for enrollees on behalf of their health organizations."
 						/>
 					</div>
-					<div className="flex flex-col justify-between h-full">
+					<div className="flex flex-col justify-between h-full gap-5">
 						{CompliantData.map((item, index) => (
 							<ComplaintItem
 								title={item.title}
 								desc={item.description}
 								image={item.image}
 								key={index}
+								alt={item.alt}
+								comCls='w-full'
+								imageCls="w-14 md:w-[2rem] min-w-12 py-2"
 							/>
 						))}
 					</div>

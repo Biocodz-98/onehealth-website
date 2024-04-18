@@ -35,7 +35,7 @@ export default function SectionHeader(props:SectionHeaderProps) {
 			transition={{ duration: 0.65, delay: 0.3 }}
 			exit={Header.exit}
 			className={cn(
-				`text flex flex-col items-center lg:w-[70vw] gap-2 mb-4`,
+				`text flex flex-col items-center lg:w-[70vw] gap-2 mb-4 md:text-start text-center mx-auto`,
 				props.className
 			)}
 			ref={smRef}
@@ -53,7 +53,7 @@ export default function SectionHeader(props:SectionHeaderProps) {
 				viewport={{
 					once: true,
 				}}
-				className="font-semibold font-head md:text-[38px] text-[1.7rem] md:leading-[45px] leading-[25px] text-center text-secondary mt-3 mb-4 w-full"
+				className="font-semibold font-head md:text-[38px] text-[1.7rem] md:leading-[45px] leading-[33px] text-center text-secondary mt-3 mb-4 w-full"
 			>
 				{props.headingText}
 			</motion.h1>

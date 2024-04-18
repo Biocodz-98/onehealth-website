@@ -1,8 +1,9 @@
-import React,{SetStateAction} from 'react';
+import React, { SetStateAction } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import Search from "./search/Search";
 import SearchItems from "./search/SearchItems";
-import { Result,errorType } from '@/hooks/useSearch';
+import { Result, errorType } from "@/hooks/useSearch";
 import Trending from "./Trending";
 import HeroCard from "./cards/HeroCard";
 import OneLink from "./Link";
@@ -18,7 +19,7 @@ export default function SearchBody({
 	setSearchQuery,
 	searchResult,
 	setSearchResult,
-    setShowResourceMobile,
+	setShowResourceMobile,
 	loading,
 	error,
 }: {
@@ -30,14 +31,17 @@ export default function SearchBody({
 	error: errorType;
 	searchResult: Result[];
 }) {
+
 	return (
-		<div className=" relative h-full overflow-y-scroll">
+		<div className=" relative h-full overflow-y-scroll lg:w-[65vw] 2xl:w-[40vw] max-w-screen-2xl">
 			<Search
 				hasSearchButton={true}
 				setQuery={setSearchQuery}
 				query={searchQuery}
 				clsInput="md:w-full md:h-16 h-12"
 				setSearchResult={setSearchResult}
+				isAutofocus={true}
+				className="mt-2 w-[98%] mx-auto"
 			/>
 
 			<div className="py-3 flex w-full"></div>
@@ -60,35 +64,45 @@ export default function SearchBody({
 				)}
 			{searchResult.length === 0 && (
 				<>
-					<div className="space-y-2">
+					<div className="space-y-6">
 						<h2 className="font-head font-semibold text-xl">
 							Trending searches
 						</h2>
 						<div className="flex flex-wrap items-center gap-2.5">
 							{TrendingData.map((item, index) => (
-								<Trending key={index} title={item} setQuery={setSearchQuery} />
+								<Link
+									to={`https://onehealthng.com/search?q=${item
+										.trim()
+										.replace(" ", "+")}`}
+									key={index}
+								>
+									<Trending title={item} setQuery={setSearchQuery} />
+								</Link>
 							))}
 						</div>
 					</div>
+					<div className="divider h-1 w-full bg-slate-200 mt-10"></div>
 					<div className="space-y-2 mt-10">
 						<h2 className="font-head font-semibold md:text-xl">
 							Popular on OneHealth
 						</h2>
-						<div className="flex overflow-x-auto space-x-2 md:space-x-5 py-5 w-[80vw] mx-auto">
+						<div className="flex overflow-x-auto space-x-2 md:space-x-5 py-5 mx-auto">
 							{PopularOnOneHealthData.map((item, index) => (
 								<HeroCard
 									key={index}
 									title={item.title}
 									action={item.action}
 									imagesrc={item.Image!}
-									className="flex flex-col space-y-1 px-2 rounded-2xl min-w-44"
+									className="flex flex-col space-y-1 px-2 rounded-xl min-w-44 w-fit md:w-full"
 									imageCls="md:w-full ml-4 md:ml-0 order-1"
-									titleCls="text-[0.6rem] md:text-sm"
+									titleCls="text-[0.6rem] md:text-xs"
 									actionCls="text-[0.8rem] md:text-sm"
+									newPage={item.action.newPage}
 								/>
 							))}
 						</div>
 					</div>
+					<div className="divider h-1 w-full bg-slate-200 mt-10"></div>
 					<div className="max-h-14 w-[80%] h-12 flex items-center rounded-3xl overflow-hidden  relative mt-10  mx-auto md:hidden">
 						<div className="w-full h-full  overflow-hidden absolute z-10 bg-[#E9FFEB] cursor-pointer">
 							<div className="searchbgleft bg-[#D8F7DB]  w-full h-full absolute  z-0"></div>
@@ -117,6 +131,7 @@ export default function SearchBody({
 									imageCls="mr-5"
 									linkCls="py-5"
 									midTitleCls="mr-auto"
+									newPage={item.action.newPage}
 								/>
 							))}
 						</div>
@@ -124,7 +139,7 @@ export default function SearchBody({
 				</>
 			)}
 			{searchResult.length > 0 && (
-				<div className=" overflow-y-scroll h-full">
+				<div className=" overflow-y-scroll w-full">
 					<div className="numsearch mb-5">
 						<p className="font-semibold text-xl md:text-2xl font-body">
 							{searchResult.length} result for &quot;{searchQuery}&quot;
@@ -145,11 +160,12 @@ export default function SearchBody({
 							<div className="searchbgright bg-[#DEF7E1] w-full h-full absolute  z-0"></div>
 						</div>
 
-						<div className="content w-full h-full flex flex-col items-center relative z-10 p-4  md:p-5 space-y-4">
+						<div className="content md:min-w-full w-full h-full flex flex-col items-center relative z-10 p-4  md:p-5 space-y-4">
 							<h4 className="font-head font-semibold">
 								Don’t see what you’re looking for
 							</h4>
 							<img
+								loading="lazy"
 								src={SpillDrugContainer}
 								alt="Image of searched onehealth pills"
 								className="md:w-32 w-24"
