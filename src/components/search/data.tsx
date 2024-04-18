@@ -129,7 +129,7 @@ export const EcosystemData = [
 		},
 	},
 	{
-		title: "DISTRIBUTON PARTNER",
+		title: "DISTRIBUTION PARTNER",
 		Image: HeroIND as string,
 		action: {
 			title: "Advertise on OneHealth",
