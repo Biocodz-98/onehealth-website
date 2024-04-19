@@ -108,11 +108,11 @@ export const TestimonialCardData = [
 
 export const TestimonialSholaData = [
 	{
-		title: "Amlodipine x26 500mg, Qty 12",
-		body: "Take 2 by mouth every 8 hours",
+		title: "Tab Amlodipine 2.5mg",
+		body: "Take One by mouth Once daily for 7days.",
 	},
 	{
-		title: "Omeprazole 40mg, Qty 50",
-		body: "Take 2 by mouth 3 times daily",
+		title: "Cap Omeprazole 20mg",
+		body: "Take One by mouth everyday for 14days.",
 	},
 ];
