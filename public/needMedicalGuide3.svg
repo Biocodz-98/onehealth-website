@@ -1,7 +1,7 @@
 <svg width="89" height="88" viewBox="0 0 89 88" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <rect x="2.40002" y="2.125" width="83.75" height="83.75" rx="41.875" fill="#FFE7CC"/>
 <rect x="2.40002" y="2.125" width="83.75" height="83.75" rx="41.875" fill="url(#pattern0)"/>
-<rect x="2.40002" y="2.125" width="83.75" height="83.75" rx="41.875" stroke="white" stroke-width="3.75"/>
+<rect x="2.40002" y="2.125" width="83.75" height="83.75" rx="41.875" stroke="white" strokeWidth="3.75"/>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image0_536_1145" transform="translate(-0.267027 0.00794247) scale(0.000546309)"/>

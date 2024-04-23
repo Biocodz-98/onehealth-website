@@ -2,8 +2,8 @@ import { motion} from "framer-motion";
 import { Header } from "@/animate.data";
 export default function TextWordy() {
   return (
-		<motion.div className="text-word mb-10 w-full flex flex-col mt-20 gap-5 text-[#8D8484] text-sm">
-			<motion.h4
+		<motion.div className="text-word mb-10 w-full flex flex-col mt-20 gap-5 text-[#8D8484] text-sm pb-20 bg-white">
+			<motion.h1
 				variants={Header}
 				animate="animate"
 				initial="initial"
@@ -17,7 +17,7 @@ export default function TextWordy() {
 			>
 				Welcome to OneHealth Nigeria – Your Trusted Pharmacy Benefits Provider
 				and Online Pharmacy in Nigeria
-			</motion.h4>
+			</motion.h1>
 			<motion.p
 				variants={Header}
 				animate="animate"
@@ -38,7 +38,7 @@ export default function TextWordy() {
 				medication sourcing, and continuous after-care support to ensure a
 				holistic and personalized healthcare experience.
 			</motion.p>
-			<motion.h5
+			<motion.h2
 				variants={Header}
 				animate="animate"
 				initial="initial"
@@ -51,8 +51,8 @@ export default function TextWordy() {
 				className="font-bold text-sm leading-4"
 			>
 				OneHealth&apos;s Core Offerings:
-			</motion.h5>
-			<motion.p
+			</motion.h2>
+			<motion.div
 				variants={Header}
 				animate="animate"
 				initial="initial"
@@ -67,7 +67,9 @@ export default function TextWordy() {
 				<ol>
 					<li className="">OneHealth Pharmacy Benefit Solution:</li>
 
-					<ul className="pl-5">
+					<li className="pl-5 list-none">
+						<ul>
+
 						<li className="">
 							A specialized solution tailored for HMOs, insurers, and
 							marketplaces.
@@ -76,9 +78,12 @@ export default function TextWordy() {
 							Streamlining medication dispensing and fulfillment for enrollees,
 							ensuring seamless and cost-effective healthcare management.
 						</li>
-					</ul>
-					<li>OneHealth Pharmacy Provider Network:</li>
-					<ul className="pl-5">
+						</ul>
+					</li>
+					<li value={2}>OneHealth Pharmacy Provider Network:</li>
+					<li className="pl-5 list-none">
+						<ul>
+
 						<li>
 							{" "}
 							Join OneHealth’s extensive network of pharmacies across Nigeria to
@@ -94,9 +99,12 @@ export default function TextWordy() {
 							Benefit from a steady influx of orders from OneHealth and increase
 							your pharmacy&apos;s productivity.
 						</li>
-					</ul>
-					<li>OneHealth Online Pharmacy:</li>
-					<ul className="pl-5">
+						</ul>
+					</li>
+					<li value={3}>OneHealth Online Pharmacy:</li>
+					<li className="pl-5 list-none">
+						<ul>
+
 						<li>
 							{" "}
 							Your digital gateway to convenient access to a wide range of
@@ -107,10 +115,11 @@ export default function TextWordy() {
 							Manage, order, and track medications effortlessly for yourself,
 							employees, or enrollees – all from your phone or laptop.
 						</li>
-					</ul>
+						</ul>
+					</li>
 				</ol>
-			</motion.p>
-			<motion.h5
+			</motion.div>
+			<motion.h2
 				variants={Header}
 				animate="animate"
 				initial="initial"
@@ -123,7 +132,7 @@ export default function TextWordy() {
 				className="w-full font-bold leading-4 text-sm mb-3"
 			>
 				Why Choose OneHealth?
-			</motion.h5>
+			</motion.h2>
 			<motion.ol
 				variants={Header}
 				animate="animate"
@@ -149,7 +158,7 @@ export default function TextWordy() {
 				>
 					Last-Mile Medication Delivery:
 				</motion.li>
-				<motion.ul
+				<motion.li
 					variants={Header}
 					animate="animate"
 					initial="initial"
@@ -159,14 +168,17 @@ export default function TextWordy() {
 					viewport={{
 						once: true,
 					}}
-					className="pl-4"
+					className="pl-4 list-none"
 				>
+					<ul>
+
 					<li>
 						We take pride in being Nigeria’s first last-mile pharmacy and
 						prescription delivery service for individuals, hospitals, HMOs,
 						telemedicine companies, and their enrollees.
 					</li>
-				</motion.ul>
+					</ul>
+				</motion.li>
 
 				<motion.li
 					variants={Header}
@@ -178,10 +190,11 @@ export default function TextWordy() {
 					viewport={{
 						once: true,
 					}}
+					value={2}
 				>
 					Tailored Pharmacy Benefit Services:
 				</motion.li>
-				<motion.ul
+				<motion.li
 					variants={Header}
 					animate="animate"
 					initial="initial"
@@ -191,14 +204,17 @@ export default function TextWordy() {
 					viewport={{
 						once: true,
 					}}
-					className="pl-4"
+					className="pl-4 list-none"
 				>
+					<ul>
+
 					<li>
 						Our pharmacy benefit management program is designed to enhance
 						health outcomes, reduce risk, improve utilization, promote
 						retention, and cut both waste and cost for your business.
 					</li>
-				</motion.ul>
+					</ul>
+				</motion.li>
 
 				<motion.li
 					variants={Header}
@@ -210,10 +226,11 @@ export default function TextWordy() {
 					viewport={{
 						once: true,
 					}}
+					value={3}
 				>
 					Seamless Medication Management:
 				</motion.li>
-				<motion.ul
+				<motion.li
 					variants={Header}
 					animate="animate"
 					initial="initial"
@@ -223,14 +240,17 @@ export default function TextWordy() {
 					viewport={{
 						once: true,
 					}}
-					className="pl-4"
+					className="pl-4 list-none"
 				>
+					<ul>
+
 					<li>
 						Request, manage, order, and track prescription medications securely
 						on our platform. From request to pharmacy, from pharmacy to delivery
 						or pickup – experience seamless, quick, and confidential service.
 					</li>
-				</motion.ul>
+					</ul>
+				</motion.li>
 
 				<motion.li
 					variants={Header}
@@ -242,37 +262,50 @@ export default function TextWordy() {
 					viewport={{
 						once: true,
 					}}
+					value={4}
 				>
 					Customer-Centric Approach:
 				</motion.li>
-				<ul className="pl-4">
+				<li className="pl-4 list-none">
+					<ul>
+
 					<li>
 						Increase customer satisfaction by providing home delivery options or
 						nearby pickup at our extensive pharmacy network.
 					</li>
-				</ul>
-				<li>Special Perks for Enrollees:</li>
-				<ul className="pl-4">
+					</ul>
+				</li>
+				<li value={5}>Special Perks for Enrollees:</li>
+				<li className="pl-4 list-none">
+					<ul>
+
 					<li>
 						Enjoy free delivery for enrollees with chronic conditions and
 						recurring prescription refills.
 					</li>
-				</ul>
+					</ul>
+				</li>
 
-				<li>Get More Customers:</li>
-				<ul className="pl-4">
+				<li value={6}>Get More Customers:</li>
+				<li className="pl-4 list-none">
+					<ul>
+
 					<li>
 						Leverage our growing online media presence. Partnering with us means
 						sharing your plans with our over 150,000 users.
 					</li>
-				</ul>
-				<li>Professional Consultations and After-Care:</li>
-				<ul className="pl-4">
+					</ul>
+				</li>
+				<li value={7}>Professional Consultations and After-Care:</li>
+				<li className="pl-4 list-none">
+					<ul>
+
 					<li>
 						Benefit from free pharmacist consultations, patient follow-ups, and
 						dedicated after-service care.
 					</li>
-				</ul>
+					</ul>
+				</li>
 			</motion.ol>
 			<p>
 				Explore a Healthier Tomorrow with OneHealthNG - Your One-Stop Healthcare

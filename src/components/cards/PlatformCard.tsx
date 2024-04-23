@@ -20,6 +20,9 @@ interface PlatformCardProps {
     bgColor?: string;
     index?: number;
 	alt?: string;
+	content?: string;
+	arialLabel?: string;
+	target?: string;
 }
 
 export default function PlatformCard({
@@ -38,7 +41,9 @@ export default function PlatformCard({
 	arrowCls,
     // bgColor,
     index,
-	alt
+	alt,
+	content,arialLabel,
+	target
 }: PlatformCardProps) {
     strokec = index == 0 ? "#ffff" : "#228821";
 	return (
@@ -108,6 +113,9 @@ export default function PlatformCard({
 					action={action}
 					arrowCls={arrowCls}
 					strokec={strokec}
+					target={target}
+					content={content}
+					arialLabel={arialLabel}
 				/>
 			</div>
 			<div

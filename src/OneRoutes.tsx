@@ -5,20 +5,23 @@ import Pharmacy from "@/app/Pharmacy";
 import Root from "@/app/Landing";
 import Footer from "@/components/Footer/Footer";
 import { AnimatePresence } from "framer-motion";
-
+import { BrowserRouter } from "react-router-dom";
 
 export default function OneRoutes() {
     return (
 		<>
+		
 		<AnimatePresence>
+		<BrowserRouter key={"mainrouter"}>
 		<Header/>
-		<Routes>
+		<Routes >
 			
-			<Route path="/" element={<Root/>}/>
-			<Route path="/pharmacies" element={<Pharmacy/>}/>
-			<Route path="/insurers" element={<Insurers/>}/>
+			<Route key={'home'} path="/" element={<Root/>}/>
+			<Route key={'pharmacy'} path="/pharmacies" element={<Pharmacy/>}/>
+			<Route key={'insurers'} path="/insurers" element={<Insurers/>}/>
 		</Routes>
 		<Footer/>
+		</BrowserRouter>
 		</AnimatePresence>
 		</>
     )

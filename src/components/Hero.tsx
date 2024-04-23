@@ -1,7 +1,7 @@
 import MaxWithWrapper from "./MaxWithWrapper";
 import { cn } from "@/lib/utils";
 import HeroCard,{HeroCardProps} from "./cards/HeroCard";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 
 interface HeroProps {
 	headerText: string;
@@ -30,7 +30,7 @@ interface HeroProps {
 
 export default function Hero(props:HeroProps) {
 	return (
-		<motion.section
+		<section
 			className={cn(
 				"relative  w-full md:min-h-[65vh] lg:min-h-[88.5vh] h-fit border-b-8 border-[#E9F9DB] ",
 				props.classNameSection
@@ -54,7 +54,7 @@ export default function Hero(props:HeroProps) {
 				>
 					<div
 						className={cn(
-							" left flex flex-col gap-10 md:col-span-6 top-10 relative items-center md:items-start ",
+							" left flex flex-col gap-10 md:col-span-6 top-10 relative items-center md:items-start lg:max-w-[50%]",
 							props.className1
 						)}
 					>
@@ -63,7 +63,7 @@ export default function Hero(props:HeroProps) {
 								{props.badgeTag}
 							</p>
 						)}
-						<div className=" flex flex-col gap-4 md:gap-10 md:px-0">
+						<div className=" flex flex-col gap-4 md:gap-10 md:px-0 ">
 							<h1
 								className={cn(
 									"text-wrap w-full md:text-start text-center font-bold leading-5  md:leading-12 font-head text-[2.3rem] lg:text-5xl text-primary",
@@ -105,72 +105,77 @@ export default function Hero(props:HeroProps) {
 							props.className2
 						)}
 					>
-						{!props.isLanding ? (
-							<img
-								loading="eager"
-								src={props.heroImage}
-								alt={props.heroImageAlt}
-								className={cn(
-									"md:h-full w-full object-fit scale-100 md:scale-105",
-									props.classNameImg
-								)}
-								// width={504}
-								// height={500}
-							/>
-						) : (
-							<div className="grid gap-3 col-span-2 h-full w-full">
-								<div className="col-span-7 row-start-1 row-end-12 rounded-3xl relative">
-									<img
-										loading="lazy"
-										src={props.motherImage}
-										alt={props.heroImageAlt}
-										className="h-full w-full"
-									/>
-									<div className="absolute bottom-7 flex items-center gap-1 px-1 left-[7%]">
-										<img
-											loading="lazy"
-											src={props.sholaImage}
-											alt={props.heroImageAlt}
-											className=""
-										/>
-										<div className="flex flex-col gap-[0.1rem] ">
-											<p className="shola">
-												Shola, your meds are ready for pickup.
-											</p>
-											<p className="shola">
-												I have set 2 auto-refill for the next 30 days
-											</p>
-											<p className="shola">You save NGN16,000 order</p>
-											<p className="shola">For drug reactions, Send a DM</p>
-										</div>
-									</div>
-								</div>
-								<div className="bg-black col-span-6 row-start-1 row-end-7 rounded-3xl overflow-hidden bg-cover p-3">
-									<img
-										loading="lazy"
-										src={props.textImage}
-										alt={props.heroImageAlt}
-										className="w-full"
-									/>
-									<img
-										loading="lazy"
-										src={props.shockImage}
-										alt={props.heroImageAlt}
-										className="w-full object-contain"
-									/>
-								</div>
-								<div className="bg-[#E5F5D7] col-span-6 row-start-7 row-end-12 rounded-3xl overflow-hidden flex items-center">
-									<img
-										loading="lazy"
-										src={props.productImage}
-										alt={props.heroImageAlt}
-									/>
-								</div>
-							</div>
-						)}
+						{/* {!props.isLanding ? ( */}
+						<img
+							loading="eager"
+							// @ts-ignore
+							fetchpriority="high"
+
+							src={props.heroImage}
+							alt={props.heroImageAlt}
+							
+							className={cn(
+								"md:h-full w-full object-fit scale-100 md:scale-105 aspect-square",
+								props.classNameImg
+							)}
+							// width={504}
+							// height={500}
+						/>
+						{/* ) : (
+		
+						)} */}
 					</div>
 				</div>
 			</MaxWithWrapper>
-		</motion.section>
+		</section>
 	);
 }
+					// <div className="grid gap-3 col-span-2 h-full w-full">
+					// 			<div className="col-span-7 row-start-1 row-end-12 rounded-3xl relative">
+					// 				<img
+					// 					loading="lazy"
+					// 					src={props.motherImage}
+					// 					alt={props.heroImageAlt}
+					// 					className="h-full w-full"
+					// 				/>
+					// 				<div className="absolute bottom-7 flex items-center gap-1 px-1 left-[7%]">
+					// 					<img
+					// 						loading="lazy"
+					// 						src={props.sholaImage}
+					// 						alt={props.heroImageAlt}
+					// 						className=""
+					// 					/>
+					// 					<div className="flex flex-col gap-[0.1rem] ">
+					// 						<p className="shola">
+					// 							Shola, your meds are ready for pickup.
+					// 						</p>
+					// 						<p className="shola">
+					// 							I have set 2 auto-refill for the next 30 days
+					// 						</p>
+					// 						<p className="shola">You save NGN16,000 order</p>
+					// 						<p className="shola">For drug reactions, Send a DM</p>
+					// 					</div>
+					// 				</div>
+					// 			</div>
+					// 			<div className="bg-black col-span-6 row-start-1 row-end-7 rounded-3xl overflow-hidden bg-cover p-3">
+					// 				<img
+					// 					loading="lazy"
+					// 					src={props.textImage}
+					// 					alt={props.heroImageAlt}
+					// 					className="w-full"
+					// 				/>
+					// 				<img
+					// 					loading="lazy"
+					// 					src={props.shockImage}
+					// 					alt={props.heroImageAlt}
+					// 					className="w-full object-contain"
+					// 				/>
+					// 			</div>
+					// 			<div className="bg-[#E5F5D7] col-span-6 row-start-7 row-end-12 rounded-3xl overflow-hidden flex items-center">
+					// 				<img
+					// 					loading="lazy"
+					// 					src={props.productImage}
+					// 					alt={props.heroImageAlt}
+					// 				/>
+					// 			</div>
+					// 		</div>

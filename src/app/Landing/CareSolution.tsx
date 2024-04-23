@@ -108,6 +108,7 @@ export default function CareSolution() {
 							description="The all-in-one health partner, tailored to your healthcare needs with the help of an in-house dedicated (health) care team."
 							image={OneWellness}
 							href="https://onewellnessapp.com/"
+							alt='Onewellness logo image; for one health online pharmacy partner'
 							action="Learn more"
 							showBackground={false}
 							headCls="md:-mt-16 -mt-12 text-white md:text-2xl lg:text-[1.9rem] leading-9 "

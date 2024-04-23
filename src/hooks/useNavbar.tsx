@@ -31,7 +31,6 @@ export default function useNavbar() {
 	const checkpath = (item: string) => {
 		const checker = item.trim().toLowerCase();
 		const assignHome = location.pathname.toLowerCase() == "/" ? "home" : location.pathname;
-		console.log(checker, "item is login", checker === assignHome, assignHome);
 		if (checker === "home") {
 			setActive([true, false, false, false, false, false]);
 		}
@@ -78,12 +77,6 @@ export default function useNavbar() {
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setShowWhatapp(true);
-
-			// Attempt to play alert sound
-			// const alertSound = new Audio(WhatappSound);
-			// alertSound.play().catch((error) => {
-			// 	console.error("Failed to play alert sound:", error.message);
-			// });
 		}, 4000);
 
 		return () => clearTimeout(timer);
@@ -110,7 +103,6 @@ export default function useNavbar() {
 		window.scrollTo(0, 0);
 		closeAllPopups();
 		checkpath(location.pathname=="/"?"home":location.pathname);
-		console.log(location.pathname);
 	}, [location.pathname]);
 	return {
 		closeAllPopups,

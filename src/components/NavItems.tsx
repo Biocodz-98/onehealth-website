@@ -111,8 +111,10 @@ export default function NavItems(props: NavigationItemProps) {
 			</ul>
 			<ul className={cn("call-to-action flex ml-8 gap-2", props.callCls)}>
 				{CALL_TO_ACTION.map((items, index) => (
+					<li key={index} className="list-none">
+
 					<NavLink
-						key={index}
+						// key={index}
 						className={`${items.variant} text-sm whitespace-nowrap flex items-center gap-2`}
 						to={`${items.href}`}
 						target={
@@ -137,6 +139,7 @@ export default function NavItems(props: NavigationItemProps) {
 
 						{items.label}
 					</NavLink>
+					</li>
 				))}
 			</ul>
 		</div>

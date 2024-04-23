@@ -225,16 +225,12 @@ export default function Testimonial() {
 									slidesPerView: 5,
 								},
 							}}
-							// slidesPerView={1}
 							loop={true}
-							// centeredSlides={true} 							centeredSlidesBounds={true}
 							autoplay={{
 								delay: 2500,
 								disableOnInteraction: false,
 							}}
 							pagination={{ clickable: true }}
-							// onSwiper={(swiper) => console.log(swiper)}
-							// onSlideChange={() => console.log("slide change")}
 							className="mySwiper"
 						>
 							{TestimonialCardData.map((item, index) => (
@@ -245,6 +241,8 @@ export default function Testimonial() {
 										title={item.title}
 										index={index}
 										alt={item.alt}
+										content={item.content}
+										arialLabel={item.arialLabel}
 										// key={index}
 									/>
 								</SwiperSlide>

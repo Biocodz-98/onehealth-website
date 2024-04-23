@@ -2,6 +2,7 @@ import HeroIndividual from "../../public/heroIndividual.webp";
 import HeroInsures from "../../public/heroPartner.webp";
 import HeroOnboard from "../../public/heroOnboard.webp";
 import herolanding from "../../public/heroLanding.webp";
+// const herolanding = "https://res.cloudinary.com/dykxxifcl/image/upload/v1713720100/heroWomen_y3wfed.webp";
 import HW from "../../public/heroWomen.webp";
 import bgHeroL from "../../public/bgHeroL.svg";
 import bgHeroR from "../../public/bgHeroR.svg";

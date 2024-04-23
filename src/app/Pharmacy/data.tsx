@@ -101,7 +101,7 @@ export const PharmaSalesData = [
 	{
 		heading: "Onboard",
 		image: SignUpPharmacy,
-		imageAlt:
+		alt:
 			"Onboard Your Pharmacy in Minutes - OneHealth Pharmacy Fulfilment and Distribution Network",
 		description:
 			"Submit a few information about your pharmacy and get onboard in minutes",
@@ -109,7 +109,7 @@ export const PharmaSalesData = [
 	{
 		heading: "Verify",
 		image: VerifyPharmacy,
-		imageAlt:
+		alt:
 			"Verify Compliance and Capacity - Join OneHealth Pharmacy Fulfilment and Distribution Network",
 		description:
 			"Get verified for compliance and capacity to deliver on expectations",
@@ -117,7 +117,7 @@ export const PharmaSalesData = [
 	{
 		heading: "Dispense",
 		image: DispensePharmacy,
-		imageAlt:
+		alt:
 			"Dispense Orders, Grow Sales - Join OneHealth Pharmacy Fulfilment and Distribution Network",
 		description:
 			"Start dispensing orders on the pharmacy fulfillment portal and grow weekly sales",

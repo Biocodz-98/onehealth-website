@@ -12,6 +12,8 @@ export interface OneLinkProps {
 	action: string;
 	strokec?: string;
 	target?: string;
+	content?: string;
+	arialLabel?: string;
 	hasLeadingImage?: React.ReactNode;
 	setIsResources?: React.Dispatch<SetStateAction<boolean>>;
 }
@@ -26,11 +28,15 @@ export default function OneLink({
 	hasLeadingImage,
 	target,
 	setIsResources,
+	content,
+	arialLabel,
 }: OneLinkProps) {
 	return (
 		<Link
 			to={to}
 			target={target}
+			content={content}
+			aria-label={arialLabel}
 			onClick={() => {
 				if (to.toLowerCase() === "#resources") {
 					setIsResources?.(true);
