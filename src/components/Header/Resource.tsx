@@ -62,15 +62,10 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 			</div>
 			<div className="last flex flex-col gap-3 pt-10 md:pt-0 md:pb-0 pb-10">
 				{ResourceData.map((item, index) => (
-					<>
-						<Link
-							key={index}
-							to={item.link}
-							target="_blank"
-							className="hover:bg-slate-50"
-						>
+					<div key={index}>
+						<Link to={item.link} target="_blank" className="hover:bg-slate-50">
 							<ComplaintItem
-								key={index}
+								// key={index}
 								title={item.title}
 								desc={item.desc}
 								image={item.image}
@@ -80,7 +75,7 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 							/>
 						</Link>
 						<div className=" divider w-full h-[0.08rem] bg-gray-200"></div>
-					</>
+					</div>
 				))}
 			</div>
 		</motion.div>

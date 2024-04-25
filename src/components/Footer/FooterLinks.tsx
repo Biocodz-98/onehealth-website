@@ -50,7 +50,7 @@ export default function FooterLinks() {
 					}}
 					ref={productRef}
 				>
-					<motion.h5
+					<motion.strong
 						variants={H1P1L}
 						animate="animate"
 						initial="initial"
@@ -60,10 +60,10 @@ export default function FooterLinks() {
 						viewport={{
 							once: true,
 						}}
-						className="text-[#3E3838]/75 relative top-2"
+						className="text-[#3E3838]/75 relative top-2 font-semibold"
 					>
 						Product
-					</motion.h5>
+					</motion.strong>
 					<ul className="flex flex-col gap-3 top-4 relative">
 						{ProductData.map((item, index) => (
 							<motion.li
@@ -80,13 +80,20 @@ export default function FooterLinks() {
 								key={index}
 								className="list-none"
 							>
-								<Link to={item.link}>{item.title}</Link>
+								<Link
+									to={item.link}
+									target={item.target}
+									aria-label={item.arialLabel}
+									content={item.content}
+								>
+									{item.title}
+								</Link>
 							</motion.li>
 						))}
 					</ul>
 				</motion.div>
 				<motion.div ref={platformRef}>
-					<motion.h5
+					<motion.strong
 						variants={H1P1L}
 						animate="animate"
 						initial="initial"
@@ -96,10 +103,10 @@ export default function FooterLinks() {
 						viewport={{
 							once: true,
 						}}
-						className="text-[#3E3838]/75 relative top-2"
+						className="text-[#3E3838]/75 relative top-2 font-semibold"
 					>
 						Platform
-					</motion.h5>
+					</motion.strong>
 					<ul className="flex flex-col gap-3 top-4 relative">
 						{PlatformData.map((item, index) => (
 							<motion.li
@@ -116,7 +123,11 @@ export default function FooterLinks() {
 								key={index}
 								className="list-none"
 							>
-								<Link to={item.link} target="_blank">
+								<Link
+									to={item.link}
+									target="_blank"
+									content="Link opens in a different tab"
+								>
 									{item.title}
 								</Link>
 							</motion.li>
@@ -124,7 +135,7 @@ export default function FooterLinks() {
 					</ul>
 				</motion.div>
 				<motion.div ref={resourceRef}>
-					<motion.h5
+					<motion.strong
 						variants={H1P1L}
 						animate="animate"
 						initial="initial"
@@ -134,10 +145,10 @@ export default function FooterLinks() {
 						viewport={{
 							once: true,
 						}}
-						className="text-[#3E3838]/75 relative top-2 "
+						className="text-[#3E3838]/75 relative top-2 font-semibold"
 					>
 						Resources
-					</motion.h5>
+					</motion.strong>
 					<ul className="flex flex-col gap-3 top-4 relative">
 						{ResourceData.map((item, index) => (
 							<motion.li
@@ -154,7 +165,11 @@ export default function FooterLinks() {
 								key={index}
 								className="flex relative items-center list-none md:w-full w-fit"
 							>
-								<Link to={item.link} target="_blank">
+								<Link
+									to={item.link}
+									target="_blank"
+									content="Link opens in a different tab"
+								>
 									{item.title}
 								</Link>
 								{Boolean(item.tag) && (
@@ -171,6 +186,8 @@ export default function FooterLinks() {
 									to={item.link}
 									className="p-3 rounded-full bg-black"
 									target="_blank"
+									content={item.content}
+									aria-label={item.ariaLabel}
 									rel="noopener noreferrer"
 								>
 									{" "}
@@ -181,7 +198,11 @@ export default function FooterLinks() {
 					</ul>
 				</motion.div>
 				<div className="-order-1 md:order-last ">
-					<Link to={"/"}>
+					<Link
+						to={"/"}
+						content="Links to the same page"
+						aria-label="Link to home page of Onehealthng"
+					>
 						<Icons.logo />
 					</Link>
 				</div>
@@ -200,7 +221,12 @@ export default function FooterLinks() {
 						}}
 						className="list-none"
 					>
-						<Link to="https://onehealthng.com/privacy-policy" target="_blank">
+						<Link
+							to="https://onehealthng.com/privacy-policy"
+							target="_blank"
+							content="Links to a different page"
+							aria-label="Link to Privacy Policy of Onehealthng"
+						>
 							Privacy Policy
 						</Link>
 					</motion.li>
@@ -216,7 +242,12 @@ export default function FooterLinks() {
 						}}
 						className="list-none"
 					>
-						<Link to="https://onehealthng.com/terms" target="_blank">
+						<Link
+							to="https://onehealthng.com/terms"
+							target="_blank"
+							content="Links to a different page"
+							aria-label="Link to Terms and Conditions of Onehealthng"
+						>
 							Terms & Conditions
 						</Link>
 					</motion.li>

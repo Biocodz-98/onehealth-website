@@ -23,7 +23,7 @@ export default function MobileNavItem({
 }) {
 	const location = useLocation();
 	useEffect(() => {
-		const text = location.pathname == "/"?"home":location.pathname; console.log(text);
+		const text = location.pathname == "/"?"home":location.pathname; 
 		setActive(text);
 	}, [location.pathname]);
 	return (

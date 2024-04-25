@@ -75,8 +75,9 @@ export default function Navbar() {
 							<div className="flex  flex-16 items-center relative">
 								{/* mobile nav */}
 								<div className="ml-4 flex flex-col md:flex-row md:items-start items-center lg:ml-0 w-full ">
-									<NavLink to={"/"}>
+									<NavLink to={"/"} className={"relative"}>
 										<Icons.logo className="h-8 w-36" />
+										<span className="opacity-0 absolute">home</span>
 									</NavLink>
 
 									<p className="md:hidden font-normal text-sm py-2">
@@ -109,7 +110,7 @@ export default function Navbar() {
 							</div>
 						</div>
 					</header>
-					<ResourcePage setIsHovered={setIsHovered} isHovered={isHovered} />
+					<ResourcePage setIsHovered={setIsHovered} isHovered={isHovered} key={"desktop"} />
 				</MaxWithWrapper>
 
 				{showWhatapp && <Whatsapp />}
@@ -173,7 +174,7 @@ export default function Navbar() {
 			{screenSize.width < 650 && showResourceMobile && (
 				<Popup titleHeader="Resources" setOpenPopup={closeAllPopups}>
 					<div className="h-full overflow-y-scroll pb-16">
-						<ResourcePage resCls="flex relative p-2" />
+						<ResourcePage resCls="flex relative p-2" key={"mobile"} />
 					</div>
 				</Popup>
 			)}

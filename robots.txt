@@ -1,0 +1,16 @@
+# This is the robots.txt file for onehealthng
+# It guides search engine crawlers on which paths to allow and disallow
+
+# Allow all bots to access all content
+User-agent: *
+
+# Disallow crawlers from accessing sensitive or unnecessary paths
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /hidden/
+
+# Allow all other content
+Allow: /
+
+

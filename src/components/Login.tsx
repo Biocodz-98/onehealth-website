@@ -9,6 +9,8 @@ import { Link} from "react-router-dom";
 import HeroCard from "./cards/HeroCard";
 import { H1P1L, H1P1R, Header, _Header } from "@/animate.data";
 import Spinner from "./Spinner";
+import { Button } from './ui/button';
+import { Input } from "./ui/input";
 
 export default function Login() {
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
@@ -20,7 +22,6 @@ export default function Login() {
 		e.preventDefault();
 		if(!(Boolean(email) && Boolean(password))) return;
 		setIsProcessing(true);
-		console.log(email,password);
 		setTimeout(()=> setIsProcessing(false),3000)
 	}
 
@@ -97,14 +98,14 @@ export default function Login() {
 							<label htmlFor="email" className="text-slate-800">
 								Email Address
 							</label>
-							<input
+							<Input
 								type="email"
 								name="emai"
 								id="email"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 								disabled={isProcessing}
-								className="w-full outline outline-[#8DDE44] rounded-lg p-3 disabled:bg-slate-300"
+								className="w-full outline outline-[#8DDE44] rounded-lg p-3 disabled:bg-slate-300 min-h-14 focus:border-none"
 							/>
 							<HiOutlineMail className="absolute right-[5%] top-[50%]" />
 						</motion.div>
@@ -123,14 +124,14 @@ export default function Login() {
 							<label htmlFor="password" className="text-slate-800">
 								Password
 							</label>
-							<input
+							<Input
 								type={isShowPassword ? "text" : "password"}
 								name="password"
 								id="password"
 								value={password}
 								disabled={isProcessing}
 								onChange={(e) => setPassword(e.target.value)}
-								className="w-full outline outline-[#8DDE44] rounded-lg p-3 disabled:bg-slate-300"
+								className="w-full outline outline-[#8DDE44] rounded-lg p-3 disabled:bg-slate-300 min-h-14 focus:border-none"
 							/>
 							{!isShowPassword ? (
 								<FaEyeSlash
@@ -148,7 +149,7 @@ export default function Login() {
 							<Link to="#forgotPassword" className="text-[#228821]">
 								Forgot Password?
 							</Link>
-							<motion.button
+							<motion.div
 								variants={_Header}
 								animate="animate"
 								initial="initial"
@@ -158,12 +159,15 @@ export default function Login() {
 								viewport={{
 									once: true,
 								}}
-								type="submit"
-								className="rounded-3xl bg-[#8DDE44] text-[#10441E] p-3 px-5 flex w-full place-content-center"
 							>
-								{" "}
-								{isProcessing ? <Spinner /> : <span>Log into Account</span>}
-							</motion.button>
+								<Button
+									type="submit"
+									className="rounded-3xl bg-[#8DDE44] text-[#10441E] p-3 px-5 flex w-full place-content-center"
+								>
+									{" "}
+									{isProcessing ? <Spinner /> : <span>Log into Account</span>}
+								</Button>
+							</motion.div>
 							<motion.p
 								variants={H1P1R}
 								animate="animate"

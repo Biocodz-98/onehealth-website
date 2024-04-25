@@ -34,7 +34,7 @@ export function ComplaintItem({
 				/>
 			</div>
 			<div className={cn("text space-y-3", textCls)}>
-				<h5 className="text-[#114920] font-head font-bold text-xl">{title}</h5>
+				<h1 className="text-[#114920] font-head font-bold text-xl">{title}</h1>
 				<p className="text-[#475367] font-body font-medium">{desc}</p>
 			</div>
 		</div>

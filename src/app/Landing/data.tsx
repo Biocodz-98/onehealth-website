@@ -7,6 +7,7 @@ export const HeroCardData = [
 	{
 		title: "INDIVIDUALS",
 		Image: HeroIND as string,
+		alt: "Individual: Become a member of the our online pharmacy ; create a new account and enjoy medical discounts up to 50% ",
 		action: {
 			title: "Enter Pharmacy",
 			href: "https://onehealthng.com/pharmacy",
@@ -16,6 +17,7 @@ export const HeroCardData = [
 	{
 		title: "INSURERS",
 		Image: HeroINS as string,
+		alt: "Insurers: Register your pharmacy on Onehealth, make pharmacy distribution to benefit from our pharmacy benefits",
 		action: {
 			title: "Partner With Us",
 			// href: "https://forms.gle/WMqZerndJfihNqSt5",
@@ -26,6 +28,7 @@ export const HeroCardData = [
 	{
 		title: "PROVIDERS",
 		Image: HeroONB as string,
+		alt: "Providers: Get onboard with our online pharmacy to make fufillments to our customers",
 		action: {
 			title: "Get On Board",
 			// href: "https://forms.gle/Z38NAhYRH2uXUcEZA",
@@ -97,6 +100,9 @@ export const PlatformCardData = [
 		bgColor: "#228821",
 		bgColorSec: "#379A44",
 		alt: "Image showcasing Pillmova, the leading Pharma logistics and mobility platform in Nigeria, a product of OneHealth online pharmacy.",
+		content: "Link opens in a different tab",
+		arialLabel: "Links to pillmova partners page",
+		target: "_blank",
 	},
 	{
 		title: "Pillfinda",
@@ -109,6 +115,9 @@ export const PlatformCardData = [
 		bgColor: "#EAFBDA",
 		bgColorSec: "#61AC1A",
 		alt: "Image displaying Pillfinda, the Pharma procurement and inventory intelligence solution for pharmacies in Africa | OneHealth Nigeria",
+		content: "Link opens in a different tab",
+		arialLabel: "Links to pillfinda partners page",
+		target: "_blank",
 	},
 ];
 

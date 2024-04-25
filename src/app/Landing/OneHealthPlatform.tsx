@@ -3,35 +3,13 @@ import { useRef, useEffect } from "react";
 import MaxWithWrapper from '../../components/MaxWithWrapper'
 import { PlatformCardData } from './data';
 import PlatformCard from '../../components/cards/PlatformCard';
-// import { Navigation, Pagination, Scrollbar, A11y,Autoplay } from "swiper/modules";
-// import { Swiper, SwiperSlide } from "swiper/react";
-
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-// import function to register Swiper custom elements
-// import { register} from 'swiper/element/bundle';
-
 import { motion, useInView, useAnimation } from "framer-motion";
 import { Header, H1P1L,H1P1R,Scale } from "@/animate.data";
-// // register Swiper custom elements
-// register();
 
 export default function OneHealthPlatform() {
-    //   const swiperElRef = useRef<HTMLDivElement>(null); 
-    //   const paginationRef = useRef(null);
-
-//   useEffect(() => {
-//     // listen for Swiper events using addEventListener
-//     swiperElRef?.current?.addEventListener('swiperprogress', (e:any) => {
-//       const [swiper, progress] = e.detail;
-//       console.log(progress);
-//     });
-
-//     swiperElRef?.current?.addEventListener('swiperslidechange', (e) => {
-//       console.log('slide changed');
-//     });
-//   }, []);
 	const opRef = useRef(null);
 	const smView = useInView(opRef, { once: true });
 	const smController = useAnimation();
@@ -85,32 +63,6 @@ export default function OneHealthPlatform() {
 						Our products powering positive health experience
 					</motion.h1>
 				</div>
-
-				{/* <Swiper
-					// install Swiper modules
-					modules={[Pagination, A11y, Autoplay]}
-					spaceBetween={4}
-					breakpoints={{
-						639: {
-							slidesPerView: 2,
-						},
-						// 865: {
-						// 	slidesPerView: 4,
-						// },
-					}}
-					slidesPerView={2}
-					autoplay={{
-						delay: 2500,
-						disableOnInteraction: false,
-					}}
-					pagination={{ clickable: true }}
-					onSwiper={(swiper) => console.log(swiper)}
-					onSlideChange={() => console.log("slide change")}
-					className="mySwiper"
-				>
-							<SwiperSlide >
-                                </SwiperSlide>
-                                </Swiper> */}
 				<motion.div
 					variants={Scale}
 					animate={smController}
@@ -136,6 +88,9 @@ export default function OneHealthPlatform() {
 							index={index}
 							alt={item.alt}
 							href={item.href}
+							arialLabel={item.arialLabel}
+							content={item.content}
+							target={item.target}
 						/>
 					))}
 

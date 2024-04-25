@@ -8,8 +8,10 @@ interface TestimonialCardProps {
     alt:string;
     link:string;
     index:number;
+	content:string;
+	arialLabel:string;
 }
-export default function TestimonialCard({title,image,link,index,alt}:TestimonialCardProps) {
+export default function TestimonialCard({title,image,link,index,alt,content,arialLabel}:TestimonialCardProps) {
   return (
 		<div className="cate flex flex-col gap-3 items-center bg-[#F0F2F5] w-54 md:w-54 md:h-56 max-w-72 rounded-3xl p-5">
 			<h2 className="font-semibold font-head text-xl md:text-2xl leading-6 text-secondary text-wrap text-center ">
@@ -23,7 +25,7 @@ export default function TestimonialCard({title,image,link,index,alt}:Testimonial
 					className={`object-cover ${index == 0 ? "scale-100" : ""}`}
 				/>
 			</div>
-			<Link to={link} className="p-2.5 rounded-full bg-white ">
+			<Link to={link} content={content} aria-label={arialLabel} className="p-2.5 rounded-full bg-white ">
 				<Icons.rightArrow strokec="#8DDE44" />
 			</Link>
 		</div>
