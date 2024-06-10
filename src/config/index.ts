@@ -48,7 +48,7 @@ export const CALL_TO_ACTION = [
 		variant: "btn-light-green",
 	},
 	{
-		label: "Enter Pharmarcy",
+		label: "Enter Pharmacy",
 		value: "enter-pharmarcy" as const,
 		icon: "<></>",
 		href: "https://onehealthng.com/pharmacy" as const,
