@@ -19,6 +19,7 @@ export default function useNavbar() {
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
+	
 	const [hasAdvertisement, setHasAdvertisement] = useState<boolean>(true); //use for displaying advertisement on the screen (default false - no advertisement)
 
 	const [searchQuery, setSearchQuery] = useState<string>(""); //change search query to string
