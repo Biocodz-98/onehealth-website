@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useSearch from "@/hooks/useSearch";
 import { useLocation } from "react-router-dom";
+import { truncate } from "fs";
 
 export default function useNavbar() {
 	const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -18,7 +19,7 @@ export default function useNavbar() {
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
-	const [hasAdvertisement, setHasAdvertisement] = useState<boolean>(false); //use for displaying advertisement on the screen (default false - no advertisement)
+	const [hasAdvertisement, setHasAdvertisement] = useState<boolean>(true); //use for displaying advertisement on the screen (default false - no advertisement)
 
 	const [searchQuery, setSearchQuery] = useState<string>(""); //change search query to string
 	const location = useLocation();

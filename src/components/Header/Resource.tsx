@@ -8,6 +8,8 @@ import { ComplaintItem } from "@/app/Insurers/Compliant";
 import { cn } from '@/lib/utils';
 import OneLink from '../Link';
 
+const process = import.meta.env;
+
 export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?:boolean,setIsHovered?:React.Dispatch<SetStateAction<boolean>>,resCls?:string}) {
   return (
 		<motion.div
@@ -50,8 +52,11 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 					</h2>
 					<OneLink
 						// to={"https://onehealthng.com/guides/drug-shortages"}
+						// to={
+						// 	"https://onehealthng.com/guides/managing-medicine-shortages-due-to-pharmaceutical-companies-exiting-nigeria"
+						// }
 						to={
-							"https://onehealthng.com/guides/managing-medicine-shortages-due-to-pharmaceutical-companies-exiting-nigeria"
+							process.VITE_FULFILMENT_URL + "/strategic_responses_to_pharmaceutical_withdrawals_and_drug_shortages_in_nigeria"
 						}
 						index={1}
 						target="_blank"
