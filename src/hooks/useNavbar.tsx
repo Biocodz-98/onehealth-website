@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useSearch from "@/hooks/useSearch";
 import { useLocation } from "react-router-dom";
-import { truncate } from "fs";
+// import { truncate } from "fs";
 
 export default function useNavbar() {
 	const [isHovered, setIsHovered] = useState<boolean>(false);
