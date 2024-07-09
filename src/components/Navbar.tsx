@@ -50,7 +50,7 @@ export default function Navbar() {
   return (
     <>
       {hasAdvertisement && (
-        <div className="bg-[#10441E] top-0 md:z-50 z-30 h-fit w-full  py-2 relative flex">
+        <div className="fixed bg-[#10441E] top-0 md:z-50 z-30 h-fit w-full  py-2 flex">
           <div className="px-4 flex flex-col items-center w-full">
             <div className="flex items-center justify-center w-full text-white ">
               <svg
