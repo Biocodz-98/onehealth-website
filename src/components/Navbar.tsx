@@ -51,7 +51,7 @@ export default function Navbar() {
     <>
       {hasAdvertisement && (
         <div className="fixed bg-[#10441E] top-0 md:z-50 z-30 h-fit w-full  py-2 flex">
-          <div className="px-4 flex flex-col items-center w-full">
+          <div className="px-4 flex flex-col items-center w-full ">
             <div className="flex items-center justify-center w-full text-white ">
               <svg
                 width={37}
@@ -87,7 +87,7 @@ export default function Navbar() {
                   />
                 </defs>
               </svg>{" "}
-              <p className="ml-2">
+              <p className="ml-2 md:text-base text-xs  tracking-wider">
                 Strategic Responses to Pharmaceutical Withdrawals & Drug
                 Shortages in Nigeria
               </p>
@@ -99,8 +99,8 @@ export default function Navbar() {
                 rel="nofollow"
                 target="_blank"
               >
-                <button className="rounded-3xl bg-white text-[#228821] p-3 px-5 flex w-full place-content-center">
-                  Download report
+                <button className="rounded-3xl bg-white text-[#228821] p-3 px-5 flex w-full place-content-center md:text-sm text-xs">
+                  Download Report
                 </button>
               </Link>
             </div>
@@ -113,7 +113,7 @@ export default function Navbar() {
       )}
       <div
         className={cn(
-          "fixed top-0 bg-background  md:z-50 z-30 inset-0 h-fit flex items-end md:mb-0 mb-5 ",
+          "fixed bg-background  md:z-50 z-30 inset-0 h-fit flex items-end md:mb-0 mb-5 ",
           `${hasAdvertisement ? "top-20" : "top-0"}`
         )}
       >
@@ -138,7 +138,7 @@ export default function Navbar() {
                     setHovered={setIsHovered}
                     setSearchQuery={setSearchQuery}
                     setHasSearch={setHasSearch}
-                    setOpenLogin={setOpenLogin}
+                    // setOpenLogin={setOpenLogin}
                     setOpenCallUs={setOpenCallUs}
                     setSearchResult={setSearchResult}
                     setShowServices={setShowService}

@@ -43,15 +43,15 @@ export const CALL_TO_ACTION = [
 		label: "Sign in",
 		value: "sign-in" as const,
 		icon: "<></>",
-		// href: "https://onehealthng.com/customer/login" as const,
-		href: "#" as const,
+		// href: `${import.meta.env.VITE_OH_URL}/customer/login` as const,
+		href: `https://onehealthng.com/customer/login` as const,
 		variant: "btn-light-green",
 	},
 	{
 		label: "Enter Pharmacy",
 		value: "enter-pharmarcy" as const,
 		icon: "<></>",
-		href: "https://onehealthng.com/pharmacy" as const,
+		href: `https://onehealthng.com/pharmacy` as const,
 		variant: "btn-green",
 	},
 ];

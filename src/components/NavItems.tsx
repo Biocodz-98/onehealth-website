@@ -118,15 +118,9 @@ export default function NavItems(props: NavigationItemProps) {
 						className={`${items.variant} text-sm whitespace-nowrap flex items-center gap-2`}
 						to={`${items.href}`}
 						target={
-							items.label.toLowerCase() === "enter pharmarcy" ? "_blank" : ""
+							 ["enter pharmarcy", "sign in"].includes(items.label.toLowerCase()) ? "_blank" : ""
 						}
 						onClick={() => {
-							if (items.label.toLowerCase() === "sign in") {
-								props.setOpenLogin?.(true);
-								props.setOpenCallUs?.(false);
-								props.setHasSearch?.(false);
-								props.setSearchQuery?.("");
-							}
 							if (items.label.toLowerCase() === "call us") {
 								props.setOpenCallUs?.(true);
 								props.setOpenLogin?.(false);
