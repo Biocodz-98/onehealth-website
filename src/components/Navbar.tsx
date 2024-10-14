@@ -91,6 +91,7 @@ export default function Navbar() {
                 Strategic Responses to Pharmaceutical Withdrawals & Drug
                 Shortages in Nigeria
               </p>
+
               <Link
                 to={
                   process.VITE_FULFILMENT_URL + "/strategic_responses_to_pharmaceutical_withdrawals_and_drug_shortages_in_nigeria"
@@ -103,6 +104,7 @@ export default function Navbar() {
                   Download Report
                 </button>
               </Link>
+              
             </div>
           </div>
           {/* <RxCross2
