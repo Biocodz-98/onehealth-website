@@ -32,7 +32,7 @@ export default function Hero(props:HeroProps) {
 	return (
 		<section
 			className={cn(
-				"relative  w-full md:min-h-[65vh] lg:min-h-[88.5vh] h-fit border-b-8 border-[#E9F9DB] ",
+				"relative  w-full md:min-h-[65vh] lg:min-h-[88.5vh] h-fit border-b-8 border-[#E9F9DB]",
 				props.classNameSection
 			)}
 			// initial={{ y: 300, opacity: 0 }}
