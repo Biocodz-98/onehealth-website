@@ -32,9 +32,7 @@ export default function MobileNavItem({
 			onClick={() => {
 				setActive(text);
 				if (text.toLowerCase() === "login") {
-					setOpenLogin?.(true);
-					setOpenCallUs?.(false);
-					setShowServices?.(false);
+					window.open('https://onehealthng.com/customer/login', '_blank')
 				}
 				if (text.toLowerCase() === "call us") {
 					setOpenCallUs?.(true);
