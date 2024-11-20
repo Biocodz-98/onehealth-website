@@ -196,3 +196,7 @@ ul li{
     gap: 1.2rem !important;
   }
 }
+
+.gray-input{
+  @apply border-gray-300 !important;
+}
