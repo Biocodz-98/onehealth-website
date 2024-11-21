@@ -7,6 +7,7 @@ type ModalProps = {
     children: React.ReactNode;
 };
 
+
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;
 
