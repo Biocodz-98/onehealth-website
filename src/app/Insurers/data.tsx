@@ -7,7 +7,7 @@ export const HeroCardData = [
 		alt: "Onboarding image for insurers and HMOs to join pharmacy benefit management in Nigeria",
 		action: {
 			title: "Partner with us",
-			href: "https://forms.gle/WMqZerndJfihNqSt5",
+			href: "register",
 			newPage:false
 		},
 	},
@@ -17,7 +17,7 @@ export const HeroCardData = [
 		alt: "Onboarding image for hospitals and clinics to join pharmacy benefit management in Nigeria",
 		action: {
 			title: "Partner with us",
-			href: "https://forms.gle/cMrKEEi6zDg5JvHNA",
+			href: "register",
 			newPage:false
 		},
 	},
