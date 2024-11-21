@@ -94,7 +94,7 @@ export default function Navbar() {
 
               <Link
                 to={
-                  process.VITE_FULFILMENT_URL + "/strategic_responses_to_pharmaceutical_withdrawals_and_drug_shortages_in_nigeria"
+                  process.VITE_ADMIN_URL + "/strategic_responses_to_pharmaceutical_withdrawals_and_drug_shortages_in_nigeria"
                 }
                 className="text-[#3DA647] text-sm md:text-base p-3"
                 rel="nofollow"
