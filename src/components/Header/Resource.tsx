@@ -56,7 +56,7 @@ export default function ResourcePage({isHovered,setIsHovered,resCls}:{isHovered?
 						// 	"https://onehealthng.com/guides/managing-medicine-shortages-due-to-pharmaceutical-companies-exiting-nigeria"
 						// }
 						to={
-							process.VITE_FULFILMENT_URL + "/strategic_responses_to_pharmaceutical_withdrawals_and_drug_shortages_in_nigeria"
+							process.VITE_ADMIN_URL + "/strategic_responses_to_pharmaceutical_withdrawals_and_drug_shortages_in_nigeria"
 						}
 						index={1}
 						target="_blank"

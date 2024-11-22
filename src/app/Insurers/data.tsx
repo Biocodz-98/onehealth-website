@@ -11,6 +11,7 @@ export const HeroCardData = [
 			newPage:false
 		},
 	},
+
 	{
 		title: "HOSPITALS",
 		Image: HeroIND as string,
