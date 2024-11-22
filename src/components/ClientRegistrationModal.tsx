@@ -277,21 +277,22 @@ export default function ClientRegistrationModal({show, setShow}: ClientRegistrat
 
                             </div>
 
-                            <div className='m-2'>
-                                <SelectInput
-                                    id='sector'
-                                    disabled={isProcessing}
-                                    required={true}
-                                    onChange={(e) => setData((data) => ({...data, sector: e.target.value}))}
-                                    className='w-full border-gray-300 rounded-lg px-2 h-12'
-                                >
-                                    <option value=''>What sector is your business in?</option>
-                                    {sectors.map((sector: string, index: number) => (
-                                        <option key={index} value={sector}>{sector}</option>
-                                    ))}
+                            <div className='mt-2 '>
+                                    <SelectInput
+                                        id='sector'
+                                        disabled={isProcessing}
+                                        required={true}
+                                        onChange={(e) => setData((data) => ({...data, sector: e.target.value}))}
+                                        className='w-full border-gray-300 rounded-lg  h-12'
+                                    >
+                                        <option value=''>What sector is your business in?</option>
+                                        {sectors.map((sector: string, index: number) => (
+                                            <option key={index} value={sector}>{sector}</option>
+                                        ))}
 
-                                </SelectInput>
-                            </div>
+                                    </SelectInput>
+                                </div>
+
 
                             <div className='mt-4 p-2 '>
                                 <Button

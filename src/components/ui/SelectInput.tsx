@@ -29,6 +29,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
                 )}
             >
                 {children}
+
             </select>
         </div>
     );
