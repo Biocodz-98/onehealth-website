@@ -85,7 +85,7 @@ export default function Navbar() {
                   />
                 </defs>
               </svg>{" "}
-              <p className="ml-2 md:text-base text-xs  tracking-wider">
+              <p className="ml-2 md:text-base text-sm tracking-wider">
                 In Lagos? Get medicines in minutes from OneHealth 24 hour Pharmacy
               </p>
 
@@ -97,7 +97,7 @@ export default function Navbar() {
                 rel="nofollow"
                 target="_blank"
               >
-                <button className="rounded-3xl bg-white text-[#228821] p-3 px-5 flex w-full place-content-center md:text-sm text-xs">
+                <button className="rounded-3xl bg-white text-[#228821] p-3 px-5 flex w-full place-content-center md:text-sm text-xs text-nowrap">
                   Start Here
                 </button>
               </Link>
