@@ -16,8 +16,6 @@ import SearchBody from "./SearchBody";
 import useNavbar from "@/hooks/useNavbar";
 import { cn } from "@/lib/utils";
 
-const process = import.meta.env;
-
 export default function Navbar() {
   const {
     screenSize,
@@ -88,20 +86,19 @@ export default function Navbar() {
                 </defs>
               </svg>{" "}
               <p className="ml-2 md:text-base text-xs  tracking-wider">
-                Strategic Responses to Pharmaceutical Withdrawals & Drug
-                Shortages in Nigeria
+                In Lagos? Get medicines in minutes from OneHealth 24 hour Pharmacy
               </p>
 
               <Link
                 to={
-                  process.VITE_ADMIN_URL + "/strategic_responses_to_pharmaceutical_withdrawals_and_drug_shortages_in_nigeria"
+                   "https://247pharmacy.onehealthng.com"
                 }
                 className="text-[#3DA647] text-sm md:text-base p-3"
                 rel="nofollow"
                 target="_blank"
               >
                 <button className="rounded-3xl bg-white text-[#228821] p-3 px-5 flex w-full place-content-center md:text-sm text-xs">
-                  Download Report
+                  Start Here
                 </button>
               </Link>
               
