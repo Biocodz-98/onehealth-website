@@ -9,13 +9,16 @@ export default function FooterLinks() {
 	const productRef = useRef(null);
 	const platformRef = useRef(null);
 	const resourceRef = useRef(null);
+	const addressRef = useRef(null);
 
 	const productView = useInView(productRef, { once: true });
 	const plaformView = useInView(platformRef, { once: true });
 	const resourceView = useInView(resourceRef, { once: true });
+	const addressView = useInView(addressRef, { once: true });
 	const productController = useAnimation();
 	const platformController = useAnimation();
 	const resourceController = useAnimation();
+	const addressController = useAnimation();
 
 			useEffect(() => {
 				if (productView) {
@@ -27,7 +30,10 @@ export default function FooterLinks() {
 				if (resourceView) {
 					resourceController.start("animate");
 				}
-			}, [productView, plaformView, resourceView]);
+				if (addressView) {
+					addressController.start("animate");
+				}
+			}, [productView, plaformView, resourceView, addressController]);
   return (
 		<motion.div
 			variants={Header}
@@ -35,9 +41,9 @@ export default function FooterLinks() {
 			initial="initial"
 			transition={{ duration: 0.65, delay: 0.5, ease: "backOut" }}
 			exit={Header.exit}
-			className="col-span-7 bg-slate-100/75 w-[95vw] md:max-w-screen-2xl md:w-full md:rounded-[20px]"
+			className="col-span-8 bg-slate-100/75 w-[95vw] md:max-w-screen-2xl md:w-full md:rounded-[20px]"
 		>
-			<div className="flex md:flex-row  flex-wrap gap-12  justify-between p-4 md:p-3 lg:p-8 text-[#3E3838] text-sm font-medium ">
+			<div className="flex md:flex-row flex-wrap gap-8  justify-between p-4 md:p-3 lg:p-8 text-[#3E3838] text-sm font-medium ">
 				<motion.div
 					variants={Scale}
 					animate="animate"
@@ -184,7 +190,7 @@ export default function FooterLinks() {
 								<Link
 									key={index}
 									to={item.link}
-									className="p-3 rounded-full bg-black"
+									className="p-2 rounded-full bg-black"
 									target="_blank"
 									content={item.content}
 									aria-label={item.ariaLabel}
@@ -197,6 +203,90 @@ export default function FooterLinks() {
 						</li>
 					</ul>
 				</motion.div>
+				<div>
+					<motion.div ref={addressRef}>
+						<motion.strong
+							variants={H1P1L}
+							animate="animate"
+							initial="initial"
+							transition={{ duration: 0.65, delay: 0.6, ease: "backOut" }}
+							exit={H1P1L.exit}
+							whileInView="animate"
+							viewport={{
+								once: true,
+							}}
+							className="text-[#3E3838]/75 relative top-2 font-semibold"
+						>
+							Pharmacy Address
+						</motion.strong>
+
+						<div className='py-6'>
+
+							<motion.p
+								variants={Footer}
+								animate={resourceController}
+								initial="initial"
+								transition={{ duration: 0.65, delay: 0.55, ease: "backOut" }}
+								exit={Footer.exit}
+								whileInView="animate"
+								viewport={{
+									once: true,
+								}}
+								className="flex relative items-center list-none md:w-full w-fit"
+							>
+								<p>
+									Block 6, Suite 3,
+									<br/> Elegushi Modern
+									<br/> Plaza Jakande (4th)
+									<br/>Roundabout, Lekki-Epe
+									<br/>Expressway,
+									<br/>Lekki, Lagos
+								</p>
+							</motion.p>
+
+						</div>
+
+					</motion.div>
+					<motion.div ref={addressRef}>
+						<motion.strong
+							variants={H1P1L}
+							animate="animate"
+							initial="initial"
+							transition={{ duration: 0.65, delay: 0.6, ease: "backOut" }}
+							exit={H1P1L.exit}
+							whileInView="animate"
+							viewport={{
+								once: true,
+							}}
+							className="text-[#3E3838]/75 relative top-2 font-semibold"
+						>
+							Office Address
+						</motion.strong>
+
+						<div className='py-6'>
+
+							<motion.p
+								variants={Footer}
+								animate={resourceController}
+								initial="initial"
+								transition={{ duration: 0.65, delay: 0.55, ease: "backOut" }}
+								exit={Footer.exit}
+								whileInView="animate"
+								viewport={{
+									once: true,
+								}}
+								className="flex relative items-center list-none md:w-full w-fit"
+							>
+								<p>
+									56 Opebi, Ikeja, Lagos
+								</p>
+							</motion.p>
+
+						</div>
+
+					</motion.div>
+
+				</div>
 				<div className="-order-1 md:order-last ">
 					<Link
 						to={"/"}
@@ -252,7 +342,7 @@ export default function FooterLinks() {
 						</Link>
 					</motion.li>
 				</ul>
-				<div className="text-nowrap">&copy; 2024 with OneHealth</div>
+				<div className="text-nowrap">&copy; 2025 with OneHealth</div>
 			</div>
 		</motion.div>
 	);
