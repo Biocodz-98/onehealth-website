@@ -16,7 +16,7 @@ export default function Subsriber() {
 			viewport={{
 				once: true,
 			}}
-			className="bg-[#228821]  w-full p-5 py-9 md:p-9 rounded-3xl col-span-4 flex flex-col gap-5  overflow-hidden  justify-between"
+			className="bg-[#228821]  w-full p-5 py-9 md:p-9 rounded-3xl col-span-3 flex flex-col gap-5  overflow-hidden  justify-between"
 		>
 			<motion.h1
 				variants={H1P1L}
