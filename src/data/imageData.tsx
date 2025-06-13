@@ -86,6 +86,12 @@ import productHero from "../../public/productHero.svg";
 import femaleNurseHero from "../../public/femalenurseHero.svg";
 import prescriptionHero from "../../public/prescriptionHero.svg";
 
+import pharmacySearchHero from "../../public/pharmacySearchHero.png";
+import pharmacySearchSec2Img from "../../public/pharmacySearchSec2Img.png";
+import atomSvg from "../../public/atom.svg";
+import computerSvg from "../../public/computer-support.svg";
+import trackOrderSvg from "../../public/track-order.svg";
+import downCarret from  "../../public/down-carret.png";
 
 
 export const HeroIND =  HeroIndividual as string;
@@ -181,3 +187,10 @@ export const Antimaleria = antimaleria as string;
 export const Antibiotics = antibiotics as string;
 export const Contraceptives = contraceptives as string;
 export const MotherChildCat = motherChild as string;
+
+export const PharmacySearchHero = pharmacySearchHero as string;
+export const PharmacySearchSec2Img = pharmacySearchSec2Img as string;
+export const AtomSvg = atomSvg as string;
+export const ComputerSvg = computerSvg as string;
+export const TrackOrderSvg = trackOrderSvg as string;
+export const DownCarret = downCarret as string;
