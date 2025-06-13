@@ -253,6 +253,7 @@ export default function PharmacySearch() {
                 <span className="inline-block mb-2 md:mb-0 md:mt-1">
                   <img src={AtomSvg} alt="Atom" className="w-16 h-16 md:w-24 md:h-24 mx-auto md:mx-0" />
                 </span>
+                
                 <div>
                   <h3 className="font-bold text-lg text-[#10441E] mb-2">Regulatory Compliance & Data Security</h3>
                   <p className="text-gray-700 text-base">Fully compliant with Nigerian healthcare regulations including stringent data security measures to safeguard enrollee information.</p>
