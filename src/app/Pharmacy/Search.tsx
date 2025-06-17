@@ -1,21 +1,17 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search, MapPin, Filter, Star, Clock, Phone, Mail, Globe } from "lucide-react";
+
 import { 
     PharmacySearchHero,
     PharmacySearchSec2Img,
     AtomSvg,
     ComputerSvg,
     TrackOrderSvg,
-    Sheets, 
-    DownCarret
+    Sheets
 } from "@/data/imageData";
 
-const BASE_URL = import.meta.env.VITE_FULFILLMENT_URL;
+const BASE_URL = import.meta.env.VITE_FULFILMENT_URL;
 
-// Types
+
 interface StateType { id: number; name: string; }
 interface LgaType { id: number; name: string; }
 interface PharmacyType {
@@ -62,7 +58,7 @@ export default function PharmacySearch() {
     fetchStates();
   }, []);
 
-  // Fetch LGAs when state is selected
+
   useEffect(() => {
     if (!selectedState) {
       setLgas([]);
@@ -253,7 +249,7 @@ export default function PharmacySearch() {
                 <span className="inline-block mb-2 md:mb-0 md:mt-1">
                   <img src={AtomSvg} alt="Atom" className="w-16 h-16 md:w-24 md:h-24 mx-auto md:mx-0" />
                 </span>
-                
+
                 <div>
                   <h3 className="font-bold text-lg text-[#10441E] mb-2">Regulatory Compliance & Data Security</h3>
                   <p className="text-gray-700 text-base">Fully compliant with Nigerian healthcare regulations including stringent data security measures to safeguard enrollee information.</p>
