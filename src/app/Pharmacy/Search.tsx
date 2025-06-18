@@ -9,7 +9,7 @@ import {
     Sheets
 } from "@/data/imageData";
 
-const BASE_URL = import.meta.env.VITE_FULFILLMENT_URL;
+const BASE_URL = import.meta.env.VITE_FULFILLMENT_URL + '/api';
 
 
 interface StateType { id: number; name: string; }
