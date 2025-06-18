@@ -9,7 +9,7 @@ import {
     Sheets
 } from "@/data/imageData";
 
-const BASE_URL = import.meta.env.VITE_FULFILMENT_URL;
+const BASE_URL = import.meta.env.VITE_FULFILLMENT_URL + '/api';
 
 
 interface StateType { id: number; name: string; }
@@ -26,7 +26,6 @@ interface PharmacyType {
 }
 
 export default function PharmacySearch() {
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [selectedLGA, setSelectedLGA] = useState("");
   const [states, setStates] = useState<StateType[]>([]);
