@@ -28,7 +28,7 @@ export default function ClientRegistrationModal({show, setShow}: ClientRegistrat
 
     const fetchStates = async () => {
         try {
-            const response = await fetch(process.VITE_FULFILMENT_URL + "/api/states");
+            const response = await fetch(process.VITE_FULFILLMENT_URL + "/api/states");
 
             if(response.status == 200) {
                 const result = await response.json();
@@ -45,7 +45,7 @@ export default function ClientRegistrationModal({show, setShow}: ClientRegistrat
 
     const fetchStateLgas = async (state: string) => {
         try{
-            const response = await fetch(process.VITE_FULFILMENT_URL + "/api/states/" + state + '/lgas');
+            const response = await fetch(process.VITE_FULFILLMENT_URL + "/api/states/" + state + '/lgas');
 
             if(response.status == 200) {
                 const result = await response.json();
@@ -100,7 +100,7 @@ export default function ClientRegistrationModal({show, setShow}: ClientRegistrat
         setError(null)
 
         try {
-            const response = await fetch(process.VITE_FULFILMENT_URL + '/api/register/client', {
+            const response = await fetch(process.VITE_FULFILLMENT_URL + '/api/register/client', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
