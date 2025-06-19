@@ -35,9 +35,11 @@ export default function PharmacySearch() {
   const [loadingLgas, setLoadingLgas] = useState(false);
   const [errorStates, setErrorStates] = useState("");
   const [errorLgas, setErrorLgas] = useState("");
-  const [pharmacies, setPharmacies] = useState<PharmacyType[]>([]);
+  const [pharmacyPage, setPharmacyPage] = useState<any>(null);
   const [loadingPharmacies, setLoadingPharmacies] = useState(false);
   const [errorPharmacies, setErrorPharmacies] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 10;
 
   const resultsRef = useRef<HTMLDivElement | null>(null);
 
@@ -85,21 +87,23 @@ export default function PharmacySearch() {
   }, [selectedState]);
 
   // Handle pharmacy search
-  const handleSearch = async () => {
+  const handleSearch = async (url?: string) => {
     setLoadingPharmacies(true);
     setErrorPharmacies("");
-    setPharmacies([]);
+    setPharmacyPage(null);
     try {
-      const params = new URLSearchParams({
-        state: selectedState,
-        lga: selectedLGA,
-      });
-      const res = await fetch(`${BASE_URL}/pharmacies/search?${params.toString()}`);
-    
+      let fetchUrl = url;
+      if (!fetchUrl) {
+        const params = new URLSearchParams({
+          state: selectedState,
+          lga: selectedLGA,
+        });
+        fetchUrl = `${BASE_URL}/pharmacies/search?${params.toString()}`;
+      }
+      const res = await fetch(fetchUrl);
       if (!res.ok) throw new Error("Failed to fetch pharmacies");
       const data = await res.json();
-      console.log(data.data)
-      setPharmacies(data.data?.data || []);
+      setPharmacyPage(data.data);
     } catch (err: any) {
       setErrorPharmacies(err.message || "Error fetching pharmacies");
     } finally {
@@ -108,10 +112,16 @@ export default function PharmacySearch() {
   };
 
   useEffect(() => {
-    if (pharmacies.length > 0 && resultsRef.current) {
+    if (pharmacyPage?.data?.length > 0 && resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  }, [pharmacies]);
+  }, [pharmacyPage]);
+
+  const totalPages = Math.ceil(pharmacyPage?.data?.length / recordsPerPage);
+  const paginatedPharmacies = pharmacyPage?.data?.slice(
+    (currentPage - 1) * recordsPerPage,
+    currentPage * recordsPerPage
+  );
 
   return (
     <div className="bg-[#FCFEF9] min-h-screen w-full">
@@ -188,10 +198,10 @@ export default function PharmacySearch() {
       </section>
 
       {/* Results Section */}
-      {pharmacies.length > 0 && (
-        <section ref={resultsRef}  className="max-w-7xl mx-auto px-4 py-8 bg-white">
+      {pharmacyPage?.data?.length > 0 && (
+        <section ref={resultsRef} className="max-w-7xl mx-auto px-4 py-8 bg-white">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pharmacies.map(pharmacy => (
+            {pharmacyPage.data.map(pharmacy => (
               <div key={pharmacy.id} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex flex-col justify-between min-h-[110px]">
                 <div>
                   <h3 className="font-bold text-lg mb-2 text-[#222]">{pharmacy.pharmacy_name}</h3>
@@ -201,6 +211,20 @@ export default function PharmacySearch() {
               </div>
             ))}
           </div>
+          {/* Pagination */}
+          {pharmacyPage.links && pharmacyPage.links.length > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
+              {pharmacyPage.links.map((link, idx) => (
+                <button
+                  key={idx}
+                  disabled={!link.url}
+                  onClick={() => link.url && handleSearch(link.url)}
+                  className={`px-3 py-1 rounded border ${link.active ? 'bg-green-200 font-bold' : 'bg-gray-100'} disabled:opacity-50`}
+                  dangerouslySetInnerHTML={{ __html: link.label }}
+                />
+              ))}
+            </div>
+          )}
         </section>
       )}
 
