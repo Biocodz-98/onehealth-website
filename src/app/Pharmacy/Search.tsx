@@ -74,19 +74,17 @@ export default function PharmacySearch() {
   }, [selectedState]);
 
   // Handle pharmacy search
-  const handleSearch = async (url?: string) => {
+  const handleSearch = async (_?: string, page?: string) => {
     setLoadingPharmacies(true);
     setErrorPharmacies("");
     setPharmacyPage(null);
     try {
-      let fetchUrl = url;
-      if (!fetchUrl) {
-        const params = new URLSearchParams({
-          state: selectedState,
-          lga: selectedLGA,
-        });
-        fetchUrl = `${BASE_URL}/pharmacies/search?${params.toString()}`;
-      }
+      const params = new URLSearchParams({
+        state: selectedState,
+        lga: selectedLGA,
+      });
+      if (page) params.set('page', page);
+      const fetchUrl = `${BASE_URL}/pharmacies/search?${params.toString()}`;
       const res = await fetch(fetchUrl);
       if (!res.ok) throw new Error("Failed to fetch pharmacies");
       const data = await res.json();
@@ -199,7 +197,13 @@ export default function PharmacySearch() {
                 <button
                   key={idx}
                   disabled={!link.url}
-                  onClick={() => link.url && handleSearch(link.url)}
+                  onClick={() => {
+                    if (link.url) {
+                      const urlObj = new URL(link.url);
+                      const page = urlObj.searchParams.get('page');
+                      handleSearch(undefined, page);
+                    }
+                  }}
                   className={`px-3 py-1 rounded border ${link.active ? 'bg-green-200 font-bold' : 'bg-gray-100'} disabled:opacity-50`}
                   dangerouslySetInnerHTML={{ __html: link.label }}
                 />
