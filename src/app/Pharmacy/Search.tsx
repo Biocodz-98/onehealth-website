@@ -201,7 +201,7 @@ export default function PharmacySearch() {
                     if (link.url) {
                       const urlObj = new URL(link.url);
                       const page = urlObj.searchParams.get('page');
-                      handleSearch(undefined, page);
+                      handleSearch(undefined, page || undefined);
                     }
                   }}
                   className={`px-3 py-1 rounded border ${link.active ? 'bg-green-200 font-bold' : 'bg-gray-100'} disabled:opacity-50`}
