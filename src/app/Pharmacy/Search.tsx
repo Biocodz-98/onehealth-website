@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { ChevronDown } from "lucide-react";
 
 import { 
     PharmacySearchHero,
@@ -37,6 +38,8 @@ export default function PharmacySearch() {
   const [pharmacies, setPharmacies] = useState<PharmacyType[]>([]);
   const [loadingPharmacies, setLoadingPharmacies] = useState(false);
   const [errorPharmacies, setErrorPharmacies] = useState("");
+
+  const resultsRef = useRef<HTMLDivElement | null>(null);
 
   // Fetch states on mount
   useEffect(() => {
@@ -104,6 +107,12 @@ export default function PharmacySearch() {
     }
   };
 
+  useEffect(() => {
+    if (pharmacies.length > 0 && resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [pharmacies]);
+
   return (
     <div className="bg-[#FCFEF9] min-h-screen w-full">
       {/* Hero Section */}
@@ -118,10 +127,9 @@ export default function PharmacySearch() {
           </p>
           <form className=" mb-4" onSubmit={e => { e.preventDefault(); handleSearch(); }}>
             <div className="flex flex-col md:flex-row gap-4">
-
                 <div className="relative w-full md:w-60">
                   <select
-                    className="w-full px-4 pr-10 py-3 rounded-lg border border-gray-200 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-green-400 "
+                    className="w-full px-4 pr-10 py-3 rounded-lg border border-gray-200 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-green-400 appearance-none"
                     value={selectedState}
                     onChange={e => setSelectedState(e.target.value)}
                     disabled={loadingStates}
@@ -131,19 +139,26 @@ export default function PharmacySearch() {
                       <option key={state.id} value={state.name}>{state.name}</option>
                     ))}
                   </select>
-
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <ChevronDown className="h-5 w-5 text-gray-500" />
+                  </div>
                 </div>
-                <select
-                    className="w-full md:w-60 px-4 pr-20 py-3 rounded-lg border border-gray-200 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                <div className="relative w-full md:w-60">
+                  <select
+                    className="w-full px-4 pr-10 py-3 rounded-lg border border-gray-200 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-green-400 appearance-none"
                     value={selectedLGA}
                     onChange={e => setSelectedLGA(e.target.value)}
                     disabled={!selectedState || loadingLgas}
-                    >
+                  >
                     <option value="">{!selectedState ? "Select state first" : loadingLgas ? "Loading LGAs..." : "Select your LGA"}</option>
                     {lgas.map(lga => (
-                        <option key={lga.id} value={lga.name}>{lga.name}</option>
+                      <option key={lga.id} value={lga.name}>{lga.name}</option>
                     ))}
-                </select>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <ChevronDown className="h-5 w-5 text-gray-500" />
+                  </div>
+                </div>
             </div>
 
             <div className="mt-5">
@@ -174,7 +189,7 @@ export default function PharmacySearch() {
 
       {/* Results Section */}
       {pharmacies.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-8 bg-white">
+        <section ref={resultsRef}  className="max-w-7xl mx-auto px-4 py-8 bg-white">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pharmacies.map(pharmacy => (
               <div key={pharmacy.id} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex flex-col justify-between min-h-[110px]">
