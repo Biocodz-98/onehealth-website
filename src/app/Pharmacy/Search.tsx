@@ -15,16 +15,6 @@ const BASE_URL = import.meta.env.VITE_FULFILLMENT_URL + '/api';
 
 interface StateType { id: number; name: string; }
 interface LgaType { id: number; name: string; }
-interface PharmacyType {
-  id: string;
-  pharmacy_name: string;
-  address: string;
-  state: string;
-  lga: string;
-  avatar?: string;
-  average_rating?: number;
-  rating_count?: number;
-}
 
 export default function PharmacySearch() {
   const [selectedState, setSelectedState] = useState("");
@@ -38,9 +28,6 @@ export default function PharmacySearch() {
   const [pharmacyPage, setPharmacyPage] = useState<any>(null);
   const [loadingPharmacies, setLoadingPharmacies] = useState(false);
   const [errorPharmacies, setErrorPharmacies] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 10;
-
   const resultsRef = useRef<HTMLDivElement | null>(null);
 
   // Fetch states on mount
@@ -116,12 +103,6 @@ export default function PharmacySearch() {
       resultsRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [pharmacyPage]);
-
-  const totalPages = Math.ceil(pharmacyPage?.data?.length / recordsPerPage);
-  const paginatedPharmacies = pharmacyPage?.data?.slice(
-    (currentPage - 1) * recordsPerPage,
-    currentPage * recordsPerPage
-  );
 
   return (
     <div className="bg-[#FCFEF9] min-h-screen w-full">
@@ -201,7 +182,7 @@ export default function PharmacySearch() {
       {pharmacyPage?.data?.length > 0 && (
         <section ref={resultsRef} className="max-w-7xl mx-auto px-4 py-8 bg-white">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pharmacyPage.data.map(pharmacy => (
+            {pharmacyPage.data.map((pharmacy: any) => (
               <div key={pharmacy.id} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex flex-col justify-between min-h-[110px]">
                 <div>
                   <h3 className="font-bold text-lg mb-2 text-[#222]">{pharmacy.pharmacy_name}</h3>
@@ -214,7 +195,7 @@ export default function PharmacySearch() {
           {/* Pagination */}
           {pharmacyPage.links && pharmacyPage.links.length > 1 && (
             <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
-              {pharmacyPage.links.map((link, idx) => (
+              {pharmacyPage.links.map((link: any, idx: number) => (
                 <button
                   key={idx}
                   disabled={!link.url}
