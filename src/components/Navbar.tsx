@@ -10,6 +10,7 @@ import MobileNavItem from "./MobileNavItem";
 import ResourcePage from "./Header/Resource";
 import Popup from "./Popup";
 import Login from "./Login";
+import Product from "./Products";
 import Services from "./Services";
 import Callus from "./Callus";
 import SearchBody from "./SearchBody";
@@ -31,6 +32,8 @@ export default function Navbar() {
     showResourceMobile,
     showServices,
     setShowService,
+    showProduct,
+    setShowProduct,
     hasSearch,
     // setHasAdvertisement,
     isHovered,
@@ -86,13 +89,11 @@ export default function Navbar() {
                 </defs>
               </svg>{" "}
               <p className="ml-2 md:text-base text-sm tracking-wider">
-                In Lagos? Get medicines in minutes from OneHealth 24 hour Pharmacy
+                In Lagos? Get medicines in minutes from OneHealth 24 hour
+                Pharmacy
               </p>
-
               <Link
-                to={
-                   "https://247pharmacy.onehealthng.com"
-                }
+                to={"https://247pharmacy.onehealthng.com"}
                 className="text-[#3DA647] text-sm md:text-base p-3"
                 rel="nofollow"
                 target="_blank"
@@ -101,7 +102,6 @@ export default function Navbar() {
                   Start Here
                 </button>
               </Link>
-              
             </div>
           </div>
           {/* <RxCross2
@@ -142,6 +142,8 @@ export default function Navbar() {
                     setSearchResult={setSearchResult}
                     setShowServices={setShowService}
                     showServices={showServices}
+                    setShowProduct={setShowProduct}
+                    showProduct={showProduct}
                   />
                 </div>
               </div>
@@ -178,6 +180,7 @@ export default function Navbar() {
             setOpenLogin={setOpenLogin}
             setOpenCallUs={setOpenCallUs}
             setShowServices={setShowService}
+            setShowProduct={setShowProduct}
           />
         ))}
       </nav>
@@ -236,6 +239,11 @@ export default function Navbar() {
             setSearchQuery={setSearchQuery}
             setSearchResult={setSearchResult}
           />
+        </Popup>
+      )}
+      {showProduct && (
+        <Popup titleHeader="Products" setOpenPopup={closeAllPopups}>
+          <Product />
         </Popup>
       )}
     </>

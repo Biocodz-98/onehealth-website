@@ -1,125 +1,126 @@
 /** @type {import('tailwindcss').Config} */
-import * as defaultTheme from "tailwindcss/defaultTheme"
+import * as defaultTheme from "tailwindcss/defaultTheme";
 // const defaultTheme = import("tailwindcss/defaultTheme");
 module.exports = {
-	darkMode: ["class"],
-	content: [
-		"./pages/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-		"./src/app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
-	],
-	prefix: "",
-	theme: {
-		screens: {
-			xs: "350px",
-			...defaultTheme.screens,
-		},
-		container: {
-			center: true,
-			padding: "2rem",
-			screens: {
-				"2xl": "1400px",
-				xs: "350px",
-			},
-		},
-		extend: {
-			colors: {
-				border: "hsl(var(--border))",
-				input: "hsl(var(--input))",
-				ring: "hsl(var(--ring))",
-				background: "hsl(var(--background))",
-				foreground: "hsl(var(--foreground))",
-				primary: {
-					DEFAULT: "hsl(var(--primary))",
-					foreground: "hsl(var(--primary-foreground))",
-				},
-				secondary: {
-					DEFAULT: "hsl(var(--secondary))",
-					foreground: "hsl(var(--secondary-foreground))",
-				},
-				destructive: {
-					DEFAULT: "hsl(var(--destructive))",
-					foreground: "hsl(var(--destructive-foreground))",
-				},
-				muted: {
-					DEFAULT: "hsl(var(--muted))",
-					foreground: "hsl(var(--muted-foreground))",
-				},
-				accent: {
-					DEFAULT: "hsl(var(--accent))",
-					foreground: "hsl(var(--accent-foreground))",
-				},
-				popover: {
-					DEFAULT: "hsl(var(--popover))",
-					foreground: "hsl(var(--popover-foreground))",
-				},
-				card: {
-					DEFAULT: "hsl(var(--card))",
-					foreground: "hsl(var(--card-foreground))",
-				},
-			},
-			fontFamily: {
-				head: "Familjen Grotesk, Sans-serif",
-				sans: "Inter, sans-serif",
-				body: "Manrope, sans-serif",
-			},
-			borderRadius: {
-				lg: "var(--radius)",
-				md: "calc(var(--radius) - 2px)",
-				sm: "calc(var(--radius) - 4px)",
-			},
-			keyframes: {
-				"accordion-down": {
-					from: { height: "0" },
-					to: { height: "var(--radix-accordion-content-height)" },
-				},
-				"accordion-up": {
-					from: { height: "var(--radix-accordion-content-height)" },
-					to: { height: "0" },
-				},
-				marquee: {
-					"0%": { transform: "translateX(0%)" },
-					"100%": { transform: "translateX(-100%)" },
-				},
-				typewriter: {
-					to: {
-						left: "100%",
-					},
-				},
-				blink: {
-					"0%": {
-						opacity: "0",
-					},
-					"0.1%": {
-						opacity: "1",
-					},
-					"50%": {
-						opacity: "1",
-					},
-					"50.1%": {
-						opacity: "0",
-					},
-					"100%": {
-						opacity: "0",
-					},
-				},
+  darkMode: ["class"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./src/app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+    "../method-onehealthng/src/**/*.{ts,tsx,js,jsx}",
+  ],
+  prefix: "",
+  theme: {
+    screens: {
+      xs: "350px",
+      ...defaultTheme.screens,
+    },
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+        xs: "350px",
+      },
+    },
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      fontFamily: {
+        head: "Familjen Grotesk, Sans-serif",
+        sans: "Inter, sans-serif",
+        body: "Manrope, sans-serif",
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        typewriter: {
+          to: {
+            left: "100%",
+          },
+        },
+        blink: {
+          "0%": {
+            opacity: "0",
+          },
+          "0.1%": {
+            opacity: "1",
+          },
+          "50%": {
+            opacity: "1",
+          },
+          "50.1%": {
+            opacity: "0",
+          },
+          "100%": {
+            opacity: "0",
+          },
+        },
 
-				fadeIn: {
-					from: { opacity: 0 },
-					to: { opacity: 1 },
-				},
-			},
-			animation: {
-				"accordion-down": "accordion-down 0.2s ease-out",
-				"accordion-up": "accordion-up 0.2s ease-out",
-				marquee: "marquee 25s linear infinite",
-				typewriter: "typewriter 2s steps(11) forwards",
-				caret:
-					"typewriter 2s steps(11) forwards, blink 1s steps(11) infinite 2s",
-				fade: "fadeIn .8s ease-in-out",
-			},
-		},
-	},
-	plugins: [require("tailwindcss-animate")],
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        marquee: "marquee 25s linear infinite",
+        typewriter: "typewriter 2s steps(11) forwards",
+        caret:
+          "typewriter 2s steps(11) forwards, blink 1s steps(11) infinite 2s",
+        fade: "fadeIn .8s ease-in-out",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
 };
