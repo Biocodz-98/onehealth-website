@@ -1,11 +1,12 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-body {
-  font-family: "Manrope", sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  font-style: regular;
-}
-ul {
-  list-style-type: none;
+@layer base {
+  body {
+    font-family: "Manrope", sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    font-style: regular;
+  }
 }

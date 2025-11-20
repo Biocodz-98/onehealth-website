@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 
-const MethodApp = lazy(() => import("../../src/method-app/src/App"));
+const MethodApp = lazy(() => import("@/method-app/src/App"));
 
 export default function MethodPage() {
   return (
