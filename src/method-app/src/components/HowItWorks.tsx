@@ -303,7 +303,10 @@ export default function MethodWorks() {
             </div>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-              <button
+              <a
+                href="https://tally.so/r/mKqLN8"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-white font-medium shadow-md hover:shadow-lg transition-shadow w-full sm:w-auto text-sm sm:text-base"
                 style={{
                   backgroundColor: "#3da647",
@@ -312,8 +315,11 @@ export default function MethodWorks() {
                 }}
               >
                 Start the Readiness Check
-              </button>
-              <button
+              </a>
+              <a
+                href="https://tally.so/r/mKqLN8"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="border-2 font-medium hover:bg-gray-50 transition-colors w-full sm:w-auto text-sm sm:text-base"
                 style={{
                   borderColor: "#3da647",
@@ -325,7 +331,7 @@ export default function MethodWorks() {
                 }}
               >
                 Book My Doctor Consultation
-              </button>
+              </a>
             </div>
           </motion.div>
         </div>
