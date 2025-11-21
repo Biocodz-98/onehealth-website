@@ -51,7 +51,10 @@ export default function WeightLossLanding() {
             </p>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-              <button
+              <a
+                href="https://tally.so/r/mKqLN8"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-green-600 hover:bg-green-700 transition-colors text-sm sm:text-base w-full sm:w-auto"
                 style={{
                   padding: "14px 24px",
@@ -62,8 +65,11 @@ export default function WeightLossLanding() {
                 }}
               >
                 Start Your Medical Assessment
-              </button>
-              <button
+              </a>
+              <a
+                href="https://tally.so/r/mKqLN8"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white transition-colors hover:bg-green-50 text-sm sm:text-base w-full sm:w-auto"
                 style={{
                   padding: "14px 24px",
@@ -74,7 +80,7 @@ export default function WeightLossLanding() {
                 }}
               >
                 Check Eligibility (free)
-              </button>
+              </a>
             </div>
 
             <div className="flex items-center gap-3 pt-2 md:pt-4">

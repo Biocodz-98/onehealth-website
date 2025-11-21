@@ -58,7 +58,10 @@ export default function WeightLossHero() {
             </p>
 
             <div className="pt-2">
-              <button
+              <a
+                href="https://tally.so/r/mKqLN8"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-[#3da647] hover:bg-[#358f3d] text-white transition-colors shadow-lg hover:shadow-xl w-full sm:w-auto text-sm sm:text-base"
                 style={{
                   borderRadius: "50px",
@@ -67,7 +70,7 @@ export default function WeightLossHero() {
                 }}
               >
                 See If I Qualify
-              </button>
+              </a>
             </div>
           </motion.div>
         </div>

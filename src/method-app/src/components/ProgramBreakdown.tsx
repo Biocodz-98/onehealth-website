@@ -46,7 +46,10 @@ function ProgramBreakdown() {
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
           className="flex justify-center mt-6 md:mt-8 px-4"
         >
-          <button
+          <a
+            href="https://tally.so/r/mKqLN8"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full sm:w-auto text-sm sm:text-base hover:bg-[#358f3d] transition-colors"
             style={{
               backgroundColor: "#3da647",
@@ -59,7 +62,7 @@ function ProgramBreakdown() {
             }}
           >
             Confirm Eligibility Now
-          </button>
+          </a>
         </motion.div>
       </div>
     </div>

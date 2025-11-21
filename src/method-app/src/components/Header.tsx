@@ -44,7 +44,10 @@ function Header() {
         </nav>
 
         {/* Desktop Button */}
-        <button
+        <a
+          href="https://tally.so/r/mKqLN8"
+          target="_blank"
+          rel="noopener noreferrer"
           className="hidden md:block bg-[#3da647] text-white hover:bg-green-700"
           style={{
             padding: "10px 16px",
@@ -57,7 +60,7 @@ function Header() {
           }}
         >
           Start Your Free Check
-        </button>
+        </a>
 
         {/* Hamburger Menu Button */}
         <button
@@ -88,8 +91,12 @@ function Header() {
               </li>
             </ul>
           </nav>
-          <button
-            className="w-full mt-4 bg-[#3da647] text-white hover:bg-green-700"
+
+          <a
+            href="https://tally.so/r/mKqLN8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block w-full mt-4 text-center bg-[#3da647] text-white hover:bg-green-700"
             style={{
               padding: "10px 16px",
               borderRadius: "50px",
@@ -98,10 +105,11 @@ function Header() {
               lineHeight: "150%",
               fontFamily: "Manrope, sans-serif",
               cursor: "pointer",
+              textDecoration: "none",
             }}
           >
             Start Your Free Check
-          </button>
+          </a>
         </div>
       )}
     </header>
