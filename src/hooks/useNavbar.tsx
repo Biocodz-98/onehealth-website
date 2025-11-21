@@ -4,136 +4,134 @@ import { useLocation } from "react-router-dom";
 // import { truncate } from "fs";
 
 export default function useNavbar() {
-	const [isHovered, setIsHovered] = useState<boolean>(false);
-	const [hasSearch, setHasSearch] = useState<boolean>(false);
-	const [openLogin, setOpenLogin] = useState<boolean>(false);
-	const [callUs, setOpenCallUs] = useState<boolean>(false);
-	const [showResourceMobile, setShowResourceMobile] = useState<boolean>(false);
-	const [showServices, setShowService] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [hasSearch, setHasSearch] = useState<boolean>(false);
+  const [openLogin, setOpenLogin] = useState<boolean>(false);
+  const [callUs, setOpenCallUs] = useState<boolean>(false);
+  const [showResourceMobile, setShowResourceMobile] = useState<boolean>(false);
+  const [showServices, setShowService] = useState<boolean>(false);
+  const [showProduct, setShowProduct] = useState<boolean>(false);
 
-	const [showWhatapp, setShowWhatapp] = useState<boolean>(false);
-	const [screenSize, setScreenSize] = useState<{
-		height: number;
-		width: number;
-	}>({
-		width: window.innerWidth,
-		height: window.innerHeight,
-	});
-	
-	const [hasAdvertisement, setHasAdvertisement] = useState<boolean>(true); //use for displaying advertisement on the screen (default false - no advertisement)
+  const [showWhatapp, setShowWhatapp] = useState<boolean>(false);
+  const [screenSize, setScreenSize] = useState<{
+    height: number;
+    width: number;
+  }>({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
-	const [searchQuery, setSearchQuery] = useState<string>(""); //change search query to string
-	const location = useLocation();
-	//mobile devices
-	const [active, setActive] = useState<boolean[]>([false, false, false, false]);
+  const [hasAdvertisement, setHasAdvertisement] = useState<boolean>(true); //use for displaying advertisement on the screen (default false - no advertisement)
 
-	const { error, searchResult, loading, setSearchResult } =
-		useSearch(searchQuery);
+  const [searchQuery, setSearchQuery] = useState<string>(""); //change search query to string
+  const location = useLocation();
+  //mobile devices
+  const [active, setActive] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
-	const checkpath = (item: string) => {
-		const checker = item.trim().toLowerCase();
-		const assignHome = location.pathname.toLowerCase() == "/" ? "home" : location.pathname;
-		if (checker === "home") {
-			setActive([true, false, false, false, false, false]);
-		}
-		if (checker == assignHome) {
-			setActive([true, false, false, false, false, false]);
-		}
-		if (checker === "services") {
-			setActive([false, true, false, false, false, false]);
-		}
-		if (checker === "call us") {
-			setActive([false, false, true, false, false, false]);
-		}
-		if (checker === "login") {
-			setActive([false, false, false, true, false, false, false]);
-		}
-		if (checker === "/pharmacies") {
-			setActive([false, false, false, false, true, false, false]);
-		}
-		if (checker === "/insurers") {
-			setActive([false, false, false, false, false, true, false]);
-		}
-		if (
-			checker !== "login" &&
-			checker !== "services" &&
-			checker !== "call us" &&
-			(checker !== "home" || checker !== assignHome) &&
-			checker !== "/pharmacies" &&
-			checker !== "/insurers"
-		) {
-			setActive([false, false, false, false, false, false, false]);
-		}
-	};
+  const { error, searchResult, loading, setSearchResult } =
+    useSearch(searchQuery);
 
-	const closeAllPopups = () => {
-		setShowResourceMobile(false);
-		setOpenCallUs(false);
-		setOpenLogin(false);
-		setHasSearch(false);
-		setShowService(false);
-		setSearchResult([]);
-	};
+  const checkpath = (item: string) => {
+    const checker = item.trim().toLowerCase();
+    const assignHome =
+      location.pathname.toLowerCase() === "/" ? "home" : location.pathname;
 
-	//pop in whatsapp
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setShowWhatapp(true);
-		}, 4000);
+    const newActive = [false, false, false, false, false];
 
-		return () => clearTimeout(timer);
-	}, []);
+    if (checker === "home" || checker === "/" || checker === assignHome) {
+      newActive[0] = true;
+    } else if (checker === "product") {
+      newActive[1] = true;
+    } else if (checker === "services") {
+      newActive[2] = true;
+    } else if (checker === "call us") {
+      newActive[3] = true;
+    } else if (checker === "login") {
+      newActive[4] = true;
+    } else if (checker === "/pharmacies" || checker === "/insurers") {
+      newActive[0] = true;
+    }
 
-	//handle screen sizes
-	useEffect(() => {
-		const handleResize = () => {
-			setScreenSize({
-				width: window.innerWidth,
-				height: window.innerHeight,
-			});
-		};
+    setActive(newActive);
+  };
 
-		window.addEventListener("resize", handleResize);
+  const closeAllPopups = () => {
+    setShowResourceMobile(false);
+    setOpenCallUs(false);
+    setOpenLogin(false);
+    setHasSearch(false);
+    setShowService(false);
+    setShowProduct(false);
+    setSearchResult([]);
+  };
 
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
+  //pop in whatsapp
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowWhatapp(true);
+    }, 4000);
 
-	//scroll to top on router change
-	useEffect(() => {
-		window.scrollTo(0, 0);
-		closeAllPopups();
-		checkpath(location.pathname=="/"?"home":location.pathname);
-	}, [location.pathname]);
-	return {
-		closeAllPopups,
-		checkpath,
-		isHovered,
-		setIsHovered,
-		hasSearch,
-		setHasSearch,
-		hasAdvertisement,
-		setHasAdvertisement,
-		openLogin,
-		setOpenLogin,
-		callUs,
-		setOpenCallUs,
-		showResourceMobile,
-		setShowResourceMobile,
-		showServices,
-		setShowService,
-		showWhatapp,
-		setShowWhatapp,
-		setScreenSize,
-		screenSize,
-		active,
-		setActive,
-		searchQuery,
-		setSearchQuery,
-		error,
-		searchResult,
-		loading,
-		setSearchResult,
-	};
+    return () => clearTimeout(timer);
+  }, []);
+
+  //handle screen sizes
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  //scroll to top on router change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    closeAllPopups();
+    checkpath(location.pathname == "/" ? "home" : location.pathname);
+  }, [location.pathname]);
+  return {
+    closeAllPopups,
+    checkpath,
+    isHovered,
+    setIsHovered,
+    hasSearch,
+    setHasSearch,
+    hasAdvertisement,
+    setHasAdvertisement,
+    openLogin,
+    setOpenLogin,
+    callUs,
+    setOpenCallUs,
+    showResourceMobile,
+    setShowResourceMobile,
+    showServices,
+    setShowService,
+    showWhatapp,
+    setShowWhatapp,
+    setScreenSize,
+    screenSize,
+    showProduct,
+    setShowProduct,
+    active,
+    setActive,
+    searchQuery,
+    setSearchQuery,
+    error,
+    searchResult,
+    loading,
+    setSearchResult,
+  };
 }
