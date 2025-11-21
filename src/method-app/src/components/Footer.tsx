@@ -112,7 +112,7 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="hover:text-green-600">
-                  PillHinda
+                  Pillfinda
                 </a>
               </li>
             </ul>

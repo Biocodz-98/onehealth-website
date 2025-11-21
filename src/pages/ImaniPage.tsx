@@ -34,8 +34,8 @@ export default function ImaniPage() {
 
   return (
     <div
-      className="relative w-full"
-      style={{ minHeight: "calc(100vh - 80px)" }}
+      className="relative w-full pt-32 md:pt-20"
+      style={{ minHeight: "100vh" }}
     >
       {/* Loading Spinner */}
       {!loaded && (

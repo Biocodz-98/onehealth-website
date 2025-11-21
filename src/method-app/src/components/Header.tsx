@@ -22,9 +22,15 @@ function Header() {
         {/* Desktop Navigation */}
         <nav className="hidden md:block">
           <ul className="flex space-x-6 list-none m-0 p-0">
-            <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
-              Home
-            </li>
+            <a
+              href="https://web.onehealthng.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
+                Home
+              </li>
+            </a>
             <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
               How It Works
             </li>
