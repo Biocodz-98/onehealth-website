@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 export default function MethodWorks() {
   return (
     <div
+      id="how-it-works"
       className="p-6 sm:p-8 md:p-12 lg:p-20 lg:py-16"
       style={{ backgroundColor: "#fafdf7" }}
     >

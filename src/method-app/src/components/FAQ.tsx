@@ -37,7 +37,7 @@ export default function FAQ() {
   };
 
   return (
-    <div className="p-6 sm:p-8 md:p-12 lg:p-20 lg:py-16 bg-white">
+    <div id="faq" className="p-6 sm:p-8 md:p-12 lg:p-20 lg:py-16 bg-white">
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-start">
           <motion.div
