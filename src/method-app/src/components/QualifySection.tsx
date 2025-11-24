@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function WeightLossHero() {
+  const [imageLoaded, setImageLoaded] = useState({
+    img1: false,
+  });
   return (
     <div className="p-6 sm:p-8 md:p-12 lg:p-20 lg:py-16 bg-white">
       {/* Main content */}
@@ -14,11 +18,24 @@ export default function WeightLossHero() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg order-2 md:order-1"
           >
-            <img
-              src="/method-images/happy lady image.svg"
-              alt="Woman celebrating with scale"
-              className="w-full h-64 sm:h-80 md:h-96 lg:h-full object-cover"
-            />
+            <div className="rounded-3xl overflow-hidden shadow-lg relative bg-gray-200">
+              {!imageLoaded.img1 && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+
+              <img
+                src="/method-images/happy lady image.svg"
+                alt="Woman celebrating with scale"
+                className={`w-full h-64 sm:h-80 md:h-96 lg:h-full object-cover ${
+                  imageLoaded.img1 ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300`}
+                onLoad={() =>
+                  setImageLoaded((prev) => ({ ...prev, img1: true }))
+                }
+              />
+            </div>
           </motion.div>
 
           {/* Right side - Text content */}

@@ -1,6 +1,12 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function WeightLossLanding() {
+  const [imageLoaded, setImageLoaded] = useState({
+    img1: false,
+    img2: false,
+  });
+
   return (
     <div
       className="p-6 sm:p-8 md:p-12 lg:p-20 lg:py-16"
@@ -106,11 +112,24 @@ export default function WeightLossLanding() {
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
               className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg"
             >
-              <img
-                src="/method-images/hero image 01.svg"
-                alt="Woman measuring waist"
-                className="w-full h-48 sm:h-56 md:h-64 object-cover"
-              />
+              <div className="rounded-3xl overflow-hidden shadow-lg relative bg-gray-200">
+                {!imageLoaded.img1 && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
+
+                <img
+                  src="/method-images/hero image 01.svg"
+                  alt="Woman measuring waist"
+                  className={`w-full h-48 transition-opacity duration-300 ${
+                    imageLoaded.img1 ? "opacity-100" : "opacity-0"
+                  } sm:h-56 md:h-64 object-cover`}
+                  onLoad={() =>
+                    setImageLoaded((prev) => ({ ...prev, img1: true }))
+                  }
+                />
+              </div>
             </motion.div>
 
             {/* Top Right - Elderly woman eating healthy - spans 2 rows */}
@@ -136,11 +155,24 @@ export default function WeightLossLanding() {
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
               className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg"
             >
-              <img
-                src="/method-images/hero image 02.svg"
-                alt="Measuring tape"
-                className="w-full h-48 sm:h-56 md:h-64 object-cover"
-              />
+              <div className="rounded-3xl overflow-hidden shadow-lg relative bg-gray-200">
+                {!imageLoaded.img2 && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
+
+                <img
+                  src="/method-images/hero image 02.svg"
+                  alt="Measuring tape"
+                  className={`w-full h-48 transition-opacity duration-300 ${
+                    imageLoaded.img2 ? "opacity-100" : "opacity-0"
+                  } sm:h-56 md:h-64 object-cover`}
+                  onLoad={() =>
+                    setImageLoaded((prev) => ({ ...prev, img2: true }))
+                  }
+                />
+              </div>
             </motion.div>
           </div>
         </div>
