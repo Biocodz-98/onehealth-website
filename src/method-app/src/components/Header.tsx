@@ -3,6 +3,19 @@ import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 function Header() {
+  const handleScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    targetId: string
+  ) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -10,7 +23,7 @@ function Header() {
       <div className="flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
-          <Link to={"/"} className="pointer">
+          <Link to={"/"} className="pointer-events-auto">
             <img
               src="/method-images/Onehealthng-Logo.svg"
               alt="OneHealth Logo"
@@ -26,20 +39,32 @@ function Header() {
               href="https://web.onehealthng.com/"
               target="_blank"
               rel="noopener noreferrer"
+              className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
             >
-              <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
-                Home
-              </li>
+              Home
             </a>
-            <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
+
+            <a
+              href="#how-it-works"
+              onClick={(e) => handleScroll(e, "how-it-works")}
+              className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
+            >
               How It Works
-            </li>
-            <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
+            </a>
+            <a
+              href="#product-categories"
+              onClick={(e) => handleScroll(e, "product-categories")}
+              className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
+            >
               Product Categories
-            </li>
-            <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
+            </a>
+            <a
+              href="#faq"
+              onClick={(e) => handleScroll(e, "faq")}
+              className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
+            >
               FAQ
-            </li>
+            </a>
           </ul>
         </nav>
 
@@ -77,18 +102,36 @@ function Header() {
         <div className="md:hidden mt-4 pb-4">
           <nav>
             <ul className="flex flex-col space-y-4 list-none m-0 p-0">
-              <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
+              <a
+                href="https://web.onehealthng.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
+              >
                 Home
-              </li>
-              <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
+              </a>
+
+              <a
+                href="#how-it-works"
+                onClick={(e) => handleScroll(e, "how-it-works")}
+                className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
+              >
                 How It Works
-              </li>
-              <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
+              </a>
+              <a
+                href="#product-categories"
+                onClick={(e) => handleScroll(e, "product-categories")}
+                className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
+              >
                 Product Categories
-              </li>
-              <li className="hover:text-green-600 cursor-pointer text-base font-normal list-none">
+              </a>
+              <a
+                href="#faq"
+                onClick={(e) => handleScroll(e, "faq")}
+                className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
+              >
                 FAQ
-              </li>
+              </a>
             </ul>
           </nav>
 

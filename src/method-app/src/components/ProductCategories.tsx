@@ -1,8 +1,17 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 function ProductCategories() {
+  const [imageLoaded, setImageLoaded] = useState({
+    img1: false,
+    img2: false,
+    img3: false,
+    img4: false,
+  });
+
   return (
     <div
+      id="product-categories"
       className="p-6 sm:p-8 md:p-12 lg:p-20 lg:py-16"
       style={{ backgroundColor: "#fef4e9" }}
     >
@@ -33,11 +42,24 @@ function ProductCategories() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
             className="flex items-center justify-center p-6 sm:p-8"
           >
-            <img
-              src="/method-images/pharmacist support.svg"
-              alt="Pharmacist support"
-              className="w-full max-w-xs sm:max-w-sm"
-            />
+            <div className="rounded-3xl overflow-hidden shadow-lg relative bg-gray-200">
+              {!imageLoaded.img1 && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+
+              <img
+                src="/method-images/pharmacist support.svg"
+                alt="Pharmacist support"
+                className={`w-full max-w-xs sm:max-w-sm ${
+                  imageLoaded.img1 ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300`}
+                onLoad={() =>
+                  setImageLoaded((prev) => ({ ...prev, img1: true }))
+                }
+              />
+            </div>
           </motion.div>
 
           {/* Section 2: Local Supply */}
@@ -48,11 +70,24 @@ function ProductCategories() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
             className="flex items-center justify-center p-6 sm:p-8"
           >
-            <img
-              src="/method-images/local supply.svg"
-              alt="Local supply"
-              className="w-full max-w-xs sm:max-w-sm"
-            />
+            <div className="rounded-3xl overflow-hidden shadow-lg relative bg-gray-200">
+              {!imageLoaded.img2 && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+
+              <img
+                src="/method-images/local supply.svg"
+                alt="Local supply"
+                className={`w-full max-w-xs sm:max-w-sm ${
+                  imageLoaded.img2 ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300`}
+                onLoad={() =>
+                  setImageLoaded((prev) => ({ ...prev, img2: true }))
+                }
+              />
+            </div>
           </motion.div>
 
           {/* Section 3: Temperature Verified */}
@@ -63,11 +98,24 @@ function ProductCategories() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
             className="flex items-center justify-center p-6 sm:p-8"
           >
-            <img
-              src="/method-images/temperature verified.svg"
-              alt="Temperature verified"
-              className="w-full max-w-xs sm:max-w-sm"
-            />
+            <div className="rounded-3xl overflow-hidden shadow-lg relative bg-gray-200">
+              {!imageLoaded.img3 && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+
+              <img
+                src="/method-images/temperature verified.svg"
+                alt="Temperature verified"
+                className={`w-full max-w-xs sm:max-w-sm ${
+                  imageLoaded.img3 ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300`}
+                onLoad={() =>
+                  setImageLoaded((prev) => ({ ...prev, img3: true }))
+                }
+              />
+            </div>
           </motion.div>
 
           {/* Section 4: Discrete Private */}
@@ -78,11 +126,24 @@ function ProductCategories() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
             className="flex items-center justify-center p-6 sm:p-8"
           >
-            <img
-              src="/method-images/discrete private.svg"
-              alt="Discrete private"
-              className="w-full max-w-xs sm:max-w-sm"
-            />
+            <div className="rounded-3xl overflow-hidden shadow-lg relative bg-gray-200">
+              {!imageLoaded.img4 && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+
+              <img
+                src="/method-images/discrete private.svg"
+                alt="Discrete private"
+                className={`w-full max-w-xs sm:max-w-sm ${
+                  imageLoaded.img4 ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300`}
+                onLoad={() =>
+                  setImageLoaded((prev) => ({ ...prev, img4: true }))
+                }
+              />
+            </div>
           </motion.div>
         </div>
       </div>

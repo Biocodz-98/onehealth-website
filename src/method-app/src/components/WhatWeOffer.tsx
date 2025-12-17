@@ -255,7 +255,7 @@ function WhatWeOffer() {
             href="https://tally.so/r/mKqLN8"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto text-sm sm:text-base hover:bg-[#358f3d] transition-colors"
+            className="w-full sm:w-auto text-sm sm:text-base hover:bg-[#358f3d] transition-colors text-center inline-block"
             style={{
               backgroundColor: "#3da647",
               color: "#ffffff",
