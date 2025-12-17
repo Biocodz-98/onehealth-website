@@ -1,11 +1,11 @@
-import { Youtube, Linkedin, Instagram } from "lucide-react";
+import { Youtube, Linkedin, Instagram } from 'lucide-react';
 
 const Footer = () => {
   return (
     <footer
       className="p-8 md:p-12 lg:p-20 lg:py-16"
       style={{
-        backgroundColor: "#f5f5f5",
+        backgroundColor: '#f5f5f5',
       }}
     >
       <div className="max-w-7xl mx-auto">
@@ -13,11 +13,11 @@ const Footer = () => {
           <h2
             className="mb-4"
             style={{
-              fontFamily: "Lexend, sans-serif",
-              fontSize: "30px",
-              fontWeight: "700",
-              lineHeight: "110%",
-              color: "#000000",
+              fontFamily: 'Lexend, sans-serif',
+              fontSize: '30px',
+              fontWeight: '700',
+              lineHeight: '110%',
+              color: '#000000',
             }}
           >
             OneHealthng <br />
@@ -26,25 +26,25 @@ const Footer = () => {
           <div
             className="grid md:grid-cols-3 gap-8 "
             style={{
-              fontFamily: "Manrope, sans-serif",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "150%",
-              fontStyle: "regular",
-              color: "#323232",
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '16px',
+              fontWeight: '400',
+              lineHeight: '150%',
+              fontStyle: 'regular',
+              color: '#323232',
             }}
           >
             <p
               style={{
-                borderRight: "1px solid #bfbfbf",
-                paddingRight: "16px",
+                borderRight: '1px solid #bfbfbf',
+                paddingRight: '16px',
               }}
             >
               We do not claim affiliation with or distribution of brand-name
               products such as Ozempic®, Wegovy®, Mounjaro®, Zepbound®.
             </p>
             <p
-              style={{ borderRight: "1px solid #bfbfbf", paddingRight: "16px" }}
+              style={{ borderRight: '1px solid #bfbfbf', paddingRight: '16px' }}
             >
               Where clinically appropriate, OneHealth physicians may prescribe
               semaglutide (GLP-1) or tirzepatide (GLP-1 + GIP), the same
@@ -64,12 +64,12 @@ const Footer = () => {
             <h3
               className=" mb-4"
               style={{
-                fontFamily: "Monrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "medium",
-                color: "#989898",
+                fontFamily: 'Monrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'medium',
+                color: '#989898',
               }}
             >
               Product
@@ -77,12 +77,12 @@ const Footer = () => {
             <ul
               className="space-y-2 "
               style={{
-                fontFamily: "Manrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "regular",
-                color: "#4b4b4b",
+                fontFamily: 'Manrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'regular',
+                color: '#4b4b4b',
               }}
             >
               <li>
@@ -123,12 +123,12 @@ const Footer = () => {
             <h3
               className=" mb-4"
               style={{
-                fontFamily: "Monrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "medium",
-                color: "#989898",
+                fontFamily: 'Monrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'medium',
+                color: '#989898',
               }}
             >
               Platform
@@ -136,12 +136,12 @@ const Footer = () => {
             <ul
               className="space-y-2 "
               style={{
-                fontFamily: "Manrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "regular",
-                color: "#4b4b4b",
+                fontFamily: 'Manrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'regular',
+                color: '#4b4b4b',
               }}
             >
               <li>
@@ -182,12 +182,12 @@ const Footer = () => {
             <h3
               className=" mb-4"
               style={{
-                fontFamily: "Monrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "medium",
-                color: "#989898",
+                fontFamily: 'Monrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'medium',
+                color: '#989898',
               }}
             >
               Company
@@ -195,12 +195,12 @@ const Footer = () => {
             <ul
               className="space-y-2 "
               style={{
-                fontFamily: "Manrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "regular",
-                color: "#4b4b4b",
+                fontFamily: 'Manrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'regular',
+                color: '#4b4b4b',
               }}
             >
               <li>
@@ -241,12 +241,12 @@ const Footer = () => {
             <h3
               className=" mb-4"
               style={{
-                fontFamily: "Monrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "medium",
-                color: "#989898",
+                fontFamily: 'Monrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'medium',
+                color: '#989898',
               }}
             >
               Resources
@@ -254,12 +254,12 @@ const Footer = () => {
             <ul
               className="space-y-2 "
               style={{
-                fontFamily: "Manrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "regular",
-                color: "#4b4b4b",
+                fontFamily: 'Manrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'regular',
+                color: '#4b4b4b',
               }}
             >
               <li>
@@ -295,12 +295,12 @@ const Footer = () => {
             <h3
               className=" mb-4"
               style={{
-                fontFamily: "Monrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "medium",
-                color: "#989898",
+                fontFamily: 'Monrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'medium',
+                color: '#989898',
               }}
             >
               Legal
@@ -308,12 +308,12 @@ const Footer = () => {
             <ul
               className="space-y-2 "
               style={{
-                fontFamily: "Manrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "regular",
-                color: "#4b4b4b",
+                fontFamily: 'Manrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'regular',
+                color: '#4b4b4b',
               }}
             >
               <li>
@@ -334,38 +334,46 @@ const Footer = () => {
             <h3
               className=" mb-4"
               style={{
-                fontFamily: "Monrope, sans-serif",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "150%",
-                fontStyle: "medium",
-                color: "#989898",
+                fontFamily: 'Monrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '150%',
+                fontStyle: 'medium',
+                color: '#989898',
               }}
             >
               Social
             </h3>
             <div className="flex gap-3">
               <a
-                href="#"
+                href="https://youtube.com/@onehealthng?si=QdJamnqNKD5gdMxq"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-8 h-8 bg-black rounded-full flex items-center justify-center hover:bg-gray-800"
               >
                 <Youtube className="w-4 h-4 text-white" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/onehealthng?igsh=a2l6c2JkZjh2cG5u&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-8 h-8 bg-black rounded-full flex items-center justify-center hover:bg-gray-800"
               >
                 <Instagram className="w-4 h-4 text-white" />
               </a>
 
               <a
-                href="#"
+                href="https://www.linkedin.com/company/onehealthng/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-8 h-8 bg-black rounded-full flex items-center justify-center hover:bg-gray-800"
               >
                 <Linkedin className="w-4 h-4 text-white" />
               </a>
               <a
-                href="#"
+                href="https://x.com/onehealthng?s=21"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-8 h-8 bg-black rounded-full flex items-center justify-center hover:bg-gray-800"
               >
                 <svg

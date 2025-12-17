@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 function Header() {
   const handleScroll = (
@@ -11,19 +11,19 @@ function Header() {
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+        behavior: 'smooth',
+        block: 'start',
       });
     }
   };
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white px-8 py-4">
-      <div className="flex justify-between items-center">
+    <header className="bg-white px-8 py-4 shadow-sm fixed top-0 left-0 right-0 z-50">
+      <div className="flex justify-between items-center ">
         {/* Logo */}
         <div className="flex items-center">
-          <Link to={"/"} className="pointer-events-auto">
+          <Link to={'/'} className="pointer-events-auto">
             <img
               src="/method-images/Onehealthng-Logo.svg"
               alt="OneHealth Logo"
@@ -46,21 +46,21 @@ function Header() {
 
             <a
               href="#how-it-works"
-              onClick={(e) => handleScroll(e, "how-it-works")}
+              onClick={(e) => handleScroll(e, 'how-it-works')}
               className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
             >
               How It Works
             </a>
             <a
               href="#product-categories"
-              onClick={(e) => handleScroll(e, "product-categories")}
+              onClick={(e) => handleScroll(e, 'product-categories')}
               className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
             >
               Product Categories
             </a>
             <a
               href="#faq"
-              onClick={(e) => handleScroll(e, "faq")}
+              onClick={(e) => handleScroll(e, 'faq')}
               className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
             >
               FAQ
@@ -75,13 +75,13 @@ function Header() {
           rel="noopener noreferrer"
           className="hidden md:block bg-[#3da647] text-white hover:bg-green-700"
           style={{
-            padding: "10px 16px",
-            borderRadius: "50px",
-            fontSize: "14px",
-            fontWeight: "500",
-            lineHeight: "150%",
-            fontFamily: "Manrope, sans-serif",
-            cursor: "pointer",
+            padding: '10px 16px',
+            borderRadius: '50px',
+            fontSize: '14px',
+            fontWeight: '500',
+            lineHeight: '150%',
+            fontFamily: 'Manrope, sans-serif',
+            cursor: 'pointer',
           }}
         >
           Start Your Free Check
@@ -89,7 +89,7 @@ function Header() {
 
         {/* Hamburger Menu Button */}
         <button
-          className="md:hidden text-gray-700 hover:text-green-600"
+          className="md:hidden text-gray-700 hover:text-green-600 "
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -113,21 +113,21 @@ function Header() {
 
               <a
                 href="#how-it-works"
-                onClick={(e) => handleScroll(e, "how-it-works")}
+                onClick={(e) => handleScroll(e, 'how-it-works')}
                 className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
               >
                 How It Works
               </a>
               <a
                 href="#product-categories"
-                onClick={(e) => handleScroll(e, "product-categories")}
+                onClick={(e) => handleScroll(e, 'product-categories')}
                 className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
               >
                 Product Categories
               </a>
               <a
                 href="#faq"
-                onClick={(e) => handleScroll(e, "faq")}
+                onClick={(e) => handleScroll(e, 'faq')}
                 className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
               >
                 FAQ
@@ -141,14 +141,14 @@ function Header() {
             rel="noopener noreferrer"
             className="inline-block w-full mt-4 text-center bg-[#3da647] text-white hover:bg-green-700"
             style={{
-              padding: "10px 16px",
-              borderRadius: "50px",
-              fontSize: "14px",
-              fontWeight: "500",
-              lineHeight: "150%",
-              fontFamily: "Manrope, sans-serif",
-              cursor: "pointer",
-              textDecoration: "none",
+              padding: '10px 16px',
+              borderRadius: '50px',
+              fontSize: '14px',
+              fontWeight: '500',
+              lineHeight: '150%',
+              fontFamily: 'Manrope, sans-serif',
+              cursor: 'pointer',
+              textDecoration: 'none',
             }}
           >
             Start Your Free Check
