@@ -9,12 +9,19 @@ function Header() {
   ) => {
     e.preventDefault();
     const element = document.getElementById(targetId);
+
     if (element) {
-      element.scrollIntoView({
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
         behavior: 'smooth',
-        block: 'start',
       });
     }
+    setIsMenuOpen(false);
   };
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -107,6 +114,7 @@ function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-green-600 cursor-pointer text-base font-normal list-none"
+                onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </a>

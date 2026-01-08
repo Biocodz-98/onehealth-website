@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 export default function WeightLossLanding() {
   const [imageLoaded, setImageLoaded] = useState({
@@ -9,10 +9,10 @@ export default function WeightLossLanding() {
 
   return (
     <div
-      className="p-6 sm:p-8 md:p-12 lg:p-20 lg:py-16"
+      className="pt-24 md:pt-20 p-6 sm:p-8 md:p-12 lg:p-20 lg:pb-16"
       style={{
         background:
-          "linear-gradient(270deg, rgba(207, 234, 209, 0.7) -5.28%, rgba(252, 244, 232, 0.7) 18.28%, rgba(254, 244, 233, 0.7) 42.1%, rgba(226, 242, 227, 0.7) 97.58%)",
+          'linear-gradient(270deg, rgba(207, 234, 209, 0.7) -5.28%, rgba(252, 244, 232, 0.7) 18.28%, rgba(254, 244, 233, 0.7) 42.1%, rgba(226, 242, 227, 0.7) 97.58%)',
       }}
     >
       <div className="max-w-7xl mx-auto">
@@ -22,16 +22,16 @@ export default function WeightLossLanding() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
             className="space-y-6 md:space-y-8"
           >
             <h1
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
               style={{
-                fontFamily: "Lexend, sans-serif",
-                fontWeight: "700",
-                lineHeight: "110%",
-                color: "#000000",
+                fontFamily: 'Lexend, sans-serif',
+                fontWeight: '700',
+                lineHeight: '110%',
+                color: '#000000',
               }}
             >
               Clinically
@@ -44,10 +44,10 @@ export default function WeightLossLanding() {
             <p
               className="text-base sm:text-lg md:text-xl max-w-lg leading-relaxed"
               style={{
-                fontFamily: "Manrope, sans-serif",
-                fontWeight: "400",
-                lineHeight: "150%",
-                color: "#323232",
+                fontFamily: 'Manrope, sans-serif',
+                fontWeight: '400',
+                lineHeight: '150%',
+                color: '#323232',
               }}
             >
               The Method is a doctor-led GLP-1 program in Nigeria using
@@ -63,11 +63,11 @@ export default function WeightLossLanding() {
                 rel="noopener noreferrer"
                 className="bg-green-600 hover:bg-green-700 transition-colors text-sm sm:text-base w-full sm:w-auto"
                 style={{
-                  padding: "14px 24px",
-                  borderRadius: "50px",
-                  border: "1px solid #3da647",
-                  color: "#ffffff",
-                  cursor: "pointer",
+                  padding: '14px 24px',
+                  borderRadius: '50px',
+                  border: '1px solid #3da647',
+                  color: '#ffffff',
+                  cursor: 'pointer',
                 }}
               >
                 Start Your Medical Assessment
@@ -78,11 +78,11 @@ export default function WeightLossLanding() {
                 rel="noopener noreferrer"
                 className="bg-white transition-colors hover:bg-green-50 text-sm sm:text-base w-full sm:w-auto"
                 style={{
-                  padding: "14px 24px",
-                  borderRadius: "50px",
-                  border: "1px solid #3da647",
-                  color: "#3da647",
-                  cursor: "pointer",
+                  padding: '14px 24px',
+                  borderRadius: '50px',
+                  border: '1px solid #3da647',
+                  color: '#3da647',
+                  cursor: 'pointer',
                 }}
               >
                 Check Eligibility (free)
@@ -109,7 +109,7 @@ export default function WeightLossLanding() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
               className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg"
             >
               <div className="rounded-3xl overflow-hidden shadow-lg relative bg-gray-200">
@@ -123,7 +123,7 @@ export default function WeightLossLanding() {
                   src="/method-images/hero image 01.svg"
                   alt="Woman measuring waist"
                   className={`w-full h-48 transition-opacity duration-300 ${
-                    imageLoaded.img1 ? "opacity-100" : "opacity-0"
+                    imageLoaded.img1 ? 'opacity-100' : 'opacity-0'
                   } sm:h-56 md:h-64 object-cover`}
                   onLoad={() =>
                     setImageLoaded((prev) => ({ ...prev, img1: true }))
@@ -137,7 +137,7 @@ export default function WeightLossLanding() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
               className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg row-span-2"
             >
               <img
@@ -152,7 +152,7 @@ export default function WeightLossLanding() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 }}
               className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg"
             >
               <div className="rounded-3xl overflow-hidden shadow-lg relative bg-gray-200">
@@ -166,7 +166,7 @@ export default function WeightLossLanding() {
                   src="/method-images/hero image 02.svg"
                   alt="Measuring tape"
                   className={`w-full h-48 transition-opacity duration-300 ${
-                    imageLoaded.img2 ? "opacity-100" : "opacity-0"
+                    imageLoaded.img2 ? 'opacity-100' : 'opacity-0'
                   } sm:h-56 md:h-64 object-cover`}
                   onLoad={() =>
                     setImageLoaded((prev) => ({ ...prev, img2: true }))
