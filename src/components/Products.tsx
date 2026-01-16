@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface ProductItem {
   name: string;
@@ -11,18 +11,25 @@ interface ProductItem {
 
 const PRODUCT_ITEMS: ProductItem[] = [
   {
-    name: "Imani",
+    name: 'Imani',
     description:
-      "Imani is the breast pump that gives you back your time, energy, and peace of mind",
-    link: "/products/imani",
-    logo: "/imani-onehealthng/images/OneHealthng--Imani-Logo.svg",
+      'Imani is the breast pump that gives you back your time, energy, and peace of mind',
+    link: '/products/imani',
+    logo: '/imani-onehealthng/images/OneHealthng--Imani-Logo.svg',
   },
   {
-    name: "Method",
+    name: 'Method',
     description:
-      "The Method is a doctor-led GLP-1 program in Nigeria using semaglutide or tirzepatide when appropriate.",
-    link: "/products/method",
-    logo: "/method-images/Onehealthng-Logo.svg",
+      'The Method is a doctor-led GLP-1 program in Nigeria using semaglutide or tirzepatide when appropriate.',
+    link: '/products/method',
+    logo: '/method-images/Onehealthng-Logo.svg',
+  },
+  {
+    name: 'Prefill',
+    description:
+      'Prefill is a personalized medicine delivery service that ensures you never run out of your essential medications.',
+    link: '/products/prefill',
+    logo: '/prefill-images/onehealth logo.svg',
   },
 ];
 
@@ -63,7 +70,7 @@ export default function Product({ className }: ProductProps) {
 
   return (
     <motion.div
-      className={cn("w-full px-4 py-6", className)}
+      className={cn('w-full px-4 py-6', className)}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
