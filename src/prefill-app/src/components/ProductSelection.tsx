@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
+import { useRefill } from '../Services/refillApi';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 // Types
-interface MonthlyPurchaseProps {
-  onBack?: () => void;
-  onRemindLater?: () => void;
-  onBuyNow?: (selectedItems: string[], subscription?: string) => void;
-}
-
 interface ProductItem {
   id: string;
   name: string;
@@ -15,11 +11,10 @@ interface ProductItem {
   image: string;
 }
 
-const MonthlyPurchase: React.FC<MonthlyPurchaseProps> = ({
-  onBack,
-  onRemindLater,
-  onBuyNow,
-}) => {
+const MonthlyPurchase: React.FC = () => {
+  const navigate = useNavigate();
+  const { addToCart, addToWishlist, isLoading, error } = useRefill();
+
   const [selectedProducts, setSelectedProducts] = useState<string[]>([
     '1',
     '2',
@@ -57,13 +52,88 @@ const MonthlyPurchase: React.FC<MonthlyPurchaseProps> = ({
 
   const toggleProduct = (id: string) => {
     setSelectedProducts((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
-  const handleBuyNow = () => {
-    if (onBuyNow) {
-      onBuyNow(selectedProducts, selectedSubscription);
+  const handleBuyNow = async () => {
+    if (selectedProducts.length === 0) {
+      alert('Please select at least one product');
+      return;
+    }
+
+    try {
+      // Determine subscription duration
+      let durationMonths: number | undefined;
+      if (selectedSubscription === '3months') durationMonths = 3;
+      else if (selectedSubscription === '6months') durationMonths = 6;
+      else if (selectedSubscription === '1year') durationMonths = 12;
+
+      // Add each selected product to cart
+      for (const productId of selectedProducts) {
+        await addToCart({
+          product_id: parseInt(productId),
+          quantity: 1,
+          purchase_type: selectedSubscription ? 'subscribe' : 'buy_now',
+          duration_months: durationMonths,
+        });
+      }
+
+      navigate('/products/refill/pharmacy-cart');
+    } catch (err) {
+      console.error('Failed to add to cart:', err);
+    }
+  };
+
+  const handleRemindLater = async () => {
+    if (selectedProducts.length === 0) {
+      alert('Please select at least one product');
+      return;
+    }
+
+    try {
+      // Add each selected product to wishlist
+      for (const productId of selectedProducts) {
+        await addToWishlist(parseInt(productId));
+      }
+
+      alert("Products saved to wishlist! We'll remind you later.");
+      navigate('/products/refill');
+    } catch (err) {
+      console.error('Failed to add to wishlist:', err);
+    }
+  };
+
+  const handleSubscribe = async () => {
+    if (!selectedSubscription) {
+      alert('Please select a subscription plan');
+      return;
+    }
+
+    if (selectedProducts.length === 0) {
+      alert('Please select at least one product');
+      return;
+    }
+
+    try {
+      let durationMonths: number = 1;
+      if (selectedSubscription === '3months') durationMonths = 3;
+      else if (selectedSubscription === '6months') durationMonths = 6;
+      else if (selectedSubscription === '1year') durationMonths = 12;
+
+      // Add products as subscription
+      for (const productId of selectedProducts) {
+        await addToCart({
+          product_id: parseInt(productId),
+          quantity: 1,
+          purchase_type: 'subscribe',
+          duration_months: durationMonths,
+        });
+      }
+
+      navigate('/products/refill/pharmacy-cart');
+    } catch (err) {
+      console.error('Failed to subscribe:', err);
     }
   };
 
@@ -74,12 +144,19 @@ const MonthlyPurchase: React.FC<MonthlyPurchaseProps> = ({
     >
       {/* Back Button */}
       <button
-        onClick={onBack}
+        onClick={() => navigate('/products/refill/survey/product-search')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-12 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
         <span className="text-base font-medium">Back</span>
       </button>
+
+      {/* Error Display */}
+      {error && (
+        <div className="max-w-7xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -152,7 +229,7 @@ const MonthlyPurchase: React.FC<MonthlyPurchaseProps> = ({
                     <div className="flex flex-col items-center">
                       <img
                         src={product.image}
-                        alt=""
+                        alt={product.name}
                         className="w-32 h-32 object-contain mb-3"
                       />
                       <p
@@ -173,21 +250,31 @@ const MonthlyPurchase: React.FC<MonthlyPurchaseProps> = ({
               })}
             </div>
 
+            {/* Selection Counter */}
+            {selectedProducts.length > 0 && (
+              <p className="text-sm text-gray-600 mb-4">
+                {selectedProducts.length} product
+                {selectedProducts.length !== 1 ? 's' : ''} selected
+              </p>
+            )}
+
             {/* Action Buttons */}
             <div className="flex items-center gap-4">
               <button
-                onClick={onRemindLater}
-                className="px-6 py-3 border-2 border-[#3da467] text-[#3da467] rounded-full text-sm font-medium hover:bg-green-50 transition-colors"
-                style={{ fontFamily: 'Manrope, sans-serif', cursor: 'pointer' }}
+                onClick={handleRemindLater}
+                disabled={isLoading || selectedProducts.length === 0}
+                className="px-6 py-3 border-2 border-[#3da467] text-[#3da467] rounded-full text-sm font-medium hover:bg-green-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ fontFamily: 'Manrope, sans-serif' }}
               >
-                Remind Me Later
+                {isLoading ? 'Saving...' : 'Remind Me Later'}
               </button>
               <button
                 onClick={handleBuyNow}
-                className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full text-sm font-semibold transition-colors"
-                style={{ fontFamily: 'Manrope, sans-serif', cursor: 'pointer' }}
+                disabled={isLoading || selectedProducts.length === 0}
+                className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ fontFamily: 'Manrope, sans-serif' }}
               >
-                Buy Now
+                {isLoading ? 'Processing...' : 'Buy Now'}
               </button>
             </div>
           </div>
@@ -293,14 +380,19 @@ const MonthlyPurchase: React.FC<MonthlyPurchaseProps> = ({
 
               {/* Subscribe Button */}
               <button
-                className="w-32 px-6 py-3 border-2 border-[#3da467] text-[#3da467] rounded-full text-sm font-normal hover:bg-green-50 transition-colors"
+                onClick={handleSubscribe}
+                disabled={
+                  isLoading ||
+                  !selectedSubscription ||
+                  selectedProducts.length === 0
+                }
+                className="w-full px-6 py-3 border-2 border-[#3da467] text-[#3da467] rounded-full text-sm font-medium hover:bg-green-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   fontFamily: 'Manrope, sans-serif',
-                  cursor: 'pointer',
                   lineHeight: 1.5,
                 }}
               >
-                Subscribe
+                {isLoading ? 'Subscribing...' : 'Subscribe'}
               </button>
             </div>
           </div>

@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useRefill } from '../Services/refillApi';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-
-// Types
-interface PaymentSuccessProps {
-  onBack?: () => void;
-  onSeePersona?: () => void;
-  onTrackOrder?: () => void;
-}
 
 // Step indicator component
 const StepIndicator: React.FC<{ currentStep: number }> = ({ currentStep }) => {
@@ -61,20 +56,41 @@ const StepIndicator: React.FC<{ currentStep: number }> = ({ currentStep }) => {
   );
 };
 
-const PaymentSuccess: React.FC<PaymentSuccessProps> = ({
-  onBack,
-  onSeePersona,
-  onTrackOrder,
-}) => {
+const PaymentSuccess: React.FC = () => {
+  const navigate = useNavigate();
+  const { getSuccessData, isLoading, error } = useRefill();
+
+  const [personaData, setPersonaData] = useState<any>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const fetchSuccessData = async () => {
+      try {
+        const data = await getSuccessData();
+        setPersonaData(data);
+      } catch (err) {
+        console.error('Failed to load success data:', err);
+      }
+    };
+
+    fetchSuccessData();
+
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 100);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [getSuccessData]);
+
+  const handleSeePersona = () => {
+    navigate('/products/refill/persona', {
+      state: { personaData },
+    });
+  };
+
+  const handleTrackOrder = () => {
+    navigate('/');
+  };
 
   return (
     <div
@@ -83,7 +99,7 @@ const PaymentSuccess: React.FC<PaymentSuccessProps> = ({
     >
       {/* Back Button */}
       <button
-        onClick={onBack}
+        onClick={() => navigate('/products/refill/checkout')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-8 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
@@ -93,78 +109,97 @@ const PaymentSuccess: React.FC<PaymentSuccessProps> = ({
       {/* Step Indicator */}
       <StepIndicator currentStep={3} />
 
+      {/* Error Display */}
+      {error && (
+        <div className="max-w-2xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
+
       {/* Success Content */}
       <div className="max-w-2xl mx-auto">
-        <div className=" p-12 text-center">
-          {/* Animated Checkmark */}
-          <div
-            className={`mb-8 flex justify-center transition-all duration-700 ${
-              isVisible
-                ? 'opacity-100 scale-100 translate-y-0'
-                : 'opacity-0 scale-50 translate-y-4'
-            }`}
-          >
-            <div className="relative">
-              {/* Outer circle with pulse animation */}
-              <div
-                className={`absolute inset-0 bg-green-100 rounded-full ${
-                  isVisible ? 'animate-ping' : ''
-                }`}
-                style={{
-                  animationIterationCount: '1',
-                  animationDuration: '1s',
-                }}
-              />
-              {/* Static outer circle */}
-              <div className="relative w-32 h-32 bg-green-50 rounded-full flex items-center justify-center border-4 border-green-100">
-                {/* Inner circle */}
-
-                <img
-                  src="/prefill-images/payment check.svg"
-                  alt="Success"
-                  className={`w-16 h-16 transition-all duration-500 delay-300 ${
-                    isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
-                  }`}
-                />
+        <div className="p-12 text-center">
+          {/* Loading State */}
+          {isLoading ? (
+            <div className="mb-8 flex justify-center">
+              <div className="w-32 h-32 bg-green-50 rounded-full flex items-center justify-center border-4 border-green-100">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600"></div>
               </div>
             </div>
-          </div>
-
-          {/* Success Message */}
-          <div
-            className={`transition-all duration-700 delay-500 ${
-              isVisible
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-4'
-            }`}
-          >
-            <h1
-              className="text-3xl font-bold text-gray-900 mb-4"
-              style={{ fontFamily: 'Lexend, sans-serif' }}
-            >
-              Order Successful
-            </h1>
-            <p className="text-base text-gray-600 mb-8 max-w-md mx-auto">
-              Your order has been placed. Please check "My Orders" to track the
-              progress of your order.
-            </p>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={onSeePersona}
-                className="w-full sm:w-auto bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors"
+          ) : (
+            <>
+              {/* Animated Checkmark */}
+              <div
+                className={`mb-8 flex justify-center transition-all duration-700 ${
+                  isVisible
+                    ? 'opacity-100 scale-100 translate-y-0'
+                    : 'opacity-0 scale-50 translate-y-4'
+                }`}
               >
-                See Your Persona
-              </button>
-              <button
-                onClick={onTrackOrder}
-                className="w-full sm:w-auto border-2 border-[#3da467] text-[#3da467] px-8 py-3 rounded-full font-semibold hover:bg-green-50 transition-colors"
+                <div className="relative">
+                  {/* Outer circle with pulse animation */}
+                  <div
+                    className={`absolute inset-0 bg-green-100 rounded-full ${
+                      isVisible ? 'animate-ping' : ''
+                    }`}
+                    style={{
+                      animationIterationCount: '1',
+                      animationDuration: '1s',
+                    }}
+                  />
+                  {/* Static outer circle */}
+                  <div className="relative w-32 h-32 bg-green-50 rounded-full flex items-center justify-center border-4 border-green-100">
+                    <img
+                      src="/prefill-images/payment check.svg"
+                      alt="Success"
+                      className={`w-16 h-16 transition-all duration-500 delay-300 ${
+                        isVisible
+                          ? 'opacity-100 scale-100'
+                          : 'opacity-0 scale-0'
+                      }`}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Success Message */}
+              <div
+                className={`transition-all duration-700 delay-500 ${
+                  isVisible
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-4'
+                }`}
               >
-                Track Order
-              </button>
-            </div>
-          </div>
+                <h1
+                  className="text-3xl font-bold text-gray-900 mb-4"
+                  style={{ fontFamily: 'Lexend, sans-serif' }}
+                >
+                  Order Successful
+                </h1>
+                <p className="text-base text-gray-600 mb-8 max-w-md mx-auto">
+                  Your order has been placed. Please check "My Orders" to track
+                  the progress of your order.
+                </p>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <button
+                    onClick={handleSeePersona}
+                    disabled={!personaData}
+                    className="w-full sm:w-auto bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    See Your Persona
+                  </button>
+                  <button
+                    onClick={handleTrackOrder}
+                    className="w-full sm:w-auto border-2 border-[#3da467] text-[#3da467] px-8 py-3 rounded-full font-semibold hover:bg-green-50 transition-colors"
+                  >
+                    Track Order
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useRefill } from '../Services/refillApi';
+import { useNavigate } from 'react-router-dom';
 import { Heart, Trash2, ChevronDown, ArrowLeft } from 'lucide-react';
 
 //Types
@@ -23,11 +25,6 @@ interface RecommendedProducts {
   reviewCount: number;
   soldCount: number;
   size?: 'sm' | 'md';
-}
-
-interface CartProps {
-  onBack?: () => void;
-  onProceedToCheckout?: (cartItems: CartItem[]) => void;
 }
 
 // ITEM DATA
@@ -201,7 +198,7 @@ const StarRating: React.FC<{ rating: number; size?: 'sm' | 'md' }> = ({
           viewBox="0 0 20 20"
         >
           <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-        </svg>
+        </svg>,
       );
     } else if (i === fullStars && hasHalfStar) {
       stars.push(
@@ -220,7 +217,7 @@ const StarRating: React.FC<{ rating: number; size?: 'sm' | 'md' }> = ({
             fill="url(#half)"
             d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"
           />
-        </svg>
+        </svg>,
       );
     } else {
       stars.push(
@@ -230,7 +227,7 @@ const StarRating: React.FC<{ rating: number; size?: 'sm' | 'md' }> = ({
           viewBox="0 0 20 20"
         >
           <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-        </svg>
+        </svg>,
       );
     }
   }
@@ -389,16 +386,12 @@ const CartItem: React.FC<CartItemProps> = ({
 };
 
 // Product Card Component
-
 interface ProductCardProps {
   product: RecommendedProducts;
   onAddToCart: (product: RecommendedProducts) => void;
 }
-const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
-  // const discount = Math.round(
-  //     ((product.originalPrice - product.price) / product.originalPrice) * 100
-  //   );
 
+const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   return (
     <div className=" shadow rounded-lg p-4 hover:shadow-lg transition-shadow">
       <img
@@ -494,49 +487,89 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
 };
 
 // MAIN PHARMACY CART COMPONENT
-const PharmacyCart: React.FC<CartProps> = ({ onBack, onProceedToCheckout }) => {
-  const [currentStep, setCurrentStep] = useState(1);
+const PharmacyCart: React.FC = () => {
+  const navigate = useNavigate();
+  const { addToCart, isLoading, error } = useRefill();
+
+  const [currentStep] = useState(1);
   const [cartItems, setCartItems] = useState(
-    cartItemsData.map((item) => ({ ...item, quantity: 1 }))
+    cartItemsData.map((item) => ({ ...item, quantity: 1 })),
   );
   const [showCoupons, setShowCoupons] = useState(false);
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
   const shipping = 0;
   const discount = 0;
   const total = subtotal + shipping - discount;
   const freeShippingThreshold = 33400;
 
-  const handleQuantityChange = (id: string, newQuantity: number) => {
+  const handleQuantityChange = async (id: string, newQuantity: number) => {
     if (newQuantity < 1) return;
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
+
+    try {
+      await addToCart({
+        product_id: parseInt(id),
+        quantity: newQuantity,
+        purchase_type: 'buy_now',
+      });
+
+      setCartItems((items) =>
+        items.map((item) =>
+          item.id === id ? { ...item, quantity: newQuantity } : item,
+        ),
+      );
+    } catch (err) {
+      console.error('Failed to update quantity:', err);
+    }
   };
 
   const handleRemoveItem = (id: string) => {
     setCartItems((items) => items.filter((item) => item.id !== id));
   };
 
-  const handleToggleAutoRefill = (id: string, enabled: boolean) => {
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id ? { ...item, autoRefill: enabled } : item
-      )
-    );
+  const handleToggleAutoRefill = async (id: string, enabled: boolean) => {
+    try {
+      if (enabled) {
+        await addToCart({
+          product_id: parseInt(id),
+          quantity: 1,
+          purchase_type: 'subscribe',
+          duration_months: 1,
+        });
+      }
+
+      setCartItems((items) =>
+        items.map((item) =>
+          item.id === id ? { ...item, autoRefill: enabled } : item,
+        ),
+      );
+    } catch (err) {
+      console.error('Failed to toggle auto-refill:', err);
+    }
   };
 
-  const handleRefillDaysChange = (id: string, days: number) => {
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id ? { ...item, refillDays: days } : item
-      )
-    );
+  const handleRefillDaysChange = async (id: string, days: number) => {
+    const months = Math.ceil(days / 30);
+
+    try {
+      await addToCart({
+        product_id: parseInt(id),
+        quantity: 1,
+        purchase_type: 'subscribe',
+        duration_months: months,
+      });
+
+      setCartItems((items) =>
+        items.map((item) =>
+          item.id === id ? { ...item, refillDays: days } : item,
+        ),
+      );
+    } catch (err) {
+      console.error('Failed to update refill days:', err);
+    }
   };
 
   const handleAddToCart = (product: RecommendedProducts) => {
@@ -544,18 +577,14 @@ const PharmacyCart: React.FC<CartProps> = ({ onBack, onProceedToCheckout }) => {
   };
 
   const handleProceedToCheckout = () => {
-    setCurrentStep(2);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (onProceedToCheckout) {
-      onProceedToCheckout(cartItems);
-    }
+    navigate('/products/refill/checkout', { state: { cartItems } });
   };
 
   return (
     <div className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16">
       {/* Back Button */}
       <button
-        onClick={onBack}
+        onClick={() => navigate('/products/refill/product-selection')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-8 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
@@ -566,6 +595,13 @@ const PharmacyCart: React.FC<CartProps> = ({ onBack, onProceedToCheckout }) => {
           Back
         </span>
       </button>
+
+      {/* Error Display */}
+      {error && (
+        <div className="max-w-7xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
 
       {/* Step Indicator */}
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -599,6 +635,7 @@ const PharmacyCart: React.FC<CartProps> = ({ onBack, onProceedToCheckout }) => {
                   </p>
                 </div>
                 <button
+                  onClick={() => setCartItems([])}
                   className="text-[#3da647] text-sm font-medium"
                   style={{
                     fontFamily: 'Manrope, sans-serif',
@@ -735,7 +772,8 @@ const PharmacyCart: React.FC<CartProps> = ({ onBack, onProceedToCheckout }) => {
 
               <button
                 onClick={handleProceedToCheckout}
-                className="w-full bg-[#3da647] text-white py-3 rounded-3xl font-medium hover:bg-[#2e8a39] transition-colors mb-4"
+                disabled={isLoading || cartItems.length === 0}
+                className="w-full bg-[#3da647] text-white py-3 rounded-3xl font-medium hover:bg-[#2e8a39] transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   fontFamily: 'Manrope, sans-serif',
                   fontWeight: 500,
@@ -744,7 +782,7 @@ const PharmacyCart: React.FC<CartProps> = ({ onBack, onProceedToCheckout }) => {
                   cursor: 'pointer',
                 }}
               >
-                Proceed to Checkout
+                {isLoading ? 'Processing...' : 'Proceed to Checkout'}
               </button>
 
               <div className="bg-[#feefdd] border border-[#feefdd] rounded-3xl p-3 text-center">

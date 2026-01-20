@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useRefill } from '../Services/refillApi';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 // Types
@@ -8,19 +10,30 @@ interface ProductSearchProps {
   onNext?: (product: string) => void;
 }
 
-const ProductSearch: React.FC<ProductSearchProps> = ({
-  onBack,
-  onSkip,
-  onNext,
-}) => {
+const ProductSearch: React.FC<ProductSearchProps> = ({ onBack, onSkip }) => {
+  const navigate = useNavigate();
+  const { saveSurvey, isLoading, error } = useRefill();
   const [product, setProduct] = useState<string>('');
 
-  const handleNext = () => {
-    if (onNext) {
-      onNext(product);
+  const handleNext = async () => {
+    if (!product.trim()) {
+      navigate('/products/refill/product-selection');
+      return;
+    }
+
+    try {
+      await saveSurvey('custom_products', [
+        {
+          question_key: 'manually_added',
+          value: [product.toLowerCase()],
+        },
+      ]);
+
+      navigate('/products/refill/product-selection');
+    } catch (err) {
+      console.error('Failed to save custom product:', err);
     }
   };
-
   const handleSkip = () => {
     if (onSkip) {
       onSkip();
@@ -58,6 +71,12 @@ const ProductSearch: React.FC<ProductSearchProps> = ({
             Didn't see some of the products you love? Type it here.
           </h1>
 
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">{error}</p>
+            </div>
+          )}
+
           {/* Input Field */}
           <div className="mb-8">
             <input
@@ -81,23 +100,25 @@ const ProductSearch: React.FC<ProductSearchProps> = ({
             </button>
             <button
               onClick={handleNext}
-              className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full text-base font-semibold transition-colors flex items-center gap-2"
-              style={{ fontFamily: 'Manrope, sans-serif', cursor: 'pointer' }}
+              disabled={isLoading}
+              className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full text-base font-semibold transition-colors flex items-center gap-2 disabled:opacity-50"
             >
-              Next
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              {isLoading ? 'Saving...' : 'Next'}
+              {!isLoading && (
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              )}
             </button>
           </div>
         </div>

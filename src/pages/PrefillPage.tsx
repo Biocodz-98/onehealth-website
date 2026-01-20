@@ -1,8 +1,8 @@
 import { Suspense, lazy } from 'react';
 
-const PrefillApp = lazy(() => import('@/prefill-app/src/App'));
+const App = lazy(() => import('@/prefill-app/src/App'));
 
-export default function PrefillPage() {
+export default function RefillPage() {
   return (
     <div className="prefill-page-container ">
       <Suspense
@@ -16,7 +16,7 @@ export default function PrefillPage() {
         }
       >
         <div className="w-full min-h-screen">
-          <PrefillApp />
+          <App />
         </div>
       </Suspense>
     </div>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useRefill } from '../Services/refillApi';
 import { ArrowLeft, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Types
 interface SurveyProps {
@@ -13,7 +15,9 @@ interface MedicineItem {
   image: string;
 }
 
-const SurveyComponent: React.FC<SurveyProps> = ({ onBack, onNext }) => {
+const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
+  const navigate = useNavigate();
+  const { saveSurvey } = useRefill();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
@@ -64,13 +68,31 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack, onNext }) => {
 
   const toggleSelection = (id: string) => {
     setSelectedItems((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
-  const handleNext = () => {
-    if (onNext) {
-      onNext(selectedItems);
+  const handleNext = async () => {
+    if (selectedItems.length === 0) {
+      alert('Please select at least one item');
+      return;
+    }
+
+    try {
+      const selectedNames = selectedItems
+        .map((id) => medicines.find((p) => p.id === id)?.name.toLowerCase())
+        .filter(Boolean) as string[];
+
+      await saveSurvey('personal_care', [
+        {
+          question_key: 'frequent_products',
+          value: selectedNames,
+        },
+      ]);
+
+      navigate('/products/refill/survey/product-search');
+    } catch (err) {
+      console.error('Failed to save survey:', err);
     }
   };
 

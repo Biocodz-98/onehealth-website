@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Check } from 'lucide-react';
-
-// Types
-interface SurveyProps {
-  onBack?: () => void;
-  onNext?: (selectedItems: string[]) => void;
-}
+import { useRefill } from '../Services/refillApi';
+import { useNavigate } from 'react-router-dom';
 
 interface MedicineItem {
   id: string;
@@ -13,9 +9,41 @@ interface MedicineItem {
   image: string;
 }
 
-const Survey: React.FC<SurveyProps> = ({ onBack, onNext }) => {
+const Survey: React.FC = () => {
+  const navigate = useNavigate();
+  const { saveSurvey, isLoading, error, sessionUuid } = useRefill();
+
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
+
+  // Check for session on mount
+  useEffect(() => {
+    console.log('Survey mounted. Current sessionUuid:', sessionUuid);
+
+    // Give a brief moment for context to update
+    const timer = setTimeout(() => {
+      console.log('After delay. SessionUuid:', sessionUuid);
+
+      if (!sessionUuid) {
+        alert('Please complete the preferences form first');
+        navigate('/products/refill/preferences');
+      } else {
+        setIsCheckingSession(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [sessionUuid, navigate]);
+
+  // Show loading while checking session
+  if (isCheckingSession) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   const categories = [
     'All',
@@ -26,7 +54,6 @@ const Survey: React.FC<SurveyProps> = ({ onBack, onNext }) => {
     'Vitamins and Supplement',
   ];
 
-  //medicine items
   const medicines: MedicineItem[] = [
     {
       id: '1',
@@ -35,40 +62,62 @@ const Survey: React.FC<SurveyProps> = ({ onBack, onNext }) => {
     },
     {
       id: '2',
-      name: 'Amlodipine',
+      name: 'Lisinopril',
       image: '/prefill-images/medicine bottle.svg',
     },
     {
       id: '3',
-      name: 'Amlodipine',
+      name: 'Metformin',
       image: '/prefill-images/medicine bottle.svg',
     },
     {
       id: '4',
-      name: 'Amlodipine',
+      name: 'Atorvastatin',
       image: '/prefill-images/medicine bottle.svg',
     },
     {
       id: '5',
-      name: 'Amlodipine',
+      name: 'Omeprazole',
       image: '/prefill-images/medicine bottle.svg',
     },
     {
       id: '6',
-      name: 'Amlodipine',
+      name: 'Levothyroxine',
       image: '/prefill-images/medicine bottle.svg',
     },
   ];
 
   const toggleSelection = (id: string) => {
     setSelectedItems((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
-  const handleNext = () => {
-    if (onNext) {
-      onNext(selectedItems);
+  const handleNext = async () => {
+    if (selectedItems.length === 0) {
+      alert('Please select at least one medicine');
+      return;
+    }
+
+    try {
+      // Get the names of selected medicines
+      const selectedMedicineNames = selectedItems
+        .map((id) => medicines.find((m) => m.id === id)?.name.toLowerCase())
+        .filter(Boolean) as string[];
+
+      // Save survey data to API
+      await saveSurvey('medicines', [
+        {
+          question_key: 'frequent_products',
+          value: selectedMedicineNames,
+        },
+      ]);
+
+      // Navigate to next step
+      navigate('/products/refill/survey/skincare');
+    } catch (err) {
+      console.error('Failed to save survey:', err);
+      // Error is already displayed in context
     }
   };
 
@@ -79,7 +128,7 @@ const Survey: React.FC<SurveyProps> = ({ onBack, onNext }) => {
     >
       {/* Back Button */}
       <button
-        onClick={onBack}
+        onClick={() => navigate('/products/refill/preferences')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-12 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
@@ -111,6 +160,13 @@ const Survey: React.FC<SurveyProps> = ({ onBack, onNext }) => {
         </p>
       </div>
 
+      {/* API Error Display */}
+      {error && (
+        <div className="max-w-6xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
+
       {/* Categories and Next Button */}
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex items-center justify-between mb-6">
@@ -126,25 +182,28 @@ const Survey: React.FC<SurveyProps> = ({ onBack, onNext }) => {
           </h2>
           <button
             onClick={handleNext}
-            className="bg-[#3da467] hover:bg-green-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2"
+            disabled={isLoading || selectedItems.length === 0}
+            className="bg-[#3da467] hover:bg-green-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               fontFamily: 'Manrope, sans-serif',
             }}
           >
-            Next
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            {isLoading ? 'Saving...' : 'Next'}
+            {!isLoading && (
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            )}
           </button>
         </div>
 
@@ -218,6 +277,16 @@ const Survey: React.FC<SurveyProps> = ({ onBack, onNext }) => {
           })}
         </div>
       </div>
+
+      {/* Selection Counter */}
+      {selectedItems.length > 0 && (
+        <div className="max-w-6xl mx-auto mt-6">
+          <p className="text-sm text-gray-600">
+            {selectedItems.length} item{selectedItems.length !== 1 ? 's' : ''}{' '}
+            selected
+          </p>
+        </div>
+      )}
     </div>
   );
 };

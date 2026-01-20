@@ -4,12 +4,12 @@ import Insurers from '@/app/Insurers';
 import Pharmacy from '@/app/Pharmacy';
 import ImaniPage from '@/pages/ImaniPage';
 import MethodPage from '@/pages/MethodPage';
-import PrefillPage from '@/pages/PrefillPage';
 import PharmacySearch from '@/app/Pharmacy/Search';
 import Root from '@/app/Landing';
 import Footer from '@/components/Footer/Footer';
 import { AnimatePresence } from 'framer-motion';
 import { BrowserRouter } from 'react-router-dom';
+import RefillPage from '@/pages/PrefillPage';
 
 function AppContent() {
   const location = useLocation();
@@ -18,7 +18,7 @@ function AppContent() {
   const hideHeaderRoutes = ['/products/method', '/method'];
   const shouldHideHeader =
     hideHeaderRoutes.includes(location.pathname) ||
-    location.pathname.startsWith('/products/prefill');
+    location.pathname.startsWith('/products/refill');
 
   // Route to hide footer - updated to match any prefill path
   const hideFooterRoutes = [
@@ -30,7 +30,7 @@ function AppContent() {
 
   const shouldHideFooter =
     hideFooterRoutes.includes(location.pathname) ||
-    location.pathname.startsWith('/products/prefill');
+    location.pathname.startsWith('/products/refill');
 
   return (
     <>
@@ -51,9 +51,9 @@ function AppContent() {
           element={<MethodPage />}
         />
         <Route
-          key={'prefill'}
-          path="/products/prefill/*"
-          element={<PrefillPage />}
+          key={'refill'}
+          path="/products/refill/*"
+          element={<RefillPage />}
         />
       </Routes>
       {!shouldHideFooter && <Footer />}

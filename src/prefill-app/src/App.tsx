@@ -1,4 +1,5 @@
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { RefillProvider } from './Services/refillApi';
 
 import Header from './components/header/Header';
 import HeroSection from './components/Hero';
@@ -21,7 +22,7 @@ function HomePage() {
     <div>
       <Header />
       <HeroSection
-        onStartBuilding={() => navigate('/products/prefill/preferences')}
+        onStartBuilding={() => navigate('/products/refill/preferences')}
       />
       <Footer />
     </div>
@@ -30,133 +31,72 @@ function HomePage() {
 
 // Preferences Page Component
 function PreferencesPage() {
-  const navigate = useNavigate();
-
-  return (
-    <PreferencesForm
-      onBack={() => navigate('/products/prefill')}
-      onNext={(data) => {
-        console.log('Form data:', data);
-        navigate('/products/prefill/survey');
-      }}
-    />
-  );
+  return <PreferencesForm />;
 }
 
 // Survey Page Component
 function SurveyPage() {
-  const navigate = useNavigate();
-
-  return (
-    <Survey
-      onBack={() => navigate('/products/prefill/preferences')}
-      onNext={(selectedItems) => {
-        console.log('Selected items:', selectedItems);
-        navigate('/products/prefill/survey/skincare');
-      }}
-    />
-  );
+  return <Survey />;
 }
 
+// Skincare Survey Page Component
 function SurveySkincarePage() {
-  const navigate = useNavigate();
-
-  return (
-    <SurveyComponent
-      onBack={() => navigate('/products/prefill/survey')}
-      onNext={(selectedItems) => {
-        console.log('Selected items:', selectedItems);
-        navigate('/products/prefill/survey/product-search');
-      }}
-    />
-  );
+  return <SurveyComponent />;
 }
 
+// Product Search Page Component
 function ProductSearchPage() {
-  const navigate = useNavigate();
-
-  return (
-    <ProductSearch
-      onBack={() => navigate('/products/prefill/survey/skincare')}
-      onSkip={() => navigate('/products/prefill/product-selection')}
-      onNext={(product) => {
-        console.log('Product:', product);
-        navigate('/products/prefill/product-selection');
-      }}
-    />
-  );
+  return <ProductSearch />;
 }
 
+// Product Selection Page Component
 function ProductSelectionPage() {
-  const navigate = useNavigate();
-
-  return (
-    <MonthlyPurchase
-      onBack={() => navigate('/products/prefill/survey/product-search')}
-      onRemindLater={() => navigate('/products/prefill')}
-      onBuyNow={(selectedItems, subscription) => {
-        console.log('Selected items:', selectedItems);
-        console.log('Subscription:', subscription);
-        navigate('/products/prefill/pharmacy-cart');
-      }}
-    />
-  );
+  return <MonthlyPurchase />;
 }
 
+// Pharmacy Cart Page Component
 function PharmacyCartPage() {
-  const navigate = useNavigate();
-
-  return (
-    <PharmacyCart
-      onBack={() => navigate('/products/prefill/product-selection')}
-      onProceedToCheckout={(cartItems) => {
-        navigate('/products/prefill/checkout', { state: { cartItems } });
-      }}
-    />
-  );
+  return <PharmacyCart />;
 }
 
+// Checkout Page Component
 function CheckoutPageComponent() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const cartItems = location.state?.cartItems || [];
-
-  return (
-    <CheckoutPage
-      onBack={() => navigate('/products/prefill/pharmacy-cart')}
-      cartItems={cartItems}
-      onPayment={() => navigate('/products/prefill/payment-success')}
-    />
-  );
+  return <CheckoutPage />;
 }
 
+// Payment Success Page Component
 function PaymentSuccessPage() {
-  const navigate = useNavigate();
-
-  return (
-    <PaymentSuccess
-      onBack={() => navigate('/products/prefill/checkout')}
-      onSeePersona={() => navigate('/products/prefill/persona')}
-      onTrackOrder={() => navigate('/')}
-    />
-  );
+  return <PaymentSuccess />;
 }
 
-function PrefillApp() {
+// Wellness Persona Page Component
+function WellnessPersonaPage() {
+  return <WellnessPersona />;
+}
+
+function RefillApp() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="preferences" element={<PreferencesPage />} />{' '}
-      <Route path="survey" element={<SurveyPage />} />{' '}
-      <Route path="survey/skincare" element={<SurveySkincarePage />} />{' '}
-      <Route path="survey/product-search" element={<ProductSearchPage />} />{' '}
-      <Route path="product-selection" element={<ProductSelectionPage />} />{' '}
-      <Route path="pharmacy-cart" element={<PharmacyCartPage />} />{' '}
-      <Route path="checkout" element={<CheckoutPageComponent />} />{' '}
-      <Route path="payment-success" element={<PaymentSuccessPage />} />{' '}
-      <Route path="persona" element={<WellnessPersona />} />{' '}
+      <Route path="preferences" element={<PreferencesPage />} />
+      <Route path="survey" element={<SurveyPage />} />
+      <Route path="survey/skincare" element={<SurveySkincarePage />} />
+      <Route path="survey/product-search" element={<ProductSearchPage />} />
+      <Route path="product-selection" element={<ProductSelectionPage />} />
+      <Route path="pharmacy-cart" element={<PharmacyCartPage />} />
+      <Route path="checkout" element={<CheckoutPageComponent />} />
+      <Route path="payment-success" element={<PaymentSuccessPage />} />
+      <Route path="persona" element={<WellnessPersonaPage />} />
     </Routes>
   );
 }
 
-export default PrefillApp;
+function App() {
+  return (
+    <RefillProvider>
+      <RefillApp />
+    </RefillProvider>
+  );
+}
+
+export default App;

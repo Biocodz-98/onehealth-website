@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { useRefill } from '../Services/refillApi';
+import { useNavigate } from 'react-router-dom';
 
 // Types
-interface PreferencesFormProps {
-  onBack?: () => void;
-  onNext?: (data: FormData) => void;
-}
-
 interface FormData {
   name: string;
   email: string;
@@ -16,10 +13,10 @@ interface FormData {
   dataProfileConsent: boolean;
 }
 
-const PreferencesForm: React.FC<PreferencesFormProps> = ({
-  onBack,
-  onNext,
-}) => {
+const PreferencesForm: React.FC = () => {
+  const navigate = useNavigate();
+  const { startSession, isLoading, error } = useRefill();
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -29,17 +26,92 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
     dataProfileConsent: false,
   });
 
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string;
+  }>({});
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+
+    // Clear validation error when user starts typing
+    if (validationErrors[name]) {
+      setValidationErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
-  const handleNext = () => {
-    if (onNext) {
-      onNext(formData);
+  const validateForm = (): boolean => {
+    const errors: { [key: string]: string } = {};
+
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required';
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'Email is invalid';
+    }
+
+    if (!formData.phoneNumber.trim()) {
+      errors.phoneNumber = 'Phone number is required';
+    } else if (!/^0[789][01]\d{8}$/.test(formData.phoneNumber)) {
+      errors.phoneNumber = 'Phone number must be a valid Nigerian number';
+    }
+
+    if (!formData.condition.trim()) {
+      errors.condition = 'Please specify your condition';
+    }
+
+    if (!formData.ndprConsent) {
+      errors.ndprConsent = 'You must accept NDPR terms';
+    }
+
+    if (!formData.dataProfileConsent) {
+      errors.dataProfileConsent = 'You must consent to data storage';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleNext = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      console.log('Starting session with data:', {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phoneNumber,
+        medicine_type: formData.condition.toLowerCase(),
+      });
+
+      // Call API to start session - medicine_type should be a single string
+      await startSession({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phoneNumber,
+        medicine_type: formData.condition.toLowerCase(),
+      });
+
+      console.log('Session created successfully!');
+
+      // Small delay to ensure state updates before navigation
+      setTimeout(() => {
+        navigate('/products/refill/survey');
+      }, 100);
+    } catch (err) {
+      console.error('Failed to start session:', err);
+      alert('Failed to create session. Please check the form and try again.');
     }
   };
 
@@ -50,7 +122,7 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
         <div className="px-8 py-12 lg:px-20 lg:py-16 flex flex-col">
           {/* Back Button */}
           <button
-            onClick={onBack}
+            onClick={() => navigate('/products/refill')}
             className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-16 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -88,6 +160,13 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
               This will help us send you your preferences
             </p>
 
+            {/* API Error Display */}
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-600 text-sm">{error}</p>
+              </div>
+            )}
+
             {/* Name Field */}
             <div className="mb-8">
               <label
@@ -102,9 +181,16 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Ibrahim Idris"
-                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
+                className={`w-full px-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base ${
+                  validationErrors.name ? 'border-red-500' : 'border-gray-300'
+                }`}
                 style={{ fontFamily: 'Lato, sans-serif' }}
               />
+              {validationErrors.name && (
+                <p className="text-red-500 text-sm mt-2">
+                  {validationErrors.name}
+                </p>
+              )}
             </div>
 
             {/* Email Field */}
@@ -121,9 +207,16 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="olivia@onehealth.com"
-                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
+                className={`w-full px-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base ${
+                  validationErrors.email ? 'border-red-500' : 'border-gray-300'
+                }`}
                 style={{ fontFamily: 'Lato, sans-serif' }}
               />
+              {validationErrors.email && (
+                <p className="text-red-500 text-sm mt-2">
+                  {validationErrors.email}
+                </p>
+              )}
             </div>
 
             {/* Phone Number Field */}
@@ -140,9 +233,18 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
                 placeholder="08012345678"
-                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
+                className={`w-full px-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base ${
+                  validationErrors.phoneNumber
+                    ? 'border-red-500'
+                    : 'border-gray-300'
+                }`}
                 style={{ fontFamily: 'Lato, sans-serif' }}
               />
+              {validationErrors.phoneNumber && (
+                <p className="text-red-500 text-sm mt-2">
+                  {validationErrors.phoneNumber}
+                </p>
+              )}
             </div>
 
             {/* Condition Field */}
@@ -159,9 +261,18 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
                 value={formData.condition}
                 onChange={handleInputChange}
                 placeholder="Diabetes"
-                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base"
+                className={`w-full px-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base ${
+                  validationErrors.condition
+                    ? 'border-red-500'
+                    : 'border-gray-300'
+                }`}
                 style={{ fontFamily: 'Lato, sans-serif' }}
               />
+              {validationErrors.condition && (
+                <p className="text-red-500 text-sm mt-2">
+                  {validationErrors.condition}
+                </p>
+              )}
               <p
                 className="text-sm text-gray-500 mt-3"
                 style={{ fontFamily: 'Lato, sans-serif' }}
@@ -178,7 +289,11 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
                   name="ndprConsent"
                   checked={formData.ndprConsent}
                   onChange={handleInputChange}
-                  className="mt-1 w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                  className={`mt-1 w-5 h-5 text-green-600 rounded focus:ring-green-500 ${
+                    validationErrors.ndprConsent
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  }`}
                 />
                 <span
                   className="text-base text-gray-700 leading-relaxed"
@@ -188,13 +303,23 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
                   will only be used for medical purposes.
                 </span>
               </label>
+              {validationErrors.ndprConsent && (
+                <p className="text-red-500 text-sm">
+                  {validationErrors.ndprConsent}
+                </p>
+              )}
+
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   name="dataProfileConsent"
                   checked={formData.dataProfileConsent}
                   onChange={handleInputChange}
-                  className="mt-1 w-5 h-5 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                  className={`mt-1 w-5 h-5 text-green-600 rounded focus:ring-green-500 ${
+                    validationErrors.dataProfileConsent
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  }`}
                 />
                 <span
                   className="text-base text-gray-700 leading-relaxed"
@@ -204,28 +329,36 @@ const PreferencesForm: React.FC<PreferencesFormProps> = ({
                   profile that only I can access
                 </span>
               </label>
+              {validationErrors.dataProfileConsent && (
+                <p className="text-red-500 text-sm">
+                  {validationErrors.dataProfileConsent}
+                </p>
+              )}
             </div>
 
             {/* Next Button */}
             <button
               onClick={handleNext}
-              className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-4 rounded-full text-base font-semibold transition-colors flex items-center gap-2"
+              disabled={isLoading}
+              className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-4 rounded-full text-base font-semibold transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ fontFamily: 'Manrope, sans-serif' }}
             >
-              Next
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              {isLoading ? 'Processing...' : 'Next'}
+              {!isLoading && (
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              )}
             </button>
           </div>
         </div>

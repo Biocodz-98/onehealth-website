@@ -25,10 +25,10 @@ const PRODUCT_ITEMS: ProductItem[] = [
     logo: '/method-images/Onehealthng-Logo.svg',
   },
   {
-    name: 'Prefill',
+    name: 'Refill',
     description:
-      'Prefill is a personalized medicine delivery service that ensures you never run out of your essential medications.',
-    link: '/products/prefill',
+      'Refill is a personalized medicine delivery service that ensures you never run out of your essential medications.',
+    link: '/products/refill',
     logo: '/prefill-images/onehealth logo.svg',
   },
 ];

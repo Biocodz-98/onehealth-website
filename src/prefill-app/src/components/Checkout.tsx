@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useRefill } from '../Services/refillApi';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Home, Truck, Package, ChevronDown } from 'lucide-react';
 
 // Types
@@ -19,12 +21,6 @@ interface RecommendedProduct {
   originalPrice: number;
   rating: number;
   soldCount: number;
-}
-
-interface CheckoutProps {
-  onBack?: () => void;
-  cartItems?: CartItem[];
-  onPayment?: () => void;
 }
 
 interface ShippingAddress {
@@ -107,11 +103,12 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   );
 };
 
-const CheckoutPage: React.FC<CheckoutProps> = ({
-  onBack,
-  cartItems = [],
-  onPayment,
-}) => {
+const CheckoutPage: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { checkout, isLoading, error } = useRefill();
+
+  const cartItems = location.state?.cartItems || [];
   const [selectedDelivery, setSelectedDelivery] = useState<string>('deliver');
   const [showCoupons, setShowCoupons] = useState<boolean>(false);
   const [shippingAddress] = useState<ShippingAddress>({
@@ -120,6 +117,29 @@ const CheckoutPage: React.FC<CheckoutProps> = ({
     state: 'Lagos',
     postalCode: '+234 808 6110 548',
   });
+
+  const handlePayment = async () => {
+    try {
+      const response = await checkout(
+        {
+          name: shippingAddress.city,
+          phone: shippingAddress.postalCode,
+          address: shippingAddress.street,
+          lga: 'Eti-Osa',
+          state: shippingAddress.state,
+        },
+        selectedDelivery === 'subscribe' ? 'subscribe' : 'one_time',
+      );
+
+      if (response.payment_status === 'success') {
+        navigate('/products/refill/payment-success');
+      } else {
+        alert('Payment failed. Please try again.');
+      }
+    } catch (err) {
+      console.error('Checkout failed:', err);
+    }
+  };
 
   const recommendedProducts: RecommendedProduct[] = [
     {
@@ -191,13 +211,13 @@ const CheckoutPage: React.FC<CheckoutProps> = ({
     console.log('Add to cart:', product);
   };
 
-  // Calculate totals dynamically
+  // Calculate totals dynamically - Fixed TypeScript errors
   const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
+    (sum: number, item: CartItem) => sum + item.price * item.quantity,
+    0,
   );
   const selectedOption = deliveryOptions.find(
-    (opt) => opt.id === selectedDelivery
+    (opt) => opt.id === selectedDelivery,
   );
   const shippingCost = selectedOption?.price || 0;
   const discount = 0;
@@ -205,14 +225,14 @@ const CheckoutPage: React.FC<CheckoutProps> = ({
   const freeShippingThreshold = 33400;
   const amountNeededForFreeShipping = Math.max(
     0,
-    freeShippingThreshold - subtotal
+    freeShippingThreshold - subtotal,
   );
 
   return (
     <div className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16">
       {/* Back Button */}
       <button
-        onClick={onBack}
+        onClick={() => navigate('/products/refill/pharmacy-cart')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-8 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
@@ -225,6 +245,13 @@ const CheckoutPage: React.FC<CheckoutProps> = ({
           Back
         </span>
       </button>
+
+      {/* Error Display */}
+      {error && (
+        <div className="max-w-7xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
 
       {/* Step Indicator */}
       <StepIndicator currentStep={2} />
@@ -258,7 +285,7 @@ const CheckoutPage: React.FC<CheckoutProps> = ({
                 fontFamily: 'Manrope, sans-serif',
                 fontWeight: 400,
                 lineHeight: '150%',
-                fontStyle: 'regular',
+                fontStyle: 'normal',
               }}
             >
               {shippingAddress.street}
@@ -285,7 +312,7 @@ const CheckoutPage: React.FC<CheckoutProps> = ({
                 fontFamily: 'Manrope, sans-serif',
                 fontWeight: 400,
                 lineHeight: '150%',
-                fontStyle: 'regular',
+                fontStyle: 'normal',
               }}
             >
               Please select how you want your order delivered
@@ -460,6 +487,7 @@ const CheckoutPage: React.FC<CheckoutProps> = ({
                 What you get
               </h2>
               <button
+                onClick={() => navigate('/products/refill/pharmacy-cart')}
                 className="text-[#3da467] text-sm font-medium hover:underline"
                 style={{ fontFamily: 'Manrope, sans-serif' }}
               >
@@ -469,7 +497,7 @@ const CheckoutPage: React.FC<CheckoutProps> = ({
 
             {/* Cart Items */}
             <div className="space-y-4 mb-6">
-              {cartItems.map((item) => (
+              {cartItems.map((item: CartItem) => (
                 <div key={item.id} className="flex gap-3">
                   <img
                     src={item.image}
@@ -614,11 +642,14 @@ const CheckoutPage: React.FC<CheckoutProps> = ({
             </div>
 
             <button
-              className="w-full bg-[#3da467] hover:bg-green-700 text-white py-3 rounded-full font-semibold transition-colors mb-4"
+              onClick={handlePayment}
+              disabled={isLoading || cartItems.length === 0}
+              className="w-full bg-[#3da467] hover:bg-green-700 text-white py-3 rounded-full font-semibold transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ fontFamily: 'Manrope, sans-serif', fontWeight: 700 }}
-              onClick={onPayment}
             >
-              Pay ₦{total.toLocaleString()}.00
+              {isLoading
+                ? 'Processing...'
+                : `Pay ₦${total.toLocaleString()}.00`}
             </button>
 
             <div className="bg-[#feefdd] p-3 rounded-3xl text-center border-[#feefdd] border">
