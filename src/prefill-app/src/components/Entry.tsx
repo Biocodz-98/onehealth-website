@@ -30,8 +30,14 @@ const PreferencesForm: React.FC = () => {
     [key: string]: string;
   }>({});
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
@@ -248,6 +254,7 @@ const PreferencesForm: React.FC = () => {
             </div>
 
             {/* Condition Field */}
+
             <div className="mb-8">
               <label
                 className="block text-base font-medium text-gray-800 mb-3"
@@ -255,19 +262,24 @@ const PreferencesForm: React.FC = () => {
               >
                 What Condition are you managing
               </label>
-              <input
-                type="text"
+              <select
                 name="condition"
                 value={formData.condition}
                 onChange={handleInputChange}
-                placeholder="Diabetes"
                 className={`w-full px-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base ${
                   validationErrors.condition
                     ? 'border-red-500'
                     : 'border-gray-300'
                 }`}
                 style={{ fontFamily: 'Lato, sans-serif' }}
-              />
+              >
+                <option value="">Select a condition</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="hypertension">Hypertension</option>
+                <option value="asthma">Asthma</option>
+                <option value="body loss">Body Loss</option>
+                <option value="others">Others</option>
+              </select>
               {validationErrors.condition && (
                 <p className="text-red-500 text-sm mt-2">
                   {validationErrors.condition}
@@ -280,7 +292,6 @@ const PreferencesForm: React.FC = () => {
                 This will help us tailor your care.
               </p>
             </div>
-
             {/* Checkboxes */}
             <div className="space-y-5 mb-10">
               <label className="flex items-start gap-3 cursor-pointer">

@@ -11,11 +11,14 @@ interface MedicineItem {
 
 const Survey: React.FC = () => {
   const navigate = useNavigate();
-  const { saveSurvey, isLoading, error, sessionUuid } = useRefill();
+  const { saveSurvey, getMedicineProducts, isLoading, error, sessionUuid } =
+    useRefill();
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [isCheckingSession, setIsCheckingSession] = useState(true);
+  const [medicines, setMedicines] = useState<MedicineItem[]>([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
   // Check for session on mount
   useEffect(() => {
@@ -36,11 +39,118 @@ const Survey: React.FC = () => {
     return () => clearTimeout(timer);
   }, [sessionUuid, navigate]);
 
+  // Fetch medicine products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (!sessionUuid) return;
+
+      try {
+        setIsLoadingProducts(true);
+        console.log('Fetching medicine products from API...');
+
+        const response = await getMedicineProducts();
+        console.log('Medicine products received:', response);
+
+        if (response.products && response.products.length > 0) {
+          setMedicines(response.products);
+        } else {
+          // Fallback to default data if API returns empty
+          console.warn('No products returned from API, using fallback data');
+          setMedicines([
+            {
+              id: '1',
+              name: 'Amlodipine',
+              image: '/prefill-images/medicine bottle.svg',
+            },
+            {
+              id: '2',
+              name: 'Lisinopril',
+              image: '/prefill-images/medicine bottle.svg',
+            },
+            {
+              id: '3',
+              name: 'Metformin',
+              image: '/prefill-images/medicine bottle.svg',
+            },
+            {
+              id: '4',
+              name: 'Atorvastatin',
+              image: '/prefill-images/medicine bottle.svg',
+            },
+            {
+              id: '5',
+              name: 'Omeprazole',
+              image: '/prefill-images/medicine bottle.svg',
+            },
+            {
+              id: '6',
+              name: 'Levothyroxine',
+              image: '/prefill-images/medicine bottle.svg',
+            },
+          ]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch medicine products:', err);
+        // Use fallback data on error
+        setMedicines([
+          {
+            id: '1',
+            name: 'Amlodipine',
+            image: '/prefill-images/medicine bottle.svg',
+          },
+          {
+            id: '2',
+            name: 'Lisinopril',
+            image: '/prefill-images/medicine bottle.svg',
+          },
+          {
+            id: '3',
+            name: 'Metformin',
+            image: '/prefill-images/medicine bottle.svg',
+          },
+          {
+            id: '4',
+            name: 'Atorvastatin',
+            image: '/prefill-images/medicine bottle.svg',
+          },
+          {
+            id: '5',
+            name: 'Omeprazole',
+            image: '/prefill-images/medicine bottle.svg',
+          },
+          {
+            id: '6',
+            name: 'Levothyroxine',
+            image: '/prefill-images/medicine bottle.svg',
+          },
+        ]);
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    };
+
+    if (!isCheckingSession && sessionUuid) {
+      fetchProducts();
+    }
+  }, [isCheckingSession, sessionUuid, getMedicineProducts]);
+
   // Show loading while checking session
   if (isCheckingSession) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-gray-600">Loading...</p>
+        <p className="text-gray-600">Checking session...</p>
+      </div>
+    );
+  }
+
+  // Show loading while fetching products
+  if (isLoadingProducts) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
+          {/* <p className="text-gray-600">Loading medicine products...</p> */}
+        </div>
       </div>
     );
   }
@@ -52,39 +162,6 @@ const Survey: React.FC = () => {
     "Women's Health",
     'Sexual Health',
     'Vitamins and Supplement',
-  ];
-
-  const medicines: MedicineItem[] = [
-    {
-      id: '1',
-      name: 'Amlodipine',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '2',
-      name: 'Lisinopril',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '3',
-      name: 'Metformin',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '4',
-      name: 'Atorvastatin',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '5',
-      name: 'Omeprazole',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '6',
-      name: 'Levothyroxine',
-      image: '/prefill-images/medicine bottle.svg',
-    },
   ];
 
   const toggleSelection = (id: string) => {
@@ -117,7 +194,15 @@ const Survey: React.FC = () => {
       navigate('/products/refill/survey/skincare');
     } catch (err) {
       console.error('Failed to save survey:', err);
-      // Error is already displayed in context
+
+      // Ask user if they want to continue anyway (backend not ready)
+      const continueAnyway = window.confirm(
+        'Failed to save survey data (backend endpoint not ready). Would you like to continue to the next step anyway?',
+      );
+
+      if (continueAnyway) {
+        navigate('/products/refill/survey/skincare');
+      }
     }
   };
 

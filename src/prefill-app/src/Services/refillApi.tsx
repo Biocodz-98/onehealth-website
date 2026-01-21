@@ -73,6 +73,17 @@ interface SuccessResponse {
   }>;
 }
 
+interface ProductSurveyItem {
+  id: string;
+  name: string;
+  image: string;
+  category?: string;
+}
+
+interface ProductSurveyResponse {
+  products: ProductSurveyItem[];
+}
+
 interface RefillContextType {
   sessionUuid: string | null;
   user: User | null;
@@ -93,6 +104,8 @@ interface RefillContextType {
     paymentType: string,
   ) => Promise<CheckoutResponse>;
   getSuccessData: () => Promise<SuccessResponse>;
+  getMedicineProducts: () => Promise<ProductSurveyResponse>;
+  getPersonalCareProducts: () => Promise<ProductSurveyResponse>;
   submitConsent: (consent: boolean) => Promise<void>;
   clearSession: () => void;
 }
@@ -135,7 +148,7 @@ class RefillAPIService {
     medicine_type: string;
   }) {
     return this.request<{
-      session_id: string; // Changed from session_uuid
+      session_id: string;
       user_type: string;
       status: string;
       next_phase: string;
@@ -163,6 +176,18 @@ class RefillAPIService {
         body: JSON.stringify({ category, answers }),
       },
     );
+  }
+
+  async getMedicineProducts() {
+    return this.request<ProductSurveyResponse>('/product-surveys/medicine', {
+      method: 'GET',
+    });
+  }
+
+  async getPersonalCareProducts() {
+    return this.request<ProductSurveyResponse>('/product-surveys/skincare', {
+      method: 'GET',
+    });
   }
 
   async updateCart(sessionUuid: string, item: CartItem) {
@@ -255,9 +280,9 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await apiService.startSession(data);
       console.log('API Response:', response);
-      console.log('Setting sessionUuid to:', response.session_id); // Changed from session_uuid
+      console.log('Setting sessionUuid to:', response.session_id);
 
-      setSessionUuid(response.session_id); // Changed from session_uuid
+      setSessionUuid(response.session_id);
       setUser({
         id: 0,
         name: data.name,
@@ -399,6 +424,40 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const getMedicineProducts = async (): Promise<ProductSurveyResponse> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getMedicineProducts();
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to get medicine products';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getPersonalCareProducts = async (): Promise<ProductSurveyResponse> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getPersonalCareProducts();
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Failed to get personal care products';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const clearSession = () => {
     setSessionUuid(null);
     setUser(null);
@@ -421,6 +480,8 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     getSuccessData,
     submitConsent,
     clearSession,
+    getMedicineProducts,
+    getPersonalCareProducts,
   };
 
   return (
