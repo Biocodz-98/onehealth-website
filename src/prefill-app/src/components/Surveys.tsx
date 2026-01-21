@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRefill } from '../Services/refillApi';
 import { ArrowLeft, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -9,17 +9,62 @@ interface SurveyProps {
   onNext?: (selectedItems: string[]) => void;
 }
 
-interface MedicineItem {
-  id: string;
+interface SkincareItem {
+  id: number;
   name: string;
   image: string;
+  category?: string;
 }
 
-const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
+const FALLBACK_SKINCARE: SkincareItem[] = [
+  {
+    id: 1,
+    name: 'Body Cream',
+    image: '/prefill-images/medicine bottle.svg',
+    category: 'Body Cream',
+  },
+  {
+    id: 2,
+    name: 'Face Wash',
+    image: '/prefill-images/medicine bottle.svg',
+    category: 'Facial Cleanser & Toners',
+  },
+  {
+    id: 3,
+    name: 'Moisturizer',
+    image: '/prefill-images/medicine bottle.svg',
+    category: 'Moisturizers',
+  },
+  {
+    id: 4,
+    name: 'Sunscreen',
+    image: '/prefill-images/medicine bottle.svg',
+    category: 'Sunscreens',
+  },
+  {
+    id: 5,
+    name: 'Body Wash',
+    image: '/prefill-images/medicine bottle.svg',
+    category: 'Body Wash',
+  },
+  {
+    id: 6,
+    name: 'Serum',
+    image: '/prefill-images/medicine bottle.svg',
+    category: 'Serums',
+  },
+];
+
+const SurveyComponent: React.FC<SurveyProps> = () => {
   const navigate = useNavigate();
-  const { saveSurvey } = useRefill();
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const { saveSurvey, getPersonalCareProducts, sessionUuid, isLoading, error } =
+    useRefill();
+
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [skincares, setSkincares] = useState<SkincareItem[]>([]);
+  const [isLoadingSkincare, setIsLoadingSkincare] = useState<boolean>(true);
+  const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
 
   const categories = [
     'All',
@@ -32,47 +77,74 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
     'Sanitary Pads & Tampons',
   ];
 
-  //medicine items
-  const medicines: MedicineItem[] = [
-    {
-      id: '1',
-      name: 'Amlodipine',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '2',
-      name: 'Amlodipine',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '3',
-      name: 'Amlodipine',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '4',
-      name: 'Amlodipine',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '5',
-      name: 'Amlodipine',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '6',
-      name: 'Amlodipine',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-  ];
+  /** ---- Check session on mount ---- */
+  useEffect(() => {
+    console.log('Skincare Survey mounted. Current sessionUuid:', sessionUuid);
 
-  const toggleSelection = (id: string) => {
+    const timer = setTimeout(() => {
+      if (!sessionUuid) {
+        alert('Please complete the preferences form first');
+        navigate('/products/refill/preferences');
+      } else {
+        setIsCheckingSession(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [sessionUuid, navigate]);
+
+  /** ---- Fetch skincare products with caching ---- */
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (!sessionUuid) return;
+
+      const cacheKey = `skincares_${sessionUuid}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        setSkincares(JSON.parse(cached));
+        setIsLoadingSkincare(false);
+        return;
+      }
+
+      try {
+        setIsLoadingSkincare(true);
+        const response: any = await getPersonalCareProducts();
+
+        const products: SkincareItem[] = (response.data || []).map(
+          (item: any) => ({
+            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+            name: item.name,
+            image: item.image,
+            category: item.category || 'Body Cream',
+          }),
+        );
+
+        setSkincares(products);
+        localStorage.setItem(cacheKey, JSON.stringify(products));
+      } catch (err) {
+        console.error('Failed to fetch skincares, using fallback:', err);
+        setSkincares(FALLBACK_SKINCARE);
+      } finally {
+        setIsLoadingSkincare(false);
+      }
+    };
+
+    if (!isCheckingSession && sessionUuid) {
+      fetchProducts();
+    }
+  }, [isCheckingSession, sessionUuid, getPersonalCareProducts]);
+
+  /** ---- Toggle selection ---- */
+  const toggleSelection = (id: number) => {
     setSelectedItems((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
+  /** ---- Handle next step ---- */
   const handleNext = async () => {
+    if (!sessionUuid) return;
+
     if (selectedItems.length === 0) {
       alert('Please select at least one item');
       return;
@@ -80,7 +152,7 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
 
     try {
       const selectedNames = selectedItems
-        .map((id) => medicines.find((p) => p.id === id)?.name.toLowerCase())
+        .map((id) => skincares.find((p) => p.id === id)?.name.toLowerCase())
         .filter(Boolean) as string[];
 
       await saveSurvey('personal_care', [
@@ -93,8 +165,34 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
       navigate('/products/refill/survey/product-search');
     } catch (err) {
       console.error('Failed to save survey:', err);
+      const continueAnyway = window.confirm(
+        'Failed to save survey data. Continue anyway?',
+      );
+      if (continueAnyway) navigate('/products/refill/survey/product-search');
     }
   };
+
+  // Filter skincares by active category
+  const filteredSkincares =
+    activeCategory === 'All'
+      ? skincares
+      : skincares.filter((s) => s.category === activeCategory);
+
+  /** ---- Loading states ---- */
+  if (isCheckingSession || isLoadingSkincare) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">
+            {isCheckingSession
+              ? 'Checking session...'
+              : 'Loading skincare products...'}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -103,7 +201,7 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
     >
       {/* Back Button */}
       <button
-        onClick={onBack}
+        onClick={() => navigate('/products/refill/survey/medicines')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-12 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
@@ -120,7 +218,7 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
             fontFamily: 'Lexend, sans-serif',
           }}
         >
-          Which of these do you use <br /> frequently?
+          Which of these do you use frequently?
         </h1>
         <p
           className="text-base text-black"
@@ -135,7 +233,13 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
         </p>
       </div>
 
-      {/* Categories and Next Button */}
+      {error && (
+        <div className="max-w-6xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
+
+      {/* Section Header with Next Button */}
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex items-center justify-between mb-6">
           <h2
@@ -148,28 +252,6 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
           >
             PERSONAL CARE AND SKINCARE
           </h2>
-          <button
-            onClick={handleNext}
-            className="bg-[#3da467] hover:bg-green-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2"
-            style={{
-              fontFamily: 'Manrope, sans-serif',
-            }}
-          >
-            Next
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
         </div>
 
         {/* Category Pills */}
@@ -185,7 +267,6 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
               }`}
               style={{
                 fontFamily: 'Manrope, sans-serif',
-                cursor: 'pointer',
                 fontWeight: 500,
               }}
             >
@@ -195,52 +276,89 @@ const SurveyComponent: React.FC<SurveyProps> = ({ onBack }) => {
         </div>
       </div>
 
-      {/* Medicine Grid */}
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-          {medicines.map((medicine) => {
-            const isSelected = selectedItems.includes(medicine.id);
-            return (
-              <button
-                key={medicine.id}
-                onClick={() => toggleSelection(medicine.id)}
-                className={`relative p-4 rounded-2xl border-2 transition-all hover:shadow-md ${
+      {/* Skincare Grid */}
+      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+        {filteredSkincares.map((skincare) => {
+          const isSelected = selectedItems.includes(skincare.id);
+          return (
+            <button
+              key={skincare.id}
+              onClick={() => toggleSelection(skincare.id)}
+              className={`relative p-6 rounded-2xl border-2 transition-all hover:shadow-md ${
+                isSelected
+                  ? 'border-[#3da467] bg-[#ecf6ed]'
+                  : 'border-gray-200 bg-white hover:border-gray-300'
+              }`}
+            >
+              {/* Checkbox */}
+              <div
+                className={`absolute top-4 right-4 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
                   isSelected
-                    ? 'border-[#3da467] bg-[#ecf6ed]'
-                    : 'border-gray-200 bg-white hover:border-gray-300'
+                    ? 'bg-[#3da467] border-[#3da467]'
+                    : 'bg-white border-gray-300'
                 }`}
               >
-                {/* Checkbox */}
-                <div className="absolute top-3 right-3">
-                  <div
-                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                      isSelected
-                        ? 'bg-[#3da467] border-[#3da467]'
-                        : 'bg-white border-gray-300'
-                    }`}
-                  >
-                    {isSelected && <Check className="w-3 h-3 text-white" />}
-                  </div>
-                </div>
+                {isSelected && <Check className="w-4 h-4 text-white" />}
+              </div>
 
-                {/* Medicine Image */}
-                <div className="flex flex-col items-center">
+              {/* Image and Name */}
+              <div className="flex flex-col items-center">
+                <div className="w-28 h-28 mb-4 flex items-center justify-center">
                   <img
-                    src={medicine.image}
-                    alt={medicine.name}
-                    className="w-32 h-32 object-contain mb-3"
+                    src={skincare.image}
+                    alt={skincare.name}
+                    className="w-full h-full object-contain"
                   />
-                  <p
-                    className="text-base font-medium text-[#323232]"
-                    style={{ fontFamily: 'Manrope, sans-serif' }}
-                  >
-                    {medicine.name}
-                  </p>
                 </div>
-              </button>
-            );
-          })}
+                <p
+                  className="text-base font-medium text-[#323232] text-center"
+                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                >
+                  {skincare.name}
+                </p>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Selection Counter */}
+      {selectedItems.length > 0 && (
+        <div className="max-w-6xl mx-auto mt-6">
+          <p className="text-sm text-gray-600">
+            {selectedItems.length} item{selectedItems.length !== 1 ? 's' : ''}{' '}
+            selected
+          </p>
         </div>
+      )}
+
+      {/* Next Button */}
+      <div className="max-w-6xl mx-auto mt-8 flex justify-end">
+        <button
+          onClick={handleNext}
+          disabled={selectedItems.length === 0 || isLoading}
+          className="bg-[#3da467] hover:bg-green-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          style={{
+            fontFamily: 'Manrope, sans-serif',
+          }}
+        >
+          {isLoading ? 'Saving...' : 'Next'}
+          {!isLoading && (
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          )}
+        </button>
       </div>
     </div>
   );
