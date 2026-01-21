@@ -74,7 +74,7 @@ interface SuccessResponse {
 }
 
 interface ProductSurveyItem {
-  id: string;
+  id: number;
   name: string;
   image: string;
   category?: string;
