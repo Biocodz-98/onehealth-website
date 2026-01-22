@@ -4,7 +4,6 @@ import { ArrowLeft, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 
-const hasFetchedRef = React.useRef(false);
 // Types
 interface SurveyProps {
   onBack?: () => void;
@@ -98,9 +97,7 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
   /** ---- Fetch babycare products with caching ---- */
   useEffect(() => {
     const fetchProducts = async () => {
-      if (!sessionUuid || hasFetchedRef.current) return;
-
-      hasFetchedRef.current = true; // 🔒 lock immediately
+      if (!sessionUuid) return;
 
       const cacheKey = `babycares_${sessionUuid}`;
       const cached = localStorage.getItem(cacheKey);
