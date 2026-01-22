@@ -508,13 +508,13 @@ const PharmacyCart: React.FC = () => {
 
       try {
         setIsLoadingCart(true);
-        const cartData = await getCart();
+        const cartData: any = await getCart();
 
-        const items: CartItem[] = cartData.items.map((item) => ({
+        const items: CartItem[] = cartData.map((item: any) => ({
           id: item.product_id.toString(),
           name: item.product_name,
           dosage: item.dosage || '10mg | 10 capsules',
-          price: item.price,
+          price: item.amount,
           image: item.product_image || '/prefill-images/medicine bottle.svg',
           quantity: item.quantity,
           autoRefill: item.auto_refill || false,
@@ -532,7 +532,7 @@ const PharmacyCart: React.FC = () => {
     };
 
     fetchCartItems();
-  }, [sessionUuid, getCart, navigate]);
+  }, [sessionUuid, navigate]);
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -614,7 +614,9 @@ const PharmacyCart: React.FC = () => {
   };
 
   const handleProceedToCheckout = () => {
-    navigate('/products/refill/checkout', { state: { cartItems } });
+    navigate('/products/refill/checkout', {
+      state: { cartItems, sessionUuid },
+    });
   };
 
   // Loading State

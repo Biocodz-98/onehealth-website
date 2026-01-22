@@ -106,7 +106,9 @@ const Survey: React.FC = () => {
         setIsLoadingProducts(true);
         const response: any = await getMedicineProducts();
 
-        const products: MedicineItem[] = (response.data || []).map(
+        console.log(response);
+
+        const products: MedicineItem[] = (response || []).map(
           (item: any) => ({
             id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
             name: item.name,

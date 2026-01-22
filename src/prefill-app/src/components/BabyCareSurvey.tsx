@@ -112,7 +112,7 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         setIsLoadingBabycare(true);
         const response: any = await getBabyCareProducts();
 
-        const products: BabyCareItem[] = (response.data || []).map(
+        const products: BabyCareItem[] = (response || []).map(
             (item: any) => ({
               id: Number(item.id),
               name: item.name,

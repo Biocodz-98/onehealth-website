@@ -149,7 +149,8 @@ class RefillAPIService {
       }
 
       const json: any = await response.json()
-      return json.data;
+      // return json.data;
+      return ('data' in json ? json.data : json) as T;
 
     } catch (error) {
       console.error('API Request failed:', error);

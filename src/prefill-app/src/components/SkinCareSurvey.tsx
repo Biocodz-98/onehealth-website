@@ -110,7 +110,7 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
         setIsLoadingSkincare(true);
         const response: any = await getPersonalCareProducts();
 
-        const products: SkincareItem[] = (response.data || []).map(
+        const products: SkincareItem[] = (response || []).map(
           (item: any) => ({
             id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
             name: item.name,
