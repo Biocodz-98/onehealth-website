@@ -215,21 +215,36 @@ const Survey: React.FC = () => {
         </div>
       )}
 
-      {/* Categories */}
-      <div className="max-w-6xl mx-auto mb-6 flex flex-wrap gap-3">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`px-5 py-2 rounded-full text-sm font-medium border transition-colors ${
-              activeCategory === cat
-                ? 'bg-gray-900 text-white'
-                : 'bg-white text-[#10071e] hover:bg-gray-100'
-            }`}
+      {/* Section Header with Next Button */}
+      <div className="max-w-6xl mx-auto mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <h2
+            className="text-lg font-bold uppercase tracking-wider"
+            style={{
+              fontFamily: 'Lexend, sans-serif',
+              color: '#323232',
+              lineHeight: '120%',
+            }}
           >
-            {cat}
-          </button>
-        ))}
+            MEDICINES
+          </h2>
+        </div>
+        {/* Categories */}
+        <div className="max-w-6xl mx-auto mb-6 flex flex-wrap gap-3">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-5 py-2 rounded-full text-sm font-medium border transition-colors ${
+                activeCategory === cat
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-white text-[#10071e] hover:bg-gray-100'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Medicine Grid */}

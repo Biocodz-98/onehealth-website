@@ -213,7 +213,7 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
           className="text-4xl lg:text-5xl mb-3"
           style={{
             fontWeight: '400',
-            lineHeight: '1.3',
+            lineHeight: '1.5',
             fontFamily: 'Lexend, sans-serif',
           }}
         >
