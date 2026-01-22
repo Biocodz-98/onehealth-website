@@ -73,6 +73,23 @@ interface SuccessResponse {
   }>;
 }
 
+interface CartResponse {
+  items: Array<{
+    product_id: number;
+    product_name: string;
+    product_image: string;
+    price: number;
+    quantity: number;
+    purchase_type: 'buy_now' | 'subscribe';
+    duration_months?: number;
+    dosage?: string;
+    auto_refill?: boolean;
+    refill_days?: number;
+  }>;
+  subtotal: number;
+  total: number;
+}
+
 interface ProductSurveyItem {
   id: number;
   name: string;
@@ -106,7 +123,9 @@ interface RefillContextType {
   getSuccessData: () => Promise<SuccessResponse>;
   getMedicineProducts: () => Promise<ProductSurveyResponse>;
   getPersonalCareProducts: () => Promise<ProductSurveyResponse>;
+  getBabyCareProducts: () => Promise<ProductSurveyResponse>;
   submitConsent: (consent: boolean) => Promise<void>;
+  getCart: () => Promise<CartResponse>;
   clearSession: () => void;
 }
 
@@ -186,6 +205,18 @@ class RefillAPIService {
 
   async getPersonalCareProducts() {
     return this.request<ProductSurveyResponse>('/product-surveys/skincare', {
+      method: 'GET',
+    });
+  }
+
+  async getBabyCareProducts() {
+    return this.request<ProductSurveyResponse>('/product-surveys/babycare', {
+      method: 'GET',
+    });
+  }
+
+  async getCart(sessionUuid: string) {
+    return this.request<CartResponse>(`/sessions/${sessionUuid}/cart`, {
       method: 'GET',
     });
   }
@@ -458,6 +489,38 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const getBabyCareProducts = async (): Promise<ProductSurveyResponse> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getBabyCareProducts();
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to get baby care products';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getCart = async (): Promise<CartResponse> => {
+    if (!sessionUuid) throw new Error('No active session');
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getCart(sessionUuid);
+      return response;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to get cart';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const clearSession = () => {
     setSessionUuid(null);
     setUser(null);
@@ -482,6 +545,8 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     clearSession,
     getMedicineProducts,
     getPersonalCareProducts,
+    getBabyCareProducts,
+    getCart,
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRefill } from '../Services/refillApi';
 import { useNavigate } from 'react-router-dom';
 import { Heart, Trash2, ChevronDown, ArrowLeft } from 'lucide-react';
@@ -27,36 +27,36 @@ interface RecommendedProducts {
   size?: 'sm' | 'md';
 }
 
-// ITEM DATA
-const cartItemsData = [
-  {
-    id: '1',
-    name: 'Amlodipine Capsules',
-    dosage: '10mg | 10 capsules',
-    price: 25000,
-    image: '/prefill-images/medicine bottle.svg',
-    autoRefill: true,
-    refillDays: 30,
-  },
-  {
-    id: '2',
-    name: 'Amoxicillin Capsules',
-    dosage: '500mg | 10 capsules',
-    price: 7000,
-    image: '/prefill-images/amoxicillin capsules.svg',
-    autoRefill: false,
-    refillDays: 30,
-  },
-  {
-    id: '3',
-    name: 'Amoxicillin Capsules',
-    dosage: '500mg | 10 capsules',
-    price: 7000,
-    image: '/prefill-images/amoxicillin capsules.svg',
-    autoRefill: false,
-    refillDays: 30,
-  },
-];
+// // ITEM DATA
+// const cartItemsData = [
+//   {
+//     id: '1',
+//     name: 'Amlodipine Capsules',
+//     dosage: '10mg | 10 capsules',
+//     price: 25000,
+//     image: '/prefill-images/medicine bottle.svg',
+//     autoRefill: true,
+//     refillDays: 30,
+//   },
+//   {
+//     id: '2',
+//     name: 'Amoxicillin Capsules',
+//     dosage: '500mg | 10 capsules',
+//     price: 7000,
+//     image: '/prefill-images/amoxicillin capsules.svg',
+//     autoRefill: false,
+//     refillDays: 30,
+//   },
+//   {
+//     id: '3',
+//     name: 'Amoxicillin Capsules',
+//     dosage: '500mg | 10 capsules',
+//     price: 7000,
+//     image: '/prefill-images/amoxicillin capsules.svg',
+//     autoRefill: false,
+//     refillDays: 30,
+//   },
+// ];
 
 const recommendedProducts: RecommendedProducts[] = [
   {
@@ -489,13 +489,50 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
 // MAIN PHARMACY CART COMPONENT
 const PharmacyCart: React.FC = () => {
   const navigate = useNavigate();
-  const { addToCart, isLoading, error } = useRefill();
+  const { getCart, addToCart, sessionUuid, isLoading, error } = useRefill();
 
   const [currentStep] = useState(1);
-  const [cartItems, setCartItems] = useState(
-    cartItemsData.map((item) => ({ ...item, quantity: 1 })),
-  );
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [showCoupons, setShowCoupons] = useState(false);
+  const [isLoadingCart, setIsLoadingCart] = useState(true);
+
+  //Fetch cart items on mount
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      if (!sessionUuid) {
+        alert('Please complete the preferences form first');
+        navigate('/products/refill/preferences');
+        return;
+      }
+
+      try {
+        setIsLoadingCart(true);
+        const cartData = await getCart();
+
+        const items: CartItem[] = cartData.items.map((item) => ({
+          id: item.product_id.toString(),
+          name: item.product_name,
+          dosage: item.dosage || '10mg | 10 capsules',
+          price: item.price,
+          image: item.product_image || '/prefill-images/medicine bottle.svg',
+          quantity: item.quantity,
+          autoRefill: item.auto_refill || false,
+          refillDays: item.refill_days || 30,
+        }));
+
+        setCartItems(items);
+      } catch (err) {
+        console.error('Failed to fetch cart:', err);
+
+        setCartItems([]);
+      } finally {
+        setIsLoadingCart(false);
+      }
+    };
+
+    fetchCartItems();
+  }, [sessionUuid, getCart, navigate]);
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -579,6 +616,35 @@ const PharmacyCart: React.FC = () => {
   const handleProceedToCheckout = () => {
     navigate('/products/refill/checkout', { state: { cartItems } });
   };
+
+  // Loading State
+  if (isLoadingCart) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
+          {/* <p className="text-gray-600">Loading your cart...</p> */}
+        </div>
+      </div>
+    );
+  }
+
+  // Empty Cart State
+  if (cartItems.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">Your cart is empty.</p>
+          <button
+            onClick={() => navigate('/products/refill/product-selection')}
+            className="bg-[#3da467] text-white px-6 py-2 rounded-full"
+          >
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16">

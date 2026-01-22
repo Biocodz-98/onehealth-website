@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRefill } from '../Services/refillApi';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -13,42 +13,49 @@ interface ProductItem {
 
 const MonthlyPurchase: React.FC = () => {
   const navigate = useNavigate();
-  const { addToCart, addToWishlist, isLoading, error } = useRefill();
+  const { getCart, addToCart, addToWishlist, sessionUuid, isLoading, error } =
+    useRefill();
 
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([
-    '1',
-    '2',
-    '3',
-    '4',
-  ]);
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [selectedSubscription, setSelectedSubscription] = useState<string>('');
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
-  const products: ProductItem[] = [
-    {
-      id: '1',
-      name: 'Amlodipine',
-      price: '₦25,000',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '2',
-      name: 'Amlodipine',
-      price: '₦25,000',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '3',
-      name: 'Amlodipine',
-      price: '₦25,000',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '4',
-      name: 'Amlodipine',
-      price: '₦25,000',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-  ];
+  // Fetch cart products on mount
+  useEffect(() => {
+    const fetchCartProducts = async () => {
+      if (!sessionUuid) {
+        alert('Please complete the preferences form first');
+        navigate('/products/refill/preferences');
+        return;
+      }
+
+      try {
+        setIsLoadingProducts(true);
+        const cartData = await getCart();
+
+        // Transform cart items to product format
+        const productsList: ProductItem[] = cartData.items.map((item) => ({
+          id: item.product_id.toString(),
+          name: item.product_name,
+          price: `₦${item.price.toLocaleString()}`,
+          image: item.product_image || '/prefill-images/medicine bottle.svg',
+        }));
+
+        setProducts(productsList);
+
+        // Auto-select all products by default
+        setSelectedProducts(productsList.map((p) => p.id));
+      } catch (err) {
+        console.error('Failed to fetch cart:', err);
+        alert('Failed to load your selected products. Please try again.');
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    };
+
+    fetchCartProducts();
+  }, [sessionUuid, getCart, navigate]);
 
   const toggleProduct = (id: string) => {
     setSelectedProducts((prev) =>
@@ -63,7 +70,6 @@ const MonthlyPurchase: React.FC = () => {
     }
 
     try {
-      // Determine subscription duration
       let durationMonths: number | undefined;
       if (selectedSubscription === '3months') durationMonths = 3;
       else if (selectedSubscription === '6months') durationMonths = 6;
@@ -136,6 +142,35 @@ const MonthlyPurchase: React.FC = () => {
       console.error('Failed to subscribe:', err);
     }
   };
+
+  // Loading state
+  if (isLoadingProducts) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
+          {/* <p className="text-gray-600">Loading your selected products...</p> */}
+        </div>
+      </div>
+    );
+  }
+
+  // Empty state
+  if (products.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">No products selected yet.</p>
+          <button
+            onClick={() => navigate('/products/refill/survey/medicines')}
+            className="bg-[#3da467] text-white px-6 py-2 rounded-full"
+          >
+            Complete Survey
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

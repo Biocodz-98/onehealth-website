@@ -5,8 +5,9 @@ import Header from './components/header/Header';
 import HeroSection from './components/Hero';
 import Footer from './components/Footer';
 import PreferencesForm from './components/Entry';
-import Survey from './components/Survey';
-import SurveyComponent from './components/Surveys';
+import Survey from './components/MedicineSurvey';
+import SurveyComponent from './components/SkinCareSurvey';
+import BabyCareComponent from './components/BabyCareSurvey';
 import ProductSearch from './components/ProductSearch';
 import MonthlyPurchase from './components/ProductSelection';
 import PharmacyCart from './components/Cart';
@@ -42,6 +43,11 @@ function SurveyPage() {
 // Skincare Survey Page Component
 function SurveySkincarePage() {
   return <SurveyComponent />;
+}
+
+// Babycare Survey Page Component
+function BabycareSurveyPage() {
+  return <BabyCareComponent />;
 }
 
 // Product Search Page Component
@@ -81,6 +87,7 @@ function RefillApp() {
       <Route path="preferences" element={<PreferencesPage />} />
       <Route path="survey" element={<SurveyPage />} />
       <Route path="survey/skincare" element={<SurveySkincarePage />} />
+      <Route path="survey/babycare" element={<BabycareSurveyPage />} />
       <Route path="survey/product-search" element={<ProductSearchPage />} />
       <Route path="product-selection" element={<ProductSelectionPage />} />
       <Route path="pharmacy-cart" element={<PharmacyCartPage />} />

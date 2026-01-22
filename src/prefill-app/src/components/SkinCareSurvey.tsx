@@ -162,13 +162,13 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
         },
       ]);
 
-      navigate('/products/refill/survey/product-search');
+      navigate('/products/refill/survey/babycare');
     } catch (err) {
       console.error('Failed to save survey:', err);
       const continueAnyway = window.confirm(
         'Failed to save survey data. Continue anyway?',
       );
-      if (continueAnyway) navigate('/products/refill/survey/product-search');
+      if (continueAnyway) navigate('/products/refill/survey/babycare');
     }
   };
 
