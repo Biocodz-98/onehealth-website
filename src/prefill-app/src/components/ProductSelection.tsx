@@ -24,27 +24,21 @@ const MonthlyPurchase: React.FC = () => {
   // Fetch cart products on mount
   useEffect(() => {
     const fetchCartProducts = async () => {
-      if (!sessionUuid) {
-        alert('Please complete the preferences form first');
-        navigate('/products/refill/preferences');
-        return;
-      }
+      if (!sessionUuid) return;
 
       try {
         setIsLoadingProducts(true);
-        const cartData = await getCart();
+        const cartData: any = await getCart();
 
-        // Transform cart items to product format
-        const productsList: ProductItem[] = cartData.items.map((item) => ({
+
+        const productsList: ProductItem[] = cartData.map((item: any) => ({
           id: item.product_id.toString(),
           name: item.product_name,
-          price: `₦${item.price.toLocaleString()}`,
+          price: `₦${item.amount.toLocaleString()}`,
           image: item.product_image || '/prefill-images/medicine bottle.svg',
         }));
 
         setProducts(productsList);
-
-        // Auto-select all products by default
         setSelectedProducts(productsList.map((p) => p.id));
       } catch (err) {
         console.error('Failed to fetch cart:', err);
@@ -55,7 +49,8 @@ const MonthlyPurchase: React.FC = () => {
     };
 
     fetchCartProducts();
-  }, [sessionUuid, getCart, navigate]);
+  }, [sessionUuid, navigate]);
+
 
   const toggleProduct = (id: string) => {
     setSelectedProducts((prev) =>

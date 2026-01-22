@@ -57,7 +57,7 @@ const FALLBACK_SKINCARE: SkincareItem[] = [
 
 const SurveyComponent: React.FC<SurveyProps> = () => {
   const navigate = useNavigate();
-  const { saveSurvey, getPersonalCareProducts, sessionUuid, isLoading, error } =
+  const { saveSurvey, getPersonalCareProducts, updateCart, sessionUuid, isLoading, error } =
     useRefill();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -110,7 +110,7 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
         setIsLoadingSkincare(true);
         const response: any = await getPersonalCareProducts();
 
-        const products: SkincareItem[] = (response.data || []).map(
+        const products: SkincareItem[] = (response || []).map(
           (item: any) => ({
             id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
             name: item.name,
@@ -161,6 +161,17 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
           value: selectedNames,
         },
       ]);
+
+      // Save selected products in cart (bulk save)
+      await Promise.all(
+          selectedItems.map((id) =>
+              updateCart(sessionUuid, {
+                product_id: id,
+                quantity: 1,
+                purchase_type: 'buy_now', // or subscription if you have one
+              })
+          )
+      );
 
       navigate('/products/refill/survey/babycare');
     } catch (err) {

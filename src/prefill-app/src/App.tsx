@@ -11,7 +11,7 @@ import BabyCareComponent from './components/BabyCareSurvey';
 import ProductSearch from './components/ProductSearch';
 import MonthlyPurchase from './components/ProductSelection';
 import PharmacyCart from './components/Cart';
-import CheckoutPage from './components/Checkout';
+import CheckoutPage from './components/Checkout.tsx';
 import PaymentSuccess from './components/Payment';
 import WellnessPersona from './components/Persona';
 
