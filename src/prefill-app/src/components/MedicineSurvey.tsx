@@ -54,7 +54,7 @@ const FALLBACK_MEDICINES: MedicineItem[] = [
 
 const Survey: React.FC = () => {
   const navigate = useNavigate();
-  const { saveSurvey, getMedicineProducts, sessionUuid, isLoading, error } =
+  const { saveSurvey, getMedicineProducts, updateCart, sessionUuid, isLoading, error } =
     useRefill();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -157,6 +157,17 @@ const Survey: React.FC = () => {
       await saveSurvey('medicines', [
         { question_key: 'frequent_products', value: selectedNames },
       ]);
+
+      // Save selected products in cart (bulk save)
+      await Promise.all(
+          selectedItems.map((id) =>
+              updateCart(sessionUuid, {
+                product_id: id,
+                quantity: 1,
+                purchase_type: 'buy_now', // or subscription if you have one
+              })
+          )
+      );
 
       navigate('/products/refill/survey/skincare');
     } catch (err) {

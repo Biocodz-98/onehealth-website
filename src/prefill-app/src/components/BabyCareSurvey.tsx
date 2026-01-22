@@ -58,7 +58,7 @@ const FALLBACK_BABYCARE: BabyCareItem[] = [
 
 const BabyCareComponent: React.FC<SurveyProps> = () => {
   const navigate = useNavigate();
-  const { saveSurvey, getBabyCareProducts, sessionUuid, isLoading, error } =
+  const { saveSurvey, updateCart, getBabyCareProducts, sessionUuid, isLoading, error } =
     useRefill();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -144,6 +144,36 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
   };
 
   /** ---- Handle next step ---- */
+  // const handleNextOld = async () => {
+  //   if (!sessionUuid) return;
+  //
+  //   if (selectedItems.length === 0) {
+  //     alert('Please select at least one item');
+  //     return;
+  //   }
+  //
+  //   try {
+  //     const selectedNames = selectedItems
+  //       .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
+  //       .filter(Boolean) as string[];
+  //
+  //     await saveSurvey('baby_care', [
+  //       {
+  //         question_key: 'frequent_products',
+  //         value: selectedNames,
+  //       },
+  //     ]);
+  //
+  //     navigate('/products/refill/survey/product-search');
+  //   } catch (err) {
+  //     console.error('Failed to save survey:', err);
+  //     const continueAnyway = window.confirm(
+  //       'Failed to save survey data. Continue anyway?',
+  //     );
+  //     if (continueAnyway) navigate('/products/refill/survey/product-search');
+  //   }
+  // };
+
   const handleNext = async () => {
     if (!sessionUuid) return;
 
@@ -153,9 +183,10 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
     }
 
     try {
+      // Save survey answers
       const selectedNames = selectedItems
-        .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
-        .filter(Boolean) as string[];
+          .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
+          .filter(Boolean) as string[];
 
       await saveSurvey('baby_care', [
         {
@@ -164,15 +195,27 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         },
       ]);
 
+      // Save selected products in cart (bulk save)
+      await Promise.all(
+          selectedItems.map((id) =>
+              updateCart(sessionUuid, {
+                product_id: id,
+                quantity: 1,
+                purchase_type: 'buy_now', // or subscription if you have one
+              })
+          )
+      );
+
       navigate('/products/refill/survey/product-search');
     } catch (err) {
-      console.error('Failed to save survey:', err);
+      console.error('Failed to save survey or cart items:', err);
       const continueAnyway = window.confirm(
-        'Failed to save survey data. Continue anyway?',
+          'Failed to save your selection. Continue anyway?'
       );
       if (continueAnyway) navigate('/products/refill/survey/product-search');
     }
   };
+
 
   // Filter skincares by active category
   const filteredBabycares =

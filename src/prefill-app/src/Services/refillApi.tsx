@@ -1,10 +1,4 @@
-import {
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  type ReactNode,
-} from 'react';
+import {createContext, type ReactNode, useContext, useEffect, useState,} from 'react';
 
 interface User {
   id: number;
@@ -126,6 +120,7 @@ interface RefillContextType {
   getBabyCareProducts: () => Promise<ProductSurveyResponse>;
   submitConsent: (consent: boolean) => Promise<void>;
   getCart: () => Promise<CartResponse>;
+  updateCart: (sessionId: string, item: CartItem) => Promise<any>;
   clearSession: () => void;
 }
 
@@ -153,7 +148,9 @@ class RefillAPIService {
         );
       }
 
-      return await response.json();
+      const json: any = await response.json()
+      return json.data;
+
     } catch (error) {
       console.error('API Request failed:', error);
       throw error;
@@ -367,6 +364,23 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+
+  const updateCart  = async (sessionUuid: string, item: CartItem) => {
+    if (!sessionUuid) throw new Error('No active session');
+    setIsLoading(true);
+    setError(null);
+    try {
+      await apiService.updateCart(sessionUuid, item);
+    } catch (err) {
+      const message =
+          err instanceof Error ? err.message : 'Failed to add item to cart';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const addToCart = async (item: CartItem) => {
     if (!sessionUuid) throw new Error('No active session');
     setIsLoading(true);
@@ -546,6 +560,7 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     getMedicineProducts,
     getPersonalCareProducts,
     getBabyCareProducts,
+    updateCart,
     getCart,
   };
 

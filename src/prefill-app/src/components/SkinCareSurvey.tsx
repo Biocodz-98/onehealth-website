@@ -57,7 +57,7 @@ const FALLBACK_SKINCARE: SkincareItem[] = [
 
 const SurveyComponent: React.FC<SurveyProps> = () => {
   const navigate = useNavigate();
-  const { saveSurvey, getPersonalCareProducts, sessionUuid, isLoading, error } =
+  const { saveSurvey, getPersonalCareProducts, updateCart, sessionUuid, isLoading, error } =
     useRefill();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -161,6 +161,17 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
           value: selectedNames,
         },
       ]);
+
+      // Save selected products in cart (bulk save)
+      await Promise.all(
+          selectedItems.map((id) =>
+              updateCart(sessionUuid, {
+                product_id: id,
+                quantity: 1,
+                purchase_type: 'buy_now', // or subscription if you have one
+              })
+          )
+      );
 
       navigate('/products/refill/survey/babycare');
     } catch (err) {
