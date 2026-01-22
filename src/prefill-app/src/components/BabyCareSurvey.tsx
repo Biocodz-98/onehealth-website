@@ -3,6 +3,8 @@ import { useRefill } from '../Services/refillApi';
 import { ArrowLeft, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+
+const hasFetchedRef = React.useRef(false);
 // Types
 interface SurveyProps {
   onBack?: () => void;
@@ -96,10 +98,13 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
   /** ---- Fetch babycare products with caching ---- */
   useEffect(() => {
     const fetchProducts = async () => {
-      if (!sessionUuid) return;
+      if (!sessionUuid || hasFetchedRef.current) return;
+
+      hasFetchedRef.current = true; // 🔒 lock immediately
 
       const cacheKey = `babycares_${sessionUuid}`;
       const cached = localStorage.getItem(cacheKey);
+
       if (cached) {
         setBabycares(JSON.parse(cached));
         setIsLoadingBabycare(false);
@@ -111,18 +116,18 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         const response: any = await getBabyCareProducts();
 
         const products: BabyCareItem[] = (response.data || []).map(
-          (item: any) => ({
-            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-            name: item.name,
-            image: item.image,
-            category: item.category || 'Diapers & Wipes',
-          }),
+            (item: any) => ({
+              id: Number(item.id),
+              name: item.name,
+              image: item.image,
+              category: item.category || 'Diapers & Wipes',
+            }),
         );
 
         setBabycares(products);
         localStorage.setItem(cacheKey, JSON.stringify(products));
       } catch (err) {
-        console.error('Failed to fetch babycares, using fallback:', err);
+        console.error('Failed to fetch babycares:', err);
         setBabycares(FALLBACK_BABYCARE);
       } finally {
         setIsLoadingBabycare(false);
@@ -132,7 +137,8 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
     if (!isCheckingSession && sessionUuid) {
       fetchProducts();
     }
-  }, [isCheckingSession, sessionUuid, getBabyCareProducts]);
+  }, [isCheckingSession, sessionUuid]); // ❗ removed getBabyCareProducts
+
   /** ---- Toggle selection ---- */
   const toggleSelection = (id: number) => {
     setSelectedItems((prev) =>
