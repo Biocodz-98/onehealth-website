@@ -3,7 +3,6 @@ import { useRefill } from '../Services/refillApi';
 import { ArrowLeft, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-
 // Types
 interface SurveyProps {
   onBack?: () => void;
@@ -58,8 +57,14 @@ const FALLBACK_BABYCARE: BabyCareItem[] = [
 
 const BabyCareComponent: React.FC<SurveyProps> = () => {
   const navigate = useNavigate();
-  const { saveSurvey, updateCart, getBabyCareProducts, sessionUuid, isLoading, error } =
-    useRefill();
+  const {
+    saveSurvey,
+    updateCart,
+    getBabyCareProducts,
+    sessionUuid,
+    isLoading,
+    error,
+  } = useRefill();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -112,14 +117,12 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         setIsLoadingBabycare(true);
         const response: any = await getBabyCareProducts();
 
-        const products: BabyCareItem[] = (response || []).map(
-            (item: any) => ({
-              id: Number(item.id),
-              name: item.name,
-              image: item.image,
-              category: item.category || 'Diapers & Wipes',
-            }),
-        );
+        const products: BabyCareItem[] = (response || []).map((item: any) => ({
+          id: Number(item.id),
+          name: item.name,
+          image: item.image,
+          category: item.category || 'Diapers & Wipes',
+        }));
 
         setBabycares(products);
         localStorage.setItem(cacheKey, JSON.stringify(products));
@@ -185,8 +188,8 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
     try {
       // Save survey answers
       const selectedNames = selectedItems
-          .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
-          .filter(Boolean) as string[];
+        .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
+        .filter(Boolean) as string[];
 
       await saveSurvey('baby_care', [
         {
@@ -197,25 +200,24 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
 
       // Save selected products in cart (bulk save)
       await Promise.all(
-          selectedItems.map((id) =>
-              updateCart(sessionUuid, {
-                product_id: id,
-                quantity: 1,
-                purchase_type: 'buy_now', // or subscription if you have one
-              })
-          )
+        selectedItems.map((id) =>
+          updateCart(sessionUuid, {
+            product_id: id,
+            quantity: 1,
+            purchase_type: 'buy_now',
+          }),
+        ),
       );
 
       navigate('/products/refill/survey/product-search');
     } catch (err) {
       console.error('Failed to save survey or cart items:', err);
       const continueAnyway = window.confirm(
-          'Failed to save your selection. Continue anyway?'
+        'Failed to save your selection. Continue anyway?',
       );
       if (continueAnyway) navigate('/products/refill/survey/product-search');
     }
   };
-
 
   // Filter skincares by active category
   const filteredBabycares =

@@ -54,8 +54,14 @@ const FALLBACK_MEDICINES: MedicineItem[] = [
 
 const Survey: React.FC = () => {
   const navigate = useNavigate();
-  const { saveSurvey, getMedicineProducts, updateCart, sessionUuid, isLoading, error } =
-    useRefill();
+  const {
+    saveSurvey,
+    getMedicineProducts,
+    updateCart,
+    sessionUuid,
+    isLoading,
+    error,
+  } = useRefill();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -108,17 +114,15 @@ const Survey: React.FC = () => {
 
         console.log(response);
 
-        const products: MedicineItem[] = (response || []).map(
-          (item: any) => ({
-            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-            name: item.name,
-            image: item.image,
-            dosage: item.dosage,
-            auto_refill: item.auto_refill,
-            refill_days: item.refill_days,
-            category: 'Chronic',
-          }),
-        );
+        const products: MedicineItem[] = (response || []).map((item: any) => ({
+          id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+          name: item.name,
+          image: item.image,
+          dosage: item.dosage,
+          auto_refill: item.auto_refill,
+          refill_days: item.refill_days,
+          category: 'Chronic',
+        }));
 
         setMedicines(products);
         localStorage.setItem(cacheKey, JSON.stringify(products));
@@ -162,13 +166,13 @@ const Survey: React.FC = () => {
 
       // Save selected products in cart (bulk save)
       await Promise.all(
-          selectedItems.map((id) =>
-              updateCart(sessionUuid, {
-                product_id: id,
-                quantity: 1,
-                purchase_type: 'buy_now', // or subscription if you have one
-              })
-          )
+        selectedItems.map((id) =>
+          updateCart(sessionUuid, {
+            product_id: id,
+            quantity: 1,
+            purchase_type: 'buy_now',
+          }),
+        ),
       );
 
       navigate('/products/refill/survey/skincare');

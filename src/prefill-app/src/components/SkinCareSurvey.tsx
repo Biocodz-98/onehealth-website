@@ -57,8 +57,14 @@ const FALLBACK_SKINCARE: SkincareItem[] = [
 
 const SurveyComponent: React.FC<SurveyProps> = () => {
   const navigate = useNavigate();
-  const { saveSurvey, getPersonalCareProducts, updateCart, sessionUuid, isLoading, error } =
-    useRefill();
+  const {
+    saveSurvey,
+    getPersonalCareProducts,
+    updateCart,
+    sessionUuid,
+    isLoading,
+    error,
+  } = useRefill();
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -110,14 +116,12 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
         setIsLoadingSkincare(true);
         const response: any = await getPersonalCareProducts();
 
-        const products: SkincareItem[] = (response || []).map(
-          (item: any) => ({
-            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-            name: item.name,
-            image: item.image,
-            category: item.category || 'Body Cream',
-          }),
-        );
+        const products: SkincareItem[] = (response || []).map((item: any) => ({
+          id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+          name: item.name,
+          image: item.image,
+          category: item.category || 'Body Cream',
+        }));
 
         setSkincares(products);
         localStorage.setItem(cacheKey, JSON.stringify(products));
@@ -164,13 +168,13 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
 
       // Save selected products in cart (bulk save)
       await Promise.all(
-          selectedItems.map((id) =>
-              updateCart(sessionUuid, {
-                product_id: id,
-                quantity: 1,
-                purchase_type: 'buy_now', // or subscription if you have one
-              })
-          )
+        selectedItems.map((id) =>
+          updateCart(sessionUuid, {
+            product_id: id,
+            quantity: 1,
+            purchase_type: 'buy_now',
+          }),
+        ),
       );
 
       navigate('/products/refill/survey/babycare');

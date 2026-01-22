@@ -1,4 +1,10 @@
-import {createContext, type ReactNode, useContext, useEffect, useState,} from 'react';
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 interface User {
   id: number;
@@ -95,6 +101,22 @@ interface ProductSurveyResponse {
   products: ProductSurveyItem[];
 }
 
+interface FeedbackRequest {
+  type: 'missing_product' | 'general' | 'issue';
+  content: string;
+}
+
+interface FeedbackResponse {
+  id: number;
+  type: string;
+  content: string;
+  created_at: string;
+}
+
+interface FeedbackListResponse {
+  feedbacks: FeedbackResponse[];
+}
+
 interface RefillContextType {
   sessionUuid: string | null;
   user: User | null;
@@ -120,6 +142,8 @@ interface RefillContextType {
   getBabyCareProducts: () => Promise<ProductSurveyResponse>;
   submitConsent: (consent: boolean) => Promise<void>;
   getCart: () => Promise<CartResponse>;
+  submitFeedback: (feedback: FeedbackRequest) => Promise<FeedbackResponse>;
+  getFeedback: () => Promise<FeedbackListResponse>;
   updateCart: (sessionId: string, item: CartItem) => Promise<any>;
   clearSession: () => void;
 }
@@ -148,10 +172,9 @@ class RefillAPIService {
         );
       }
 
-      const json: any = await response.json()
+      const json: any = await response.json();
       // return json.data;
       return ('data' in json ? json.data : json) as T;
-
     } catch (error) {
       console.error('API Request failed:', error);
       throw error;
@@ -265,6 +288,21 @@ class RefillAPIService {
       },
     );
   }
+  async submitFeedback(sessionUuid: string, feedback: FeedbackRequest) {
+    return this.request<FeedbackResponse>(`/sessions/${sessionUuid}/feedback`, {
+      method: 'POST',
+      body: JSON.stringify(feedback),
+    });
+  }
+
+  async getFeedback(sessionUuid: string) {
+    return this.request<FeedbackListResponse>(
+      `/sessions/${sessionUuid}/feedback`,
+      {
+        method: 'GET',
+      },
+    );
+  }
 }
 
 const apiService = new RefillAPIService();
@@ -365,8 +403,7 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-
-  const updateCart  = async (sessionUuid: string, item: CartItem) => {
+  const updateCart = async (sessionUuid: string, item: CartItem) => {
     if (!sessionUuid) throw new Error('No active session');
     setIsLoading(true);
     setError(null);
@@ -374,7 +411,7 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
       await apiService.updateCart(sessionUuid, item);
     } catch (err) {
       const message =
-          err instanceof Error ? err.message : 'Failed to add item to cart';
+        err instanceof Error ? err.message : 'Failed to add item to cart';
       setError(message);
       throw err;
     } finally {
@@ -536,6 +573,42 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const submitFeedback = async (
+    feedback: FeedbackRequest,
+  ): Promise<FeedbackResponse> => {
+    if (!sessionUuid) throw new Error('No active session');
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.submitFeedback(sessionUuid, feedback);
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to submit feedback';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getFeedback = async (): Promise<FeedbackListResponse> => {
+    if (!sessionUuid) throw new Error('No active session');
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getFeedback(sessionUuid);
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to get feedback';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const clearSession = () => {
     setSessionUuid(null);
     setUser(null);
@@ -563,6 +636,8 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     getBabyCareProducts,
     updateCart,
     getCart,
+    submitFeedback,
+    getFeedback,
   };
 
   return (

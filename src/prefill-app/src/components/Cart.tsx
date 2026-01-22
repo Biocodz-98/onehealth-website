@@ -331,7 +331,7 @@ const CartItem: React.FC<CartItemProps> = ({
                 lineHeight: 1.5,
               }}
             >
-              ₦{item.price.toLocaleString()}
+              ₦{(item.price * item.quantity).toLocaleString()}
             </div>
           </div>
 
@@ -541,7 +541,7 @@ const PharmacyCart: React.FC = () => {
   const shipping = 0;
   const discount = 0;
   const total = subtotal + shipping - discount;
-  const freeShippingThreshold = 33400;
+  // const freeShippingThreshold = 33400;
 
   const handleQuantityChange = async (id: string, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -853,7 +853,7 @@ const PharmacyCart: React.FC = () => {
                 {isLoading ? 'Processing...' : 'Proceed to Checkout'}
               </button>
 
-              <div className="bg-[#feefdd] border border-[#feefdd] rounded-3xl p-3 text-center">
+              {/* <div className="bg-[#feefdd] border border-[#feefdd] rounded-3xl p-3 text-center">
                 <p
                   className="text-sm text-[#c57518]"
                   style={{
@@ -877,7 +877,7 @@ const PharmacyCart: React.FC = () => {
                   </span>{' '}
                   more for free shipping
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

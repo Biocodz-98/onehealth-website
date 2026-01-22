@@ -13,6 +13,7 @@ import MonthlyPurchase from './components/ProductSelection';
 import PharmacyCart from './components/Cart';
 import CheckoutPage from './components/Checkout.tsx';
 import PaymentSuccess from './components/Payment';
+import PaymentFailed from './components/PaymentFail';
 import WellnessPersona from './components/Persona';
 
 // Home Page Component
@@ -75,6 +76,11 @@ function PaymentSuccessPage() {
   return <PaymentSuccess />;
 }
 
+// Payment Failed Page Component
+function PaymentFailedPage() {
+  return <PaymentFailed />;
+}
+
 // Wellness Persona Page Component
 function WellnessPersonaPage() {
   return <WellnessPersona />;
@@ -93,6 +99,7 @@ function RefillApp() {
       <Route path="pharmacy-cart" element={<PharmacyCartPage />} />
       <Route path="checkout" element={<CheckoutPageComponent />} />
       <Route path="payment-success" element={<PaymentSuccessPage />} />
+      <Route path="payment-failed" element={<PaymentFailedPage />} />
       <Route path="persona" element={<WellnessPersonaPage />} />
     </Routes>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRefill } from '../Services/refillApi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 // Step indicator component
@@ -58,34 +58,49 @@ const StepIndicator: React.FC<{ currentStep: number }> = ({ currentStep }) => {
 
 const PaymentSuccess: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { getSuccessData, isLoading, error } = useRefill();
 
   const [personaData, setPersonaData] = useState<any>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [loadingPersona, setLoadingPersona] = useState(true);
+
+  // Get checkout_id from location state (passed from PaymentCallback)
+  const checkoutId = location.state?.checkout_id;
 
   useEffect(() => {
     const fetchSuccessData = async () => {
       try {
+        setLoadingPersona(true);
         const data = await getSuccessData();
         setPersonaData(data);
       } catch (err) {
         console.error('Failed to load success data:', err);
+      } finally {
+        setLoadingPersona(false);
       }
     };
 
-    fetchSuccessData();
+    // Only fetch if we have a checkout_id
+    if (checkoutId) {
+      fetchSuccessData();
+    } else {
+      setLoadingPersona(false);
+    }
 
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [getSuccessData]);
+  }, [checkoutId, getSuccessData]);
 
   const handleSeePersona = () => {
-    navigate('/products/refill/persona', {
-      state: { personaData },
-    });
+    if (personaData) {
+      navigate('/products/refill/persona', {
+        state: { personaData },
+      });
+    }
   };
 
   const handleTrackOrder = () => {
@@ -99,11 +114,11 @@ const PaymentSuccess: React.FC = () => {
     >
       {/* Back Button */}
       <button
-        onClick={() => navigate('/products/refill/checkout')}
+        onClick={() => navigate('/')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-8 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
-        <span className="text-base font-medium">Back</span>
+        <span className="text-base font-medium">Back to Home</span>
       </button>
 
       {/* Step Indicator */}
@@ -120,7 +135,7 @@ const PaymentSuccess: React.FC = () => {
       <div className="max-w-2xl mx-auto">
         <div className="p-12 text-center">
           {/* Loading State */}
-          {isLoading ? (
+          {loadingPersona ? (
             <div className="mb-8 flex justify-center">
               <div className="w-32 h-32 bg-green-50 rounded-full flex items-center justify-center border-4 border-green-100">
                 <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600"></div>
@@ -174,21 +189,28 @@ const PaymentSuccess: React.FC = () => {
                   className="text-3xl font-bold text-gray-900 mb-4"
                   style={{ fontFamily: 'Lexend, sans-serif' }}
                 >
-                  Order Successful
+                  Payment Successful!
                 </h1>
-                <p className="text-base text-gray-600 mb-8 max-w-md mx-auto">
-                  Your order has been placed. Please check "My Orders" to track
-                  the progress of your order.
+                <p className="text-base text-gray-600 mb-2 max-w-md mx-auto">
+                  Your order has been placed successfully.
+                </p>
+                {checkoutId && (
+                  <p className="text-sm text-gray-500 mb-8">
+                    Order ID: #{checkoutId}
+                  </p>
+                )}
+                <p className="text-sm text-gray-600 mb-8 max-w-md mx-auto">
+                  Please check "My Orders" to track the progress of your order.
                 </p>
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button
                     onClick={handleSeePersona}
-                    disabled={!personaData}
+                    disabled={!personaData || isLoading}
                     className="w-full sm:w-auto bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    See Your Persona
+                    {isLoading ? 'Loading...' : 'See Your Persona'}
                   </button>
                   <button
                     onClick={handleTrackOrder}
@@ -196,6 +218,14 @@ const PaymentSuccess: React.FC = () => {
                   >
                     Track Order
                   </button>
+                </div>
+
+                {/* Additional Info */}
+                <div className="mt-8 pt-8 border-t border-gray-200">
+                  <p className="text-sm text-gray-600 mb-2">
+                    A confirmation email has been sent to your registered email
+                    address.
+                  </p>
                 </div>
               </div>
             </>
