@@ -15,17 +15,17 @@ interface CartItem {
   refillDays: number;
 }
 
-interface RecommendedProducts {
-  id: string;
-  name: string;
-  image: string;
-  price: number;
-  originalPrice: number;
-  rating: number;
-  reviewCount: number;
-  soldCount: number;
-  size?: 'sm' | 'md';
-}
+// interface RecommendedProducts {
+//   id: string;
+//   name: string;
+//   image: string;
+//   price: number;
+//   originalPrice: number;
+//   rating: number;
+//   reviewCount: number;
+//   soldCount: number;
+//   size?: 'sm' | 'md';
+// }
 
 // // ITEM DATA
 // const cartItemsData = [
@@ -58,48 +58,48 @@ interface RecommendedProducts {
 //   },
 // ];
 
-const recommendedProducts: RecommendedProducts[] = [
-  {
-    id: 'r1',
-    name: 'medicube',
-    price: 52000,
-    originalPrice: 79000,
-    rating: 4.5,
-    reviewCount: 2435,
-    soldCount: 2144,
-    image: '/prefill-images/medicube.svg',
-  },
-  {
-    id: 'r2',
-    name: 'ANUA',
-    price: 12000,
-    originalPrice: 30000,
-    rating: 4.5,
-    reviewCount: 2435,
-    soldCount: 2144,
-    image: '/prefill-images/anua cream.svg',
-  },
-  {
-    id: 'r3',
-    name: 'CLEAN SKIN CLUB',
-    price: 48000,
-    originalPrice: 60000,
-    rating: 4.5,
-    reviewCount: 2435,
-    soldCount: 2144,
-    image: '/prefill-images/clean skin club.svg',
-  },
-  {
-    id: 'r4',
-    name: 'Mighty Patch',
-    price: 25000,
-    originalPrice: 52000,
-    rating: 4.5,
-    reviewCount: 2435,
-    soldCount: 2144,
-    image: '/prefill-images/mighty patch.svg',
-  },
-];
+// const recommendedProducts: RecommendedProducts[] = [
+//   {
+//     id: 'r1',
+//     name: 'medicube',
+//     price: 52000,
+//     originalPrice: 79000,
+//     rating: 4.5,
+//     reviewCount: 2435,
+//     soldCount: 2144,
+//     image: '/prefill-images/medicube.svg',
+//   },
+//   {
+//     id: 'r2',
+//     name: 'ANUA',
+//     price: 12000,
+//     originalPrice: 30000,
+//     rating: 4.5,
+//     reviewCount: 2435,
+//     soldCount: 2144,
+//     image: '/prefill-images/anua cream.svg',
+//   },
+//   {
+//     id: 'r3',
+//     name: 'CLEAN SKIN CLUB',
+//     price: 48000,
+//     originalPrice: 60000,
+//     rating: 4.5,
+//     reviewCount: 2435,
+//     soldCount: 2144,
+//     image: '/prefill-images/clean skin club.svg',
+//   },
+//   {
+//     id: 'r4',
+//     name: 'Mighty Patch',
+//     price: 25000,
+//     originalPrice: 52000,
+//     rating: 4.5,
+//     reviewCount: 2435,
+//     soldCount: 2144,
+//     image: '/prefill-images/mighty patch.svg',
+//   },
+// ];
 
 // CART COMPONENTS
 
@@ -179,61 +179,61 @@ const ProgressSteps = ({ currentStep }: { currentStep: number }) => {
 };
 
 // Star Rating Component
-const StarRating: React.FC<{ rating: number; size?: 'sm' | 'md' }> = ({
-  rating,
-  size = 'sm',
-}) => {
-  const stars = [];
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 !== 0;
+// const StarRating: React.FC<{ rating: number; size?: 'sm' | 'md' }> = ({
+//   rating,
+//   size = 'sm',
+// }) => {
+//   const stars = [];
+//   const fullStars = Math.floor(rating);
+//   const hasHalfStar = rating % 1 !== 0;
 
-  const starSize = size === 'sm' ? 'w-3 h-3' : 'w-4 h-4';
+//   const starSize = size === 'sm' ? 'w-3 h-3' : 'w-4 h-4';
 
-  for (let i = 0; i < 5; i++) {
-    if (i < fullStars) {
-      stars.push(
-        <svg
-          key={i}
-          className={`${starSize} fill-yellow-400`}
-          viewBox="0 0 20 20"
-        >
-          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-        </svg>,
-      );
-    } else if (i === fullStars && hasHalfStar) {
-      stars.push(
-        <svg
-          key={i}
-          className={`${starSize} fill-yellow-400`}
-          viewBox="0 0 20 20"
-        >
-          <defs>
-            <linearGradient id="half">
-              <stop offset="50%" stopColor="#FBBF24" />
-              <stop offset="50%" stopColor="#D1D5DB" />
-            </linearGradient>
-          </defs>
-          <path
-            fill="url(#half)"
-            d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"
-          />
-        </svg>,
-      );
-    } else {
-      stars.push(
-        <svg
-          key={i}
-          className={`${starSize} fill-gray-300`}
-          viewBox="0 0 20 20"
-        >
-          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-        </svg>,
-      );
-    }
-  }
+//   for (let i = 0; i < 5; i++) {
+//     if (i < fullStars) {
+//       stars.push(
+//         <svg
+//           key={i}
+//           className={`${starSize} fill-yellow-400`}
+//           viewBox="0 0 20 20"
+//         >
+//           <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+//         </svg>,
+//       );
+//     } else if (i === fullStars && hasHalfStar) {
+//       stars.push(
+//         <svg
+//           key={i}
+//           className={`${starSize} fill-yellow-400`}
+//           viewBox="0 0 20 20"
+//         >
+//           <defs>
+//             <linearGradient id="half">
+//               <stop offset="50%" stopColor="#FBBF24" />
+//               <stop offset="50%" stopColor="#D1D5DB" />
+//             </linearGradient>
+//           </defs>
+//           <path
+//             fill="url(#half)"
+//             d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"
+//           />
+//         </svg>,
+//       );
+//     } else {
+//       stars.push(
+//         <svg
+//           key={i}
+//           className={`${starSize} fill-gray-300`}
+//           viewBox="0 0 20 20"
+//         >
+//           <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+//         </svg>,
+//       );
+//     }
+//   }
 
-  return <div className="flex gap-0.5">{stars}</div>;
-};
+//   return <div className="flex gap-0.5">{stars}</div>;
+// };
 
 interface CartItemProps {
   item: CartItem;
@@ -386,105 +386,105 @@ const CartItem: React.FC<CartItemProps> = ({
 };
 
 // Product Card Component
-interface ProductCardProps {
-  product: RecommendedProducts;
-  onAddToCart: (product: RecommendedProducts) => void;
-}
+// interface ProductCardProps {
+//   product: RecommendedProducts;
+//   onAddToCart: (product: RecommendedProducts) => void;
+// }
 
-const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
-  return (
-    <div className=" shadow rounded-lg p-4 hover:shadow-lg transition-shadow">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-full h-32 object-contain mb-3"
-        onError={(e) => {
-          e.currentTarget.src =
-            'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23FBCFE8" width="200" height="200"/%3E%3C/svg%3E';
-        }}
-      />
+// const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+//   return (
+//     <div className=" shadow rounded-lg p-4 hover:shadow-lg transition-shadow">
+//       <img
+//         src={product.image}
+//         alt={product.name}
+//         className="w-full h-32 object-contain mb-3"
+//         onError={(e) => {
+//           e.currentTarget.src =
+//             'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23FBCFE8" width="200" height="200"/%3E%3C/svg%3E';
+//         }}
+//       />
 
-      <h3
-        className="font-medium text-[#575757] mb-2"
-        style={{
-          fontFamily: 'Manrope, sans-serif',
-          fontWeight: 400,
-          fontSize: '14px',
-          lineHeight: 1.5,
-        }}
-      >
-        {product.name}
-      </h3>
+//       <h3
+//         className="font-medium text-[#575757] mb-2"
+//         style={{
+//           fontFamily: 'Manrope, sans-serif',
+//           fontWeight: 400,
+//           fontSize: '14px',
+//           lineHeight: 1.5,
+//         }}
+//       >
+//         {product.name}
+//       </h3>
 
-      <div className="flex items-center gap-2 mb-3">
-        <span
-          className="text-base font-bold text-[#19191d]"
-          style={{
-            fontFamily: 'Manrope, sans-serif',
-            fontWeight: 700,
-            fontSize: '16px',
-            lineHeight: 1.5,
-          }}
-        >
-          ₦{product.price.toLocaleString()}
-        </span>
-        <span
-          className="text-sm text-[#323232] line-through"
-          style={{
-            fontFamily: 'Manrope, sans-serif',
-            fontWeight: 400,
-            fontSize: '12px',
-            lineHeight: 1.5,
-            fontStyle: 'normal',
-          }}
-        >
-          ₦{product.originalPrice.toLocaleString()}
-        </span>
-      </div>
+//       <div className="flex items-center gap-2 mb-3">
+//         <span
+//           className="text-base font-bold text-[#19191d]"
+//           style={{
+//             fontFamily: 'Manrope, sans-serif',
+//             fontWeight: 700,
+//             fontSize: '16px',
+//             lineHeight: 1.5,
+//           }}
+//         >
+//           ₦{product.price.toLocaleString()}
+//         </span>
+//         <span
+//           className="text-sm text-[#323232] line-through"
+//           style={{
+//             fontFamily: 'Manrope, sans-serif',
+//             fontWeight: 400,
+//             fontSize: '12px',
+//             lineHeight: 1.5,
+//             fontStyle: 'normal',
+//           }}
+//         >
+//           ₦{product.originalPrice.toLocaleString()}
+//         </span>
+//       </div>
 
-      <div className="flex items-center gap-2 mb-3">
-        <StarRating rating={product.rating} />
-        <span
-          className="text-xs text-[#323232]"
-          style={{
-            fontFamily: 'Manrope, sans-serif',
-            fontWeight: 400,
-            fontSize: '12px',
-            lineHeight: 1.5,
-            fontStyle: 'normal',
-          }}
-        >
-          {product.reviewCount.toLocaleString()}
-        </span>
-        <span
-          className="text-xs text-[#323232]"
-          style={{
-            fontFamily: 'Manrope, sans-serif',
-            fontWeight: 400,
-            fontSize: '12px',
-            lineHeight: 1.5,
-            fontStyle: 'normal',
-          }}
-        >
-          {product.soldCount.toLocaleString()} sold
-        </span>
-      </div>
+//       <div className="flex items-center gap-2 mb-3">
+//         <StarRating rating={product.rating} />
+//         <span
+//           className="text-xs text-[#323232]"
+//           style={{
+//             fontFamily: 'Manrope, sans-serif',
+//             fontWeight: 400,
+//             fontSize: '12px',
+//             lineHeight: 1.5,
+//             fontStyle: 'normal',
+//           }}
+//         >
+//           {product.reviewCount.toLocaleString()}
+//         </span>
+//         <span
+//           className="text-xs text-[#323232]"
+//           style={{
+//             fontFamily: 'Manrope, sans-serif',
+//             fontWeight: 400,
+//             fontSize: '12px',
+//             lineHeight: 1.5,
+//             fontStyle: 'normal',
+//           }}
+//         >
+//           {product.soldCount.toLocaleString()} sold
+//         </span>
+//       </div>
 
-      <button
-        onClick={() => onAddToCart(product)}
-        className="w-32 py-2 border-2 border-[#3da647] text-[#3da647] rounded-3xl font-medium hover:bg-green-50 transition-colors"
-        style={{
-          fontFamily: 'Manrope, sans-serif',
-          fontSize: '14px',
-          lineHeight: 1.5,
-          cursor: 'pointer',
-        }}
-      >
-        Add to Cart
-      </button>
-    </div>
-  );
-};
+//       <button
+//         onClick={() => onAddToCart(product)}
+//         className="w-32 py-2 border-2 border-[#3da647] text-[#3da647] rounded-3xl font-medium hover:bg-green-50 transition-colors"
+//         style={{
+//           fontFamily: 'Manrope, sans-serif',
+//           fontSize: '14px',
+//           lineHeight: 1.5,
+//           cursor: 'pointer',
+//         }}
+//       >
+//         Add to Cart
+//       </button>
+//     </div>
+//   );
+// };
 
 // MAIN PHARMACY CART COMPONENT
 const PharmacyCart: React.FC = () => {
@@ -609,9 +609,9 @@ const PharmacyCart: React.FC = () => {
     }
   };
 
-  const handleAddToCart = (product: RecommendedProducts) => {
-    alert(`${product.name} added to cart!`);
-  };
+  // const handleAddToCart = (product: RecommendedProducts) => {
+  //   alert(`${product.name} added to cart!`);
+  // };
 
   const handleProceedToCheckout = () => {
     navigate('/products/refill/checkout', {
@@ -728,7 +728,7 @@ const PharmacyCart: React.FC = () => {
               ))}
             </div>
 
-            {/* Recommended Products */}
+            {/* Recommended Products
             <div className="bg-white border border-gray-200 rounded-2xl p-6 mt-12">
               <h2
                 className="text-xl text-[#121515] font-normal mb-6"
@@ -749,7 +749,7 @@ const PharmacyCart: React.FC = () => {
                   />
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Summary Sidebar */}
