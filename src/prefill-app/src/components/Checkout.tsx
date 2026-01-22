@@ -97,7 +97,6 @@ const CheckoutPage: React.FC = () => {
         setError(null);
 
         try {
-            // adjust as per your app
             if (!sessionUuid) throw new Error('Session not found');
 
             const payload = {
@@ -116,8 +115,8 @@ const CheckoutPage: React.FC = () => {
                 })),
             };
 
-            const BASE_URL = 'https://dev.onehealthng.com/api/v1/refill'
-            const res = await fetch(BASE_URL + `/sessions/${sessionUuid}/checkout`, {
+            const BASE_URL = 'https://dev.onehealthng.com/api/v1/refill';
+            const res = await fetch(`${BASE_URL}/sessions/${sessionUuid}/checkout`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
@@ -126,7 +125,11 @@ const CheckoutPage: React.FC = () => {
             const data = await res.json();
 
             if (res.ok && data.status === 'initiated') {
-                // Redirect to Paystack payment page
+                // Save checkout info locally before redirect
+                localStorage.setItem('pending_checkout_id', data.checkout_id);
+                localStorage.setItem('pending_session_uuid', sessionUuid);
+
+                // Redirect to Paystack
                 window.location.href = data.authorization_url;
             } else {
                 setError(data.message || 'Payment initialization failed');
@@ -138,6 +141,7 @@ const CheckoutPage: React.FC = () => {
             setIsLoading(false);
         }
     };
+
 
     return (
         <div className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16">
