@@ -30,7 +30,6 @@ const MonthlyPurchase: React.FC = () => {
         setIsLoadingProducts(true);
         const cartData: any = await getCart();
 
-
         const productsList: ProductItem[] = cartData.map((item: any) => ({
           id: item.product_id.toString(),
           name: item.product_name,
@@ -50,7 +49,6 @@ const MonthlyPurchase: React.FC = () => {
 
     fetchCartProducts();
   }, [sessionUuid, navigate]);
-
 
   const toggleProduct = (id: string) => {
     setSelectedProducts((prev) =>
@@ -99,7 +97,13 @@ const MonthlyPurchase: React.FC = () => {
       }
 
       alert("Products saved to wishlist! We'll remind you later.");
-      navigate('/products/refill');
+
+      const selectedProductDetails = products.filter((p) =>
+        selectedProducts.includes(p.id),
+      );
+      navigate('/products/refill/remind-me-later-persona', {
+        state: { selectedProducts: selectedProductDetails },
+      });
     } catch (err) {
       console.error('Failed to add to wishlist:', err);
     }

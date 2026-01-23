@@ -10,6 +10,7 @@ import SurveyComponent from './components/SkinCareSurvey';
 import BabyCareComponent from './components/BabyCareSurvey';
 import ProductSearch from './components/ProductSearch';
 import MonthlyPurchase from './components/ProductSelection';
+import RemindMeLaterPersona from './components/RemindLaterPersona.tsx';
 import PharmacyCart from './components/Cart';
 import CheckoutPage from './components/Checkout.tsx';
 import PaymentSuccess from './components/Payment';
@@ -61,6 +62,10 @@ function ProductSelectionPage() {
   return <MonthlyPurchase />;
 }
 
+function RemindMeLaterPersonaPage() {
+  return <RemindMeLaterPersona />;
+}
+
 // Pharmacy Cart Page Component
 function PharmacyCartPage() {
   return <PharmacyCart />;
@@ -96,6 +101,10 @@ function RefillApp() {
       <Route path="survey/babycare" element={<BabycareSurveyPage />} />
       <Route path="survey/product-search" element={<ProductSearchPage />} />
       <Route path="product-selection" element={<ProductSelectionPage />} />
+      <Route
+        path="remind-me-later-persona"
+        element={<RemindMeLaterPersonaPage />}
+      />
       <Route path="pharmacy-cart" element={<PharmacyCartPage />} />
       <Route path="checkout" element={<CheckoutPageComponent />} />
       <Route path="payment-success" element={<PaymentSuccessPage />} />
