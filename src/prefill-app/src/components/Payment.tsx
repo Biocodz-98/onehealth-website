@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRefill } from '../Services/refillApi';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { ProgressBar } from './ProgressBar';
 
 // Step indicator component
 const StepIndicator: React.FC<{ currentStep: number }> = ({ currentStep }) => {
@@ -112,6 +113,7 @@ const PaymentSuccess: React.FC = () => {
       className="min-h-screen bg-gray-50 px-8 py-12 lg:px-20 lg:py-16"
       style={{ fontFamily: 'Manrope, sans-serif' }}
     >
+      <ProgressBar currentStep={8} totalSteps={9} />
       {/* Back Button */}
       <button
         onClick={() => navigate('/')}

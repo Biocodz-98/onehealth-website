@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useRefill } from '../Services/refillApi';
 import { useNavigate } from 'react-router-dom';
+import { ProgressBar } from './ProgressBar';
 
 // Types
 interface FormData {
@@ -126,6 +127,7 @@ const PreferencesForm: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
         {/* Left Side - Form */}
         <div className="px-8 py-12 lg:px-20 lg:py-16 flex flex-col">
+          <ProgressBar currentStep={1} totalSteps={9} />
           {/* Back Button */}
           <button
             onClick={() => navigate('/products/refill')}
@@ -277,7 +279,7 @@ const PreferencesForm: React.FC = () => {
                 <option value="diabetes">Diabetes</option>
                 <option value="hypertension">Hypertension</option>
                 <option value="asthma">Asthma</option>
-                <option value="body loss">Body Loss</option>
+                <option value="weight loss">Weight Loss</option>
                 <option value="others">Others</option>
               </select>
               {validationErrors.condition && (

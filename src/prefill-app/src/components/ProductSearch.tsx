@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRefill } from '../Services/refillApi';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { ProgressBar } from './ProgressBar';
 
 // Types
 interface ProductSearchProps {
@@ -24,9 +25,8 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onBack, onSkip }) => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleNext = async () => {
-    // If no product entered, just navigate to next page
     if (!product.trim()) {
-      navigate('/products/refill/product-selection');
+      setError('Please enter a product name to continue');
       return;
     }
 
@@ -78,11 +78,15 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onBack, onSkip }) => {
     }
   };
 
+  // Check if button should be disabled
+  const isNextDisabled = isSubmitting || globalLoading || !product.trim();
+
   return (
     <div
       className="min-h-screen bg-white flex flex-col"
       style={{ fontFamily: 'Manrope, sans-serif' }}
     >
+      <ProgressBar currentStep={5} totalSteps={9} />
       {/* Back Button */}
       <div className="px-8 py-8 lg:px-20 lg:py-12">
         <button
@@ -128,9 +132,13 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onBack, onSkip }) => {
             <input
               type="text"
               value={product}
-              onChange={(e) => setProduct(e.target.value)}
+              onChange={(e) => {
+                setProduct(e.target.value);
+                // Clear error when user starts typing
+                if (error) setError(null);
+              }}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && !isSubmitting) {
+                if (e.key === 'Enter' && !isNextDisabled) {
                   handleNext();
                 }
               }}
@@ -139,9 +147,9 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onBack, onSkip }) => {
               className="w-full px-6 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base text-gray-700 placeholder:text-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
               style={{ fontFamily: 'Manrope, sans-serif' }}
             />
-            {/* <p className="text-xs text-gray-500 mt-2 text-left">
-              Tell us which products you couldn't find and we'll add them to our
-              catalog.
+            {/* <p className="text-xs text-red-600 mt-2 text-left">
+              * This field is required. Tell us which product you're looking
+              for.
             </p> */}
           </div>
 
@@ -157,7 +165,7 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onBack, onSkip }) => {
             </button>
             <button
               onClick={handleNext}
-              disabled={isSubmitting || globalLoading}
+              disabled={isNextDisabled}
               className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full text-base font-semibold transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
@@ -167,7 +175,7 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onBack, onSkip }) => {
                 </>
               ) : (
                 <>
-                  {product.trim() ? 'Submit' : 'Next'}
+                  Submit
                   <svg
                     className="w-4 h-4"
                     fill="none"

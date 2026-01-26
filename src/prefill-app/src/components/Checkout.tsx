@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Home, Truck, Package, ChevronDown } from 'lucide-react';
+import { ProgressBar } from './ProgressBar';
 
 // Types
 interface CartItem {
@@ -77,14 +78,21 @@ const CheckoutPage: React.FC = () => {
     location.state?.sessionUuid || localStorage.getItem('sessionUuid');
   const [showCoupons, setShowCoupons] = useState(false);
   const [selectedDelivery, setSelectedDelivery] = useState<string>('deliver');
-  const [shippingAddress] = useState<ShippingAddress>({
-    street: '78, Abule Street, Abikooku Local Government, Ogun State',
-    city: 'Oredipe Olanrewaju',
-    state: 'Lagos',
-    postalCode: '+234 808 6110 548',
+  const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
+    street: '',
+    city: '',
+    state: '',
+    postalCode: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleAddressChange = (field: keyof ShippingAddress, value: string) => {
+    setShippingAddress((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const deliveryOptions = [
     {
@@ -123,6 +131,15 @@ const CheckoutPage: React.FC = () => {
 
   const handlePayment = async () => {
     if (cartItems.length === 0) return alert('Cart is empty');
+
+    if (
+      !shippingAddress.street ||
+      !shippingAddress.city ||
+      !shippingAddress.state ||
+      !shippingAddress.postalCode
+    ) {
+      return setError('Please fill in all shipping information');
+    }
 
     setIsLoading(true);
     setError(null);
@@ -175,6 +192,7 @@ const CheckoutPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16">
+      <ProgressBar currentStep={7} totalSteps={9} />
       {/* Back Button */}
       <button
         onClick={() => navigate('/products/refill/pharmacy-cart')}
@@ -196,16 +214,110 @@ const CheckoutPage: React.FC = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* Shipping */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">Shipping Information</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2
+                className="text-xl font-bold"
+                style={{
+                  fontFamily: 'Familjen Grotesk, sans-serif',
+                  fontWeight: 700,
+                  lineHeight: '110%',
+                }}
+              >
+                Shipping Information
+              </h2>
             </div>
-            <p className="text-sm text-[#575757]">
-              {shippingAddress.street}
-              <br />
-              {shippingAddress.city} | {shippingAddress.postalCode}
-            </p>
-          </div>
 
+            <div className="space-y-4">
+              {/* Address Field */}
+              <div>
+                <label
+                  htmlFor="address"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                >
+                  Address
+                </label>
+                <input
+                  type="text"
+                  id="address"
+                  value={shippingAddress.street}
+                  onChange={(e) =>
+                    handleAddressChange('street', e.target.value)
+                  }
+                  placeholder="Enter your delivery address"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                />
+              </div>
+
+              {/* City and State in one row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="city"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                    style={{ fontFamily: 'Manrope, sans-serif' }}
+                  >
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    id="city"
+                    value={shippingAddress.city}
+                    onChange={(e) =>
+                      handleAddressChange('city', e.target.value)
+                    }
+                    placeholder="Enter city"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                    style={{ fontFamily: 'Manrope, sans-serif' }}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="state"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                    style={{ fontFamily: 'Manrope, sans-serif' }}
+                  >
+                    State
+                  </label>
+                  <input
+                    type="text"
+                    id="state"
+                    value={shippingAddress.state}
+                    onChange={(e) =>
+                      handleAddressChange('state', e.target.value)
+                    }
+                    placeholder="Enter state"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                    style={{ fontFamily: 'Manrope, sans-serif' }}
+                  />
+                </div>
+              </div>
+
+              {/* Phone Number Field */}
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                >
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  value={shippingAddress.postalCode}
+                  onChange={(e) =>
+                    handleAddressChange('postalCode', e.target.value)
+                  }
+                  placeholder="+234 808 611 0548"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                />
+              </div>
+            </div>
+          </div>
           {/* Delivery Options */}
           <div className="bg-white border shadow border-gray-200 rounded-2xl p-6">
             <h2

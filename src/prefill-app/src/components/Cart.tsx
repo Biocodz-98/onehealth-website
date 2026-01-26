@@ -237,6 +237,8 @@ const ProgressSteps = ({ currentStep }: { currentStep: number }) => {
 
 interface CartItemProps {
   item: CartItem;
+  isFavorited: boolean;
+  onToggleFavorite: (id: string) => void;
   onQuantityChange: (id: string, newQuantity: number) => void;
   onRemove: (id: string) => void;
   onToggleAutoRefill: (id: string, enabled: boolean) => void;
@@ -246,6 +248,8 @@ interface CartItemProps {
 // Cart Item Component
 const CartItem: React.FC<CartItemProps> = ({
   item,
+  isFavorited,
+  onToggleFavorite,
   onQuantityChange,
   onRemove,
   onToggleAutoRefill,
@@ -293,8 +297,19 @@ const CartItem: React.FC<CartItemProps> = ({
             </div>
 
             <div className="flex gap-2">
-              <button className="p-2 hover:bg-gray-100 rounded-full">
-                <Heart className="w-5 h-5 text-gray-600" />
+              <button
+                onClick={() => onToggleFavorite(item.id)}
+                className={`p-2 rounded-full transition-colors ${
+                  isFavorited
+                    ? 'bg-red-50 hover:bg-red-100'
+                    : 'hover:bg-gray-100'
+                }`}
+              >
+                <Heart
+                  className={`w-5 h-5 transition-colors ${
+                    isFavorited ? 'text-red-500 fill-red-500' : 'text-gray-600'
+                  }`}
+                />
               </button>
               <button
                 onClick={() => onRemove(item.id)}
@@ -370,7 +385,7 @@ const CartItem: React.FC<CartItemProps> = ({
                   lineHeight: '150%',
                 }}
               >
-                {[5, 10, 15, 20, 25, 30].map((days) => (
+                {[30, 60, 90].map((days) => (
                   <option key={days} value={days}>
                     {days} days
                   </option>
@@ -495,6 +510,7 @@ const PharmacyCart: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [showCoupons, setShowCoupons] = useState(false);
   const [isLoadingCart, setIsLoadingCart] = useState(true);
+  const [favoritedItems, setFavoritedItems] = useState<Set<string>>(new Set());
 
   //Fetch cart items on mount
 
@@ -510,21 +526,47 @@ const PharmacyCart: React.FC = () => {
         setIsLoadingCart(true);
         const cartData: any = await getCart();
 
-        const items: CartItem[] = cartData.map((item: any) => ({
-          id: item.product_id.toString(),
-          name: item.product_name,
-          dosage: item.dosage || '10mg | 10 capsules',
-          price: item.amount,
-          image: item.product_image || '/prefill-images/medicine bottle.svg',
-          quantity: item.quantity,
-          autoRefill: item.auto_refill || false,
-          refillDays: item.refill_days || 30,
-        }));
+        // Get cached products from localStorage (saved during surveys)
+        const cachedMedicines = JSON.parse(
+          localStorage.getItem(`medicines_${sessionUuid}`) || '[]',
+        );
+        const cachedSkincares = JSON.parse(
+          localStorage.getItem(`skincares_${sessionUuid}`) || '[]',
+        );
+        const cachedBabycares = JSON.parse(
+          localStorage.getItem(`babycares_${sessionUuid}`) || '[]',
+        );
+
+        const allCachedProducts = [
+          ...cachedMedicines,
+          ...cachedSkincares,
+          ...cachedBabycares,
+        ];
+
+        const items: CartItem[] = cartData.map((item: any) => {
+          const productId = item.product_id?.toString();
+
+          // Find matching product from cache
+          const cachedProduct = allCachedProducts.find(
+            (p) => p.id.toString() === productId,
+          );
+
+          return {
+            id: productId || '',
+            name: cachedProduct?.name || 'Unknown Product',
+            dosage: cachedProduct?.dosage || '10mg | 10 capsules',
+            price: item.amount || 0,
+            image:
+              cachedProduct?.image || '/prefill-images/medicine bottle.svg',
+            quantity: item.quantity || 1,
+            autoRefill: false,
+            refillDays: item.refill_days || 30,
+          };
+        });
 
         setCartItems(items);
       } catch (err) {
         console.error('Failed to fetch cart:', err);
-
         setCartItems([]);
       } finally {
         setIsLoadingCart(false);
@@ -533,7 +575,6 @@ const PharmacyCart: React.FC = () => {
 
     fetchCartItems();
   }, [sessionUuid, navigate]);
-
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
@@ -563,11 +604,29 @@ const PharmacyCart: React.FC = () => {
     }
   };
 
+  const handleToggleFavorite = (id: string) => {
+    setFavoritedItems((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
   const handleRemoveItem = (id: string) => {
     setCartItems((items) => items.filter((item) => item.id !== id));
   };
 
   const handleToggleAutoRefill = async (id: string, enabled: boolean) => {
+    setCartItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, autoRefill: enabled } : item,
+      ),
+    );
+
     try {
       if (enabled) {
         await addToCart({
@@ -576,19 +635,33 @@ const PharmacyCart: React.FC = () => {
           purchase_type: 'subscribe',
           duration_months: 1,
         });
+      } else {
+        // If unchecking, switch back to buy_now
+        await addToCart({
+          product_id: parseInt(id),
+          quantity: 1,
+          purchase_type: 'buy_now',
+        });
       }
-
-      setCartItems((items) =>
-        items.map((item) =>
-          item.id === id ? { ...item, autoRefill: enabled } : item,
-        ),
-      );
     } catch (err) {
       console.error('Failed to toggle auto-refill:', err);
+
+      // Revert UI change if API fails
+      setCartItems((items) =>
+        items.map((item) =>
+          item.id === id ? { ...item, autoRefill: !enabled } : item,
+        ),
+      );
     }
   };
 
   const handleRefillDaysChange = async (id: string, days: number) => {
+    setCartItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, refillDays: days } : item,
+      ),
+    );
+
     const months = Math.ceil(days / 30);
 
     try {
@@ -598,17 +671,11 @@ const PharmacyCart: React.FC = () => {
         purchase_type: 'subscribe',
         duration_months: months,
       });
-
-      setCartItems((items) =>
-        items.map((item) =>
-          item.id === id ? { ...item, refillDays: days } : item,
-        ),
-      );
     } catch (err) {
       console.error('Failed to update refill days:', err);
+      // Optionally revert on error
     }
   };
-
   // const handleAddToCart = (product: RecommendedProducts) => {
   //   alert(`${product.name} added to cart!`);
   // };
@@ -720,6 +787,8 @@ const PharmacyCart: React.FC = () => {
                 <CartItem
                   key={item.id}
                   item={item}
+                  isFavorited={favoritedItems.has(item.id)}
+                  onToggleFavorite={handleToggleFavorite}
                   onQuantityChange={handleQuantityChange}
                   onRemove={handleRemoveItem}
                   onToggleAutoRefill={handleToggleAutoRefill}

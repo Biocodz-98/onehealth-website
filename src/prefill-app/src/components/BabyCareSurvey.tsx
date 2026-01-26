@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRefill } from '../Services/refillApi';
 import { ArrowLeft, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ProgressBar } from './ProgressBar';
 
 // Types
 interface SurveyProps {
@@ -246,6 +247,7 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
       className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16"
       style={{ fontFamily: 'Manrope, sans-serif' }}
     >
+      <ProgressBar currentStep={4} totalSteps={9} />
       {/* Back Button */}
       <button
         onClick={() => navigate('/products/refill/survey/skincare')}
@@ -384,7 +386,7 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         <button
           onClick={handleNext}
           disabled={selectedItems.length === 0 || isLoading}
-          className="bg-[#3da467] hover:bg-green-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="bg-[#3da467] hover:bg-green-700 text-white px-6 py-2.5 rounded-full text-base font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           style={{
             fontFamily: 'Manrope, sans-serif',
           }}

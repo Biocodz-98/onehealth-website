@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Check } from 'lucide-react';
 import { useRefill } from '../Services/refillApi';
 import { useNavigate } from 'react-router-dom';
+import { ProgressBar } from './ProgressBar';
 
 interface MedicineItem {
   id: number;
@@ -209,6 +210,7 @@ const Survey: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16">
+      <ProgressBar currentStep={2} totalSteps={9} />
       <button
         onClick={() => navigate('/products/refill/preferences')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-12"
@@ -322,7 +324,7 @@ const Survey: React.FC = () => {
         <button
           onClick={handleNext}
           disabled={selectedItems.length === 0 || isLoading}
-          className="bg-[#3da467] hover:bg-green-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-[#3da467] hover:bg-green-700 text-white px-6 py-2.5 rounded-full text-base font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? 'Saving...' : 'Next'}
           {!isLoading && (

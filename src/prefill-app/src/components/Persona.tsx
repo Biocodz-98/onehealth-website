@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRefill } from '../Services/refillApi';
 import { useLocation } from 'react-router-dom';
+import { ProgressBar } from './ProgressBar';
 
 // Types
 interface MedicineItem {
@@ -204,6 +205,7 @@ const WellnessPersona: React.FC = () => {
       className="min-h-screen bg-white flex items-center justify-center px-8 py-12"
       style={{ fontFamily: 'Lexend, sans-serif' }}
     >
+      <ProgressBar currentStep={9} totalSteps={9} />
       <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left Section - Description */}
         <div className="space-y-6">

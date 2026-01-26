@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRefill } from '../Services/refillApi';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { ProgressBar } from './ProgressBar';
 
 // Types
 interface ProductItem {
@@ -30,12 +31,44 @@ const MonthlyPurchase: React.FC = () => {
         setIsLoadingProducts(true);
         const cartData: any = await getCart();
 
-        const productsList: ProductItem[] = cartData.map((item: any) => ({
-          id: item.product_id.toString(),
-          name: item.product_name,
-          price: `₦${item.amount.toLocaleString()}`,
-          image: item.product_image || '/prefill-images/medicine bottle.svg',
-        }));
+        console.log('Cart Data from API:', cartData);
+
+        // Get cached products from localStorage (saved during surveys)
+        const cachedMedicines = JSON.parse(
+          localStorage.getItem(`medicines_${sessionUuid}`) || '[]',
+        );
+        const cachedSkincares = JSON.parse(
+          localStorage.getItem(`skincares_${sessionUuid}`) || '[]',
+        );
+        const cachedBabycares = JSON.parse(
+          localStorage.getItem(`babycares_${sessionUuid}`) || '[]',
+        );
+
+        // Combine all cached products
+        const allCachedProducts = [
+          ...cachedMedicines,
+          ...cachedSkincares,
+          ...cachedBabycares,
+        ];
+
+        const productsList: ProductItem[] = cartData.map((item: any) => {
+          const productId = item.product_id?.toString();
+
+          // Find matching product from cache
+          const cachedProduct = allCachedProducts.find(
+            (p) => p.id.toString() === productId,
+          );
+
+          return {
+            id: productId || '',
+            name: cachedProduct?.name || 'Unknown Product',
+            price: `₦${((cachedProduct as any)?.price || item.amount || 0).toLocaleString()}`,
+            image:
+              cachedProduct?.image || '/prefill-images/medicine bottle.svg',
+          };
+        });
+
+        console.log('Parsed Products List:', productsList);
 
         setProducts(productsList);
         setSelectedProducts(productsList.map((p) => p.id));
@@ -166,6 +199,7 @@ const MonthlyPurchase: React.FC = () => {
           >
             Complete Survey
           </button>
+          <ProgressBar currentStep={6} totalSteps={9} />
         </div>
       </div>
     );
@@ -176,6 +210,7 @@ const MonthlyPurchase: React.FC = () => {
       className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16"
       style={{ fontFamily: 'Manrope, sans-serif' }}
     >
+      <ProgressBar currentStep={6} totalSteps={9} />
       {/* Back Button */}
       <button
         onClick={() => navigate('/products/refill/survey/product-search')}
