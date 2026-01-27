@@ -1,143 +1,85 @@
 import React, { useEffect, useState } from 'react';
 import { useRefill } from '../Services/refillApi';
-import { useLocation } from 'react-router-dom';
 import { ProgressBar } from './ProgressBar';
 
 // Types
-interface MedicineItem {
+interface PersonaItem {
   id: string;
   name: string;
-  dosage: string;
+  dosage?: string;
   image: string;
 }
 
 const WellnessPersona: React.FC = () => {
-  const location = useLocation();
-  const { getSuccessData, submitConsent, isLoading, error } = useRefill();
+  const { getPersonaData, submitConsent, isLoading, error } = useRefill();
 
-  const [personaData, setPersonaData] = useState<any>(null);
+  const [personaType, setPersonaType] = useState<string>('');
+  const [items, setItems] = useState<PersonaItem[]>([]);
   const [loadingPersona, setLoadingPersona] = useState(true);
-
-  // Default medicines if none provided from API
-  const defaultMedicines: MedicineItem[] = [
-    {
-      id: '1',
-      name: 'Amlodipine',
-      dosage: '10mg',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '2',
-      name: 'Amlodipine',
-      dosage: '10mg',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '3',
-      name: 'Amlodipine',
-      dosage: '10mg',
-      image: '/prefill-images/medicine bottle.svg',
-    },
-    {
-      id: '4',
-      name: 'Amoxicillin',
-      dosage: '10mg',
-      image: '/prefill-images/amoxicillin capsules.svg',
-    },
-    {
-      id: '5',
-      name: 'Amoxicillin',
-      dosage: '10mg',
-      image: '/prefill-images/amoxicillin capsules.svg',
-    },
-  ];
 
   useEffect(() => {
     const loadPersona = async () => {
       try {
         setLoadingPersona(true);
+        const data = await getPersonaData();
 
-        // Try to get from navigation state first
-        const stateData = location.state?.personaData;
+        // Set persona name from API
+        setPersonaType(data.persona_name || 'Consistent');
 
-        if (stateData) {
-          setPersonaData(stateData);
-        } else {
-          // Fetch from API if not in state
-          const data = await getSuccessData();
-          setPersonaData(data);
-        }
+        // Use default medicines or empty array
+        setItems([]);
       } catch (err) {
         console.error('Failed to load persona:', err);
+        // Fallback to default
+        setPersonaType('Consistent');
+        setItems([]);
       } finally {
         setLoadingPersona(false);
       }
     };
 
     loadPersona();
-  }, [location.state?.personaData, getSuccessData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleShareWhatsApp = async () => {
     try {
-      // Submit consent before sharing
       await submitConsent(true);
-
-      // Build share message using actual persona from API or default
-      const persona = personaData?.persona || 'Consistent';
       const message = encodeURIComponent(
-        `My 2026 Wellness Persona is ${persona}! Check out OneHealth to discover yours.`,
+        `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours.`,
       );
-
       window.open(`https://wa.me/?text=${message}`, '_blank');
     } catch (err) {
       console.error('Failed to submit consent:', err);
-      // Still allow sharing even if consent fails
-      const persona = personaData?.persona || 'Consistent';
       const message = encodeURIComponent(
-        `My 2026 Wellness Persona is ${persona}! Check out OneHealth to discover yours.`,
+        `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours.`,
       );
       window.open(`https://wa.me/?text=${message}`, '_blank');
     }
   };
 
-  const handleShareInstagram = async () => {
+  const handleShareTwitter = async () => {
     try {
-      // Submit consent before sharing
       await submitConsent(true);
-
-      const persona = personaData?.persona || 'Consistent';
-      const message = `My 2026 Wellness Persona is ${persona}! Check out OneHealth to discover yours.`;
-
-      // Copy to clipboard
-      await navigator.clipboard.writeText(message);
-
-      // Show alert
-      alert(
-        'Message copied to clipboard! Paste it in your Instagram story or post.',
+      const tweetText = encodeURIComponent(
+        `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours.`,
       );
-
-      // Open Instagram (mobile) or Instagram web
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile) {
-        window.open('instagram://story-camera', '_blank');
-      } else {
-        window.open('https://www.instagram.com/', '_blank');
-      }
+      window.open(
+        `https://twitter.com/intent/tweet?text=${tweetText}`,
+        '_blank',
+      );
     } catch (err) {
-      console.error('Failed to share on Instagram:', err);
-      // Fallback - just open Instagram
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile) {
-        window.open('instagram://story-camera', '_blank');
-      } else {
-        window.open('https://www.instagram.com/', '_blank');
-      }
+      console.error('Failed to submit consent:', err);
+      // Still allow sharing even if consent fails
+      const tweetText = encodeURIComponent(
+        `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours.`,
+      );
+      window.open(
+        `https://twitter.com/intent/tweet?text=${tweetText}`,
+        '_blank',
+      );
     }
   };
-
-  // Get medicines from API or use defaults
-  const displayMedicines = personaData?.medicines || defaultMedicines;
-  const personaType = personaData?.persona || 'Consistent';
 
   // Loading state
   if (loadingPersona) {
@@ -157,7 +99,7 @@ const WellnessPersona: React.FC = () => {
   }
 
   // Error state
-  if (error && !personaData) {
+  if (error) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-8">
         <div className="text-center max-w-md">
@@ -233,7 +175,6 @@ const WellnessPersona: React.FC = () => {
 
         {/* Right Section - Persona Card */}
         <div className="relative">
-          {/* Card with gradient background */}
           <div
             className="relative rounded-3xl overflow-hidden shadow-2xl"
             style={{
@@ -268,44 +209,43 @@ const WellnessPersona: React.FC = () => {
                 Persona
               </h2>
 
-              {/* Medicine List */}
+              {/* Item List */}
               <div className="space-y-4 mb-8">
-                {displayMedicines
-                  .slice(0, 5)
-                  .map((medicine: MedicineItem, index: number) => (
-                    <div
-                      key={medicine.id}
-                      className="flex items-center gap-4 pb-4 border-b border-gray-700"
+                {items.slice(0, 5).map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-4 pb-4 border-b border-gray-700"
+                  >
+                    {/* Number */}
+                    <span
+                      className="text-[#3da467] font-bold text-lg w-8"
+                      style={{
+                        fontFamily: 'Familjen Grotesk, sans-serif',
+                        fontWeight: 700,
+                      }}
                     >
-                      {/* Number */}
-                      <span
-                        className="text-[#3da467] font-bold text-lg w-8"
+                      #{index + 1}
+                    </span>
+
+                    {/* Item Image */}
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-10 h-10 object-contain"
+                    />
+
+                    {/* Item Info */}
+                    <div className="flex-1">
+                      <p
+                        className="text-white font-medium text-base"
                         style={{
                           fontFamily: 'Familjen Grotesk, sans-serif',
-                          fontWeight: 700,
+                          fontWeight: 400,
                         }}
                       >
-                        #{index + 1}
-                      </span>
-
-                      {/* Medicine Image */}
-                      <img
-                        src={medicine.image}
-                        alt={medicine.name}
-                        className="w-10 h-10 object-contain"
-                      />
-
-                      {/* Medicine Info */}
-                      <div className="flex-1">
-                        <p
-                          className="text-white font-medium text-base"
-                          style={{
-                            fontFamily: 'Familjen Grotesk, sans-serif',
-                            fontWeight: 400,
-                          }}
-                        >
-                          {medicine.name}
-                        </p>
+                        {item.name}
+                      </p>
+                      {item.dosage && (
                         <p
                           className="text-white text-xs"
                           style={{
@@ -313,11 +253,12 @@ const WellnessPersona: React.FC = () => {
                             fontWeight: 400,
                           }}
                         >
-                          {medicine.dosage}
+                          {item.dosage}
                         </p>
-                      </div>
+                      )}
                     </div>
-                  ))}
+                  </div>
+                ))}
               </div>
 
               {/* Share Buttons */}
@@ -339,7 +280,7 @@ const WellnessPersona: React.FC = () => {
                 </button>
 
                 <button
-                  onClick={handleShareInstagram}
+                  onClick={handleShareTwitter}
                   disabled={isLoading}
                   className="w-full border-2 border-white text-white py-3 rounded-full font-semibold hover:bg-white hover:text-gray-900 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ fontFamily: 'Manrope, sans-serif' }}
@@ -349,9 +290,9 @@ const WellnessPersona: React.FC = () => {
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
-                  {isLoading ? 'Sharing...' : 'Share on Instagram'}
+                  {isLoading ? 'Sharing...' : 'Share on X'}
                 </button>
               </div>
             </div>

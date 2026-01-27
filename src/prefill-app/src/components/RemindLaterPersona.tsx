@@ -13,17 +13,18 @@ interface ProductItem {
 const RemindMeLaterPersona: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { submitConsent, isLoading } = useRefill();
+  const { getPersonaData, submitConsent, isLoading } = useRefill();
 
   const [products, setProducts] = useState<ProductItem[]>([]);
+  const [personaType, setPersonaType] = useState<string>('');
   const [loadingProducts, setLoadingProducts] = useState(true);
 
   useEffect(() => {
-    const loadProducts = () => {
+    const loadData = async () => {
       try {
         setLoadingProducts(true);
 
-        // Get products from navigation state (passed from MonthlyPurchase)
+        // Get products from navigation state (passed from MonthlyPurchase/surveys)
         const passedProducts = location.state?.selectedProducts;
         console.log('RemindMeLaterPersona - location.state:', location.state);
         console.log('RemindMeLaterPersona - passedProducts:', passedProducts);
@@ -36,6 +37,17 @@ const RemindMeLaterPersona: React.FC = () => {
           // Fallback: redirect back if no products
           alert('No products selected. Please select products first.');
           navigate('/products/refill/product-selection');
+          return;
+        }
+
+        // Fetch persona type from API
+        try {
+          const personaData = await getPersonaData();
+          setPersonaType(personaData.persona_name || 'Consistent');
+        } catch (apiErr) {
+          console.error('Failed to fetch persona data:', apiErr);
+          // Use fallback value if API fails
+          setPersonaType('Consistent');
         }
       } catch (err) {
         console.error('Failed to load products:', err);
@@ -44,69 +56,49 @@ const RemindMeLaterPersona: React.FC = () => {
       }
     };
 
-    loadProducts();
-  }, [location.state, navigate]);
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleShareWhatsApp = async () => {
     try {
-      // Submit consent before sharing
       await submitConsent(true);
-
-      // Build share message
-      const productCount = products.length;
       const message = encodeURIComponent(
-        `I've saved ${productCount} products to remind me later on OneHealth! Check it out.`,
+        `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours`,
       );
-
       window.open(`https://wa.me/?text=${message}`, '_blank');
     } catch (err) {
       console.error('Failed to submit consent:', err);
-      // Still allow sharing even if consent fails
-      const productCount = products.length;
       const message = encodeURIComponent(
-        `I've saved ${productCount} products to remind me later on OneHealth! Check it out.`,
+        `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours`,
       );
       window.open(`https://wa.me/?text=${message}`, '_blank');
     }
   };
 
-  const handleShareInstagram = async () => {
+  const handleShareTwitter = async () => {
     try {
-      // Submit consent before sharing
       await submitConsent(true);
-
-      const productCount = products.length;
-      const message = `I've saved ${productCount} products to remind me later on OneHealth! Check it out.`;
-
-      // Copy to clipboard
-      await navigator.clipboard.writeText(message);
-
-      // Show alert
-      alert(
-        'Message copied to clipboard! Paste it in your Instagram story or post.',
+      const message = `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours`;
+      const tweetText = encodeURIComponent(message);
+      window.open(
+        `https://twitter.com/intent/tweet?text=${tweetText}`,
+        '_blank',
       );
-
-      // Open Instagram
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile) {
-        window.open('instagram://story-camera', '_blank');
-      } else {
-        window.open('https://www.instagram.com/', '_blank');
-      }
     } catch (err) {
-      console.error('Failed to share on Instagram:', err);
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile) {
-        window.open('instagram://story-camera', '_blank');
-      } else {
-        window.open('https://www.instagram.com/', '_blank');
-      }
+      console.error('Failed to submit consent:', err);
+      const message = `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours`;
+      const tweetText = encodeURIComponent(message);
+      window.open(
+        `https://twitter.com/intent/tweet?text=${tweetText}`,
+        '_blank',
+      );
     }
   };
 
-  const handleGoToHome = () => {
-    navigate('/products/refill');
-  };
+  // const handleGoToHome = () => {
+  //   navigate('/products/refill');
+  // };
 
   // Loading state
   if (loadingProducts) {
@@ -118,7 +110,7 @@ const RemindMeLaterPersona: React.FC = () => {
             className="text-gray-600"
             style={{ fontFamily: 'Manrope, sans-serif' }}
           >
-            Loading your saved products...
+            Loading your persona...
           </p>
         </div>
       </div>
@@ -144,36 +136,34 @@ const RemindMeLaterPersona: React.FC = () => {
           {/* Left Section - Description */}
           <div className="space-y-6">
             <h1
-              className="text-4xl lg:text-5xl font-normal text-[#000000] leading-tight"
+              className="text-4xl lg:text-3xl font-normal text-[#000000] leading-tight"
               style={{
                 fontFamily: 'Lexend, sans-serif',
                 lineHeight: 1.2,
                 fontWeight: 400,
               }}
             >
-              Your products are saved!
+              Based on your choices, it looks like you are:
             </h1>
             <p
-              className="text-lg text-gray-700"
+              className="text-5xl text-[#3da467] font-bold"
               style={{
-                fontFamily: 'Manrope, sans-serif',
-                lineHeight: 1.5,
-                fontWeight: 400,
+                fontFamily: 'Lexend, sans-serif',
+                lineHeight: 1.2,
+                fontWeight: 700,
               }}
             >
-              We'll remind you later about these {products.length} products you
-              selected. You can continue shopping or share your selections with
-              friends.
+              {personaType}
             </p>
 
             {/* Action Button */}
-            <button
+            {/* <button
               onClick={handleGoToHome}
               className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full text-base font-semibold transition-colors"
               style={{ fontFamily: 'Manrope, sans-serif' }}
             >
               Continue Shopping
-            </button>
+            </button> */}
           </div>
 
           {/* Right Section - Persona Card */}
@@ -205,11 +195,11 @@ const RemindMeLaterPersona: React.FC = () => {
                     fontWeight: 400,
                   }}
                 >
-                  My Saved
+                  My 2026
                   <br />
-                  Products
+                  Wellness
                   <br />
-                  Reminder
+                  Persona
                 </h2>
 
                 {/* Product List */}
@@ -291,7 +281,7 @@ const RemindMeLaterPersona: React.FC = () => {
                   </button>
 
                   <button
-                    onClick={handleShareInstagram}
+                    onClick={handleShareTwitter}
                     disabled={isLoading}
                     className="w-full border-2 border-white text-white py-3 rounded-full font-semibold hover:bg-white hover:text-gray-900 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ fontFamily: 'Manrope, sans-serif' }}
@@ -301,9 +291,9 @@ const RemindMeLaterPersona: React.FC = () => {
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                     </svg>
-                    {isLoading ? 'Sharing...' : 'Share on Instagram'}
+                    {isLoading ? 'Sharing...' : 'Share on X'}
                   </button>
                 </div>
               </div>

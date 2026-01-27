@@ -73,6 +73,10 @@ interface SuccessResponse {
   }>;
 }
 
+interface PersonaResponse {
+  persona_name: string;
+}
+
 interface CartResponse {
   items: Array<{
     product_id: number;
@@ -137,6 +141,7 @@ interface RefillContextType {
     paymentType: string,
   ) => Promise<CheckoutResponse>;
   getSuccessData: () => Promise<SuccessResponse>;
+  getPersonaData: () => Promise<PersonaResponse>;
   getMedicineProducts: () => Promise<ProductSurveyResponse>;
   getPersonalCareProducts: () => Promise<ProductSurveyResponse>;
   getBabyCareProducts: () => Promise<ProductSurveyResponse>;
@@ -216,6 +221,12 @@ class RefillAPIService {
         body: JSON.stringify({ category, answers }),
       },
     );
+  }
+
+  async getPersona(sessionUuid: string) {
+    return this.request<PersonaResponse>(`/persona/${sessionUuid}`, {
+      method: 'GET',
+    });
   }
 
   async getMedicineProducts() {
@@ -491,6 +502,23 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const getPersonaData = async (): Promise<PersonaResponse> => {
+    if (!sessionUuid) throw new Error('No active session');
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getPersona(sessionUuid);
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to get persona data';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const submitConsent = async (consent: boolean) => {
     if (!sessionUuid) throw new Error('No active session');
     setIsLoading(true);
@@ -629,6 +657,7 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     addToWishlist,
     checkout,
     getSuccessData,
+    getPersonaData,
     submitConsent,
     clearSession,
     getMedicineProducts,
