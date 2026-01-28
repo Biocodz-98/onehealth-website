@@ -110,13 +110,13 @@ const CheckoutPage: React.FC = () => {
       price: 6000,
       icon: Truck,
     },
-    {
-      id: 'pickup',
-      name: 'Pick up from pharmacy',
-      description: 'Come with proof of payment',
-      price: 0,
-      icon: Package,
-    },
+    // {
+    //   id: 'pickup',
+    //   name: 'Pick up from pharmacy',
+    //   description: 'Come with proof of payment',
+    //   price: 0,
+    //   icon: Package,
+    // },
   ];
 
   const subtotal = cartItems.reduce(

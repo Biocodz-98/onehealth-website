@@ -29,7 +29,7 @@ interface SurveyAnswer {
 interface CartItem {
   product_id: number;
   quantity: number;
-  purchase_type: 'buy_now' | 'subscribe';
+  purchase_type: 'buy_now' | 'subscription';
   duration_months?: number;
 }
 

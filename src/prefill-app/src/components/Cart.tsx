@@ -632,7 +632,7 @@ const PharmacyCart: React.FC = () => {
         await addToCart({
           product_id: parseInt(id),
           quantity: 1,
-          purchase_type: 'subscribe',
+          purchase_type: 'subscription',
           duration_months: 1,
         });
       } else {
@@ -668,7 +668,7 @@ const PharmacyCart: React.FC = () => {
       await addToCart({
         product_id: parseInt(id),
         quantity: 1,
-        purchase_type: 'subscribe',
+        purchase_type: 'subscription',
         duration_months: months,
       });
     } catch (err) {

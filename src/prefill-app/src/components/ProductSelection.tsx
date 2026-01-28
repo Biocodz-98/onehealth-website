@@ -96,24 +96,18 @@ const MonthlyPurchase: React.FC = () => {
     }
 
     try {
-      let durationMonths: number | undefined;
-      if (selectedSubscription === '3months') durationMonths = 3;
-      else if (selectedSubscription === '6months') durationMonths = 6;
-      else if (selectedSubscription === '1year') durationMonths = 12;
-
-      // Add each selected product to cart
       for (const productId of selectedProducts) {
         await addToCart({
           product_id: parseInt(productId),
           quantity: 1,
-          purchase_type: selectedSubscription ? 'subscribe' : 'buy_now',
-          duration_months: durationMonths,
+          purchase_type: 'buy_now',
         });
       }
 
       navigate('/products/refill/pharmacy-cart');
     } catch (err) {
       console.error('Failed to add to cart:', err);
+      alert('Failed to add products to cart. Please try again.');
     }
   };
 
@@ -164,7 +158,7 @@ const MonthlyPurchase: React.FC = () => {
         await addToCart({
           product_id: parseInt(productId),
           quantity: 1,
-          purchase_type: 'subscribe',
+          purchase_type: 'subscription',
           duration_months: durationMonths,
         });
       }
@@ -172,6 +166,7 @@ const MonthlyPurchase: React.FC = () => {
       navigate('/products/refill/pharmacy-cart');
     } catch (err) {
       console.error('Failed to subscribe:', err);
+      alert('Failed to add subscription. Please try again.');
     }
   };
 
