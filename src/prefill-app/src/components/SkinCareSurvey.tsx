@@ -218,7 +218,7 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
       <ProgressBar currentStep={3} totalSteps={9} />
       {/* Back Button */}
       <button
-        onClick={() => navigate('/products/refill/survey/medicines')}
+        onClick={() => navigate('/products/refill/survey')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-12 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
@@ -349,8 +349,17 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
         </div>
       )}
 
-      {/* Next Button */}
-      <div className="max-w-6xl mx-auto mt-8 flex justify-end">
+      {/* Action Buttons */}
+      <div className="max-w-6xl mx-auto mt-8 flex justify-end gap-4">
+        <button
+          onClick={() => navigate('/products/refill/survey/babycare')}
+          className="px-6 py-2.5 rounded-full text-base font-semibold border-2 border-[#3da467] text-[#3da467] hover:bg-green-50 transition-colors"
+          style={{
+            fontFamily: 'Manrope, sans-serif',
+          }}
+        >
+          Skip
+        </button>
         <button
           onClick={handleNext}
           disabled={selectedItems.length === 0 || isLoading}

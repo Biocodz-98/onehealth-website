@@ -189,7 +189,7 @@ const MonthlyPurchase: React.FC = () => {
         <div className="text-center">
           <p className="text-gray-600 mb-4">No products selected yet.</p>
           <button
-            onClick={() => navigate('/products/refill/survey/medicines')}
+            onClick={() => navigate('/products/refill/survey')}
             className="bg-[#3da467] text-white px-6 py-2 rounded-full"
           >
             Complete Survey

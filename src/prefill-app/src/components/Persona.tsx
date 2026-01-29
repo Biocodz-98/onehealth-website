@@ -11,7 +11,14 @@ interface PersonaItem {
 }
 
 const WellnessPersona: React.FC = () => {
-  const { getPersonaData, submitConsent, isLoading, error } = useRefill();
+  const {
+    getPersonaData,
+    submitConsent,
+    getCart,
+    sessionUuid,
+    isLoading,
+    error,
+  } = useRefill();
 
   const [personaType, setPersonaType] = useState<string>('');
   const [items, setItems] = useState<PersonaItem[]>([]);
@@ -21,13 +28,25 @@ const WellnessPersona: React.FC = () => {
     const loadPersona = async () => {
       try {
         setLoadingPersona(true);
-        const data = await getPersonaData();
 
-        // Set persona name from API
-        setPersonaType(data.persona_name || 'Consistent');
+        // Get persona name
+        const personaData = await getPersonaData();
+        setPersonaType(personaData.persona_name || 'Consistent');
 
-        // Use default medicines or empty array
-        setItems([]);
+        // Get cart items of (selected products)
+        if (sessionUuid) {
+          const cartData = await getCart();
+
+          // Map cart items to PersonaItem format
+          const mappedItems: PersonaItem[] = cartData.items.map((item) => ({
+            id: item.product_id.toString(),
+            name: item.product_name,
+            dosage: item.dosage || '',
+            image: item.product_image || '/prefill-images/medicine bottle.svg',
+          }));
+
+          setItems(mappedItems);
+        }
       } catch (err) {
         console.error('Failed to load persona:', err);
         // Fallback to default

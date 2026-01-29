@@ -381,8 +381,17 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         </div>
       )}
 
-      {/* Next Button */}
-      <div className="max-w-6xl mx-auto mt-8 flex justify-end">
+      {/* Action Buttons */}
+      <div className="max-w-6xl mx-auto mt-8 flex justify-end gap-4">
+        <button
+          onClick={() => navigate('/products/refill/survey/product-search')}
+          className="px-6 py-2.5 rounded-full text-base font-semibold border-2 border-[#3da467] text-[#3da467] hover:bg-green-50 transition-colors"
+          style={{
+            fontFamily: 'Manrope, sans-serif',
+          }}
+        >
+          Skip
+        </button>
         <button
           onClick={handleNext}
           disabled={selectedItems.length === 0 || isLoading}

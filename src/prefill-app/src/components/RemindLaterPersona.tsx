@@ -96,9 +96,9 @@ const RemindMeLaterPersona: React.FC = () => {
     }
   };
 
-  // const handleGoToHome = () => {
-  //   navigate('/products/refill');
-  // };
+  const handleGoToHome = () => {
+    navigate('/products/refill');
+  };
 
   // Loading state
   if (loadingProducts) {
@@ -157,13 +157,13 @@ const RemindMeLaterPersona: React.FC = () => {
             </p>
 
             {/* Action Button */}
-            {/* <button
+            <button
               onClick={handleGoToHome}
               className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full text-base font-semibold transition-colors"
               style={{ fontFamily: 'Manrope, sans-serif' }}
             >
               Continue Shopping
-            </button> */}
+            </button>
           </div>
 
           {/* Right Section - Persona Card */}
