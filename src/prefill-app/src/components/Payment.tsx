@@ -60,7 +60,7 @@ const StepIndicator: React.FC<{ currentStep: number }> = ({ currentStep }) => {
 const PaymentSuccess: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { getSuccessData, isLoading, error } = useRefill();
+  const { getSuccessData, error } = useRefill();
 
   const [personaData, setPersonaData] = useState<any>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -94,14 +94,10 @@ const PaymentSuccess: React.FC = () => {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [checkoutId, getSuccessData]);
+  }, [getSuccessData, checkoutId]);
 
   const handleSeePersona = () => {
-    if (personaData) {
-      navigate('/products/refill/persona', {
-        state: { personaData },
-      });
-    }
+    navigate('/products/refill/persona');
   };
 
   const handleTrackOrder = () => {
@@ -209,10 +205,10 @@ const PaymentSuccess: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button
                     onClick={handleSeePersona}
-                    disabled={!personaData || isLoading}
+                    disabled={loadingPersona}
                     className="w-full sm:w-auto bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isLoading ? 'Loading...' : 'See Your Persona'}
+                    {loadingPersona ? 'Loading...' : 'See Your Persona'}
                   </button>
                   <button
                     onClick={handleTrackOrder}
