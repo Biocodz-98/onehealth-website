@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Home, Truck, Package, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Home, Truck, ChevronDown } from 'lucide-react';
 import { ProgressBar } from './ProgressBar';
 
 // Types

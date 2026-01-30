@@ -205,7 +205,7 @@ const PaymentSuccess: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button
                     onClick={handleSeePersona}
-                    disabled={loadingPersona}
+                    disabled={loadingPersona || !personaData}
                     className="w-full sm:w-auto bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loadingPersona ? 'Loading...' : 'See Your Persona'}
