@@ -14,46 +14,6 @@ interface MedicineItem {
   category?: string;
 }
 
-const FALLBACK_MEDICINES: MedicineItem[] = [
-  {
-    id: 1001,
-    name: 'Amlodipine',
-    image: '/prefill-images/medicine bottle.svg',
-    category: 'Chronic',
-  },
-  {
-    id: 1002,
-    name: 'Lisinopril',
-    image: '/prefill-images/medicine bottle.svg',
-    category: 'Chronic',
-  },
-  {
-    id: 1003,
-    name: 'Metformin',
-    image: '/prefill-images/medicine bottle.svg',
-    category: 'Chronic',
-  },
-  {
-    id: 1004,
-    name: 'Atorvastatin',
-    image: '/prefill-images/medicine bottle.svg',
-    category: 'Chronic',
-  },
-  {
-    id: 1005,
-    name: 'Omeprazole',
-    image: '/prefill-images/medicine bottle.svg',
-    category: 'OTC & Childcare',
-  },
-  {
-    id: 1006,
-    name: 'Levothyroxine',
-    image: '/prefill-images/medicine bottle.svg',
-    category: 'Chronic',
-  },
-];
-
-// Backend category ID for medicine = 1
 const MEDICINE_CATEGORY_ID = 1;
 
 const Survey: React.FC = () => {
@@ -73,9 +33,6 @@ const Survey: React.FC = () => {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [medicines, setMedicines] = useState<MedicineItem[]>([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
-  const [hasFetchedProducts, setHasFetchedProducts] = useState(false);
-  // Track whether we are showing real API products or fallbacks
-  const [usingFallback, setUsingFallback] = useState(false);
 
   const categories = [
     'All',
@@ -86,7 +43,7 @@ const Survey: React.FC = () => {
     'Vitamins and Supplement',
   ];
 
-  /** ---- Check session on mount ---- */
+  // Check session on mount
   useEffect(() => {
     console.log('Survey mounted. Current sessionUuid:', sessionUuid);
 
@@ -102,62 +59,35 @@ const Survey: React.FC = () => {
     return () => clearTimeout(timer);
   }, [sessionUuid, navigate]);
 
-  /** ---- Fetch medicine products ---- */
+  // Fetch medicine products
   useEffect(() => {
-    if (hasFetchedProducts || isCheckingSession || !sessionUuid) return;
+    if (isCheckingSession || !sessionUuid) return;
 
     const fetchProducts = async () => {
-      // subcategoryId from preferences is ONLY valid for medicine (category_id === 1 on backend).
-      // Read the stored category_id to confirm before using subcategoryId.
-      const subcategoryId = localStorage.getItem('selected_subcategory_id');
-      const storedCategoryId = localStorage.getItem('selected_category_id');
-
-      // Only use subcategoryId if the preference was set under the medicine category (id=1)
-      const subcategoryBelongsToMedicine =
-        storedCategoryId && Number(storedCategoryId) === MEDICINE_CATEGORY_ID;
-
-      const cacheKey = `medicines_${sessionUuid}_${
-        subcategoryBelongsToMedicine && subcategoryId ? subcategoryId : 'all'
-      }`;
-      const cached = localStorage.getItem(cacheKey);
-
-      if (cached) {
-        console.log('Using cached medicine products');
-        setMedicines(JSON.parse(cached));
-        setUsingFallback(false);
-        setIsLoadingProducts(false);
-        setHasFetchedProducts(true);
-        return;
-      }
-
       try {
         setIsLoadingProducts(true);
+
+        const subcategoryId = localStorage.getItem('selected_subcategory_id');
+        const storedCategoryId = localStorage.getItem('selected_category_id');
+
         let response: any;
 
-        if (subcategoryBelongsToMedicine && subcategoryId) {
-          // Try fetching by subcategory first
-          try {
-            console.log(
-              `[Medicine] Fetching products by subcategory: ${subcategoryId}`,
-            );
-            response = await getProductsBySubCategory(Number(subcategoryId));
-          } catch (subCatError) {
-            console.warn(
-              '[Medicine] Subcategory fetch failed, falling back to category:',
-              subCatError,
-            );
-            response = await getProductsByCategory(MEDICINE_CATEGORY_ID);
-          }
+        // If user selected a subcategory AND it's for medicine category
+        if (
+          subcategoryId &&
+          storedCategoryId &&
+          Number(storedCategoryId) === MEDICINE_CATEGORY_ID
+        ) {
+          console.log(`[Medicine] Fetching by subcategory: ${subcategoryId}`);
+          response = await getProductsBySubCategory(Number(subcategoryId));
         } else {
-          // Either no subcategory was selected, or it belongs to another category.
-          // Always use this component's own category ID.
           console.log(
-            `[Medicine] Fetching products by category: ${MEDICINE_CATEGORY_ID}`,
+            `[Medicine] Fetching by category: ${MEDICINE_CATEGORY_ID}`,
           );
           response = await getProductsByCategory(MEDICINE_CATEGORY_ID);
         }
 
-        console.log('[Medicine] Products fetched:', response);
+        console.log('[Medicine] API Response:', response);
 
         const products: MedicineItem[] = (response.products || []).map(
           (item: any) => ({
@@ -171,44 +101,28 @@ const Survey: React.FC = () => {
           }),
         );
 
-        if (products.length === 0) {
-          console.warn(
-            '[Medicine] No products returned from API, using fallback',
-          );
-          setMedicines(FALLBACK_MEDICINES);
-          setUsingFallback(true);
-        } else {
-          setMedicines(products);
-          setUsingFallback(false);
-          localStorage.setItem(cacheKey, JSON.stringify(products));
-        }
-      } catch (err) {
-        console.error(
-          '[Medicine] Failed to fetch medicines, using fallback:',
-          err,
-        );
-        setMedicines(FALLBACK_MEDICINES);
-        setUsingFallback(true);
-      } finally {
+        console.log('[Medicine] Parsed products:', products);
+        setMedicines(products);
         setIsLoadingProducts(false);
-        setHasFetchedProducts(true);
+      } catch (err) {
+        console.error('[Medicine] Failed to fetch products:', err);
+        alert('Failed to load products. Please try again.');
+        setIsLoadingProducts(false);
       }
     };
 
     fetchProducts();
-  }, [isCheckingSession, sessionUuid, hasFetchedProducts]);
+  }, [isCheckingSession, sessionUuid]);
 
-  /** ---- Toggle selection ---- */
   const toggleSelection = (id: number) => {
     setSelectedItems((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
-  /** ---- Handle next step ---- */
   const handleNext = async () => {
     if (!sessionUuid) {
-      console.error('[Medicine] No sessionUuid available');
+      alert('Session expired. Please start over.');
       return;
     }
 
@@ -220,98 +134,74 @@ const Survey: React.FC = () => {
     console.log('=== SAVING MEDICINE SURVEY ===');
     console.log('Session UUID:', sessionUuid);
     console.log('Selected items:', selectedItems);
-    console.log('Using fallback products:', usingFallback);
 
     try {
+      // Save survey
       const selectedNames = selectedItems
         .map((id) => medicines.find((m) => m.id === id)?.name.toLowerCase())
         .filter(Boolean) as string[];
 
       console.log('Selected names:', selectedNames);
 
-      // Save survey first
       await saveSurvey('medicines', [
         { question_key: 'frequent_products', value: selectedNames },
       ]);
 
       console.log('[Medicine] Survey saved successfully');
 
-      // Only update cart when we have real products from the API
-      if (!usingFallback) {
-        console.log('[Medicine] Adding real products to cart...');
+      // Add items to cart one by one
+      console.log('[Medicine] Adding products to cart...');
 
-        // Add items to cart sequentially with error handling
-        for (const id of selectedItems) {
-          try {
-            console.log(
-              `[Medicine] Adding product ${id} to cart with session ${sessionUuid}`,
-            );
+      for (const id of selectedItems) {
+        try {
+          console.log(`[Medicine] Adding product ${id} to cart`);
 
-            const cartItem = {
-              product_id: id,
-              quantity: 1,
-              purchase_type: 'buy_now' as const,
-            };
+          await updateCart(sessionUuid, {
+            product_id: id,
+            quantity: 1,
+            purchase_type: 'buy_now',
+          });
 
-            console.log('[Medicine] Cart item payload:', cartItem);
-
-            const result = await updateCart(sessionUuid, cartItem);
-
-            console.log(
-              `[Medicine] Product ${id} added to cart successfully:`,
-              result,
-            );
-          } catch (itemError) {
-            console.error(
-              `[Medicine] Failed to add product ${id} to cart:`,
-              itemError,
-            );
-            // Continue with other items even if one fails
-          }
+          console.log(`[Medicine] Product ${id} added successfully`);
+        } catch (itemError) {
+          console.error(`[Medicine] Failed to add product ${id}:`, itemError);
         }
-
-        console.log('[Medicine] All cart operations completed');
-
-        // Verify cart was updated
-        console.log(
-          '[Medicine] Waiting 500ms before navigation to ensure cart is updated...',
-        );
-        await new Promise((resolve) => setTimeout(resolve, 500));
-      } else {
-        console.warn(
-          '[Medicine] Skipping cart update — using fallback products that do not exist on backend.',
-        );
       }
+
+      console.log('[Medicine] All products processed');
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       navigate('/products/refill/survey/skincare');
     } catch (err) {
-      console.error('[Medicine] Failed to save survey or update cart:', err);
-      console.error('[Medicine] Error details:', err);
-
-      const continueAnyway = window.confirm(
-        'Failed to save survey data. Continue anyway?',
-      );
-      if (continueAnyway) navigate('/products/refill/survey/skincare');
+      console.error('[Medicine] Error:', err);
+      alert('Failed to save. Please try again.');
     }
   };
 
-  // Filter medicines by active category
   const filteredMedicines =
     activeCategory === 'All'
       ? medicines
       : medicines.filter((m) => m.category === activeCategory);
 
-  /** ---- Loading states ---- */
   if (isCheckingSession || isLoadingProducts) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
           <p className="text-gray-600">
-            {isCheckingSession
-              ? 'Checking session...'
-              : 'Loading medicine products...'}
+            {isCheckingSession ? 'Checking session...' : 'Loading products...'}
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (medicines.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">No products available.</p>
+          <p className="text-sm text-gray-500">Please contact support.</p>
         </div>
       </div>
     );
@@ -343,7 +233,6 @@ const Survey: React.FC = () => {
         </div>
       )}
 
-      {/* Section Header */}
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex items-center justify-between mb-6">
           <h2
@@ -357,7 +246,6 @@ const Survey: React.FC = () => {
             MEDICINES
           </h2>
         </div>
-        {/* Categories */}
         <div className="max-w-6xl mx-auto mb-6 flex flex-wrap gap-3">
           {categories.map((cat) => (
             <button
@@ -375,7 +263,6 @@ const Survey: React.FC = () => {
         </div>
       </div>
 
-      {/* Medicine Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
         {filteredMedicines.length === 0 ? (
           <div className="col-span-full text-center py-12">
@@ -396,7 +283,6 @@ const Survey: React.FC = () => {
                     : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
               >
-                {/* Checkbox */}
                 <div
                   className={`absolute top-4 right-4 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
                     isSelected
@@ -407,7 +293,6 @@ const Survey: React.FC = () => {
                   {isSelected && <Check className="w-4 h-4 text-white" />}
                 </div>
 
-                {/* Image and Name */}
                 <div className="flex flex-col items-center">
                   <div className="w-28 h-28 mb-4 flex items-center justify-center">
                     <img
@@ -426,7 +311,6 @@ const Survey: React.FC = () => {
         )}
       </div>
 
-      {/* Selection Counter */}
       {selectedItems.length > 0 && (
         <div className="max-w-6xl mx-auto mt-6">
           <p className="text-sm text-gray-600">
@@ -436,7 +320,6 @@ const Survey: React.FC = () => {
         </div>
       )}
 
-      {/* Action Buttons */}
       <div className="max-w-6xl mx-auto mt-8 flex justify-end gap-4">
         <button
           onClick={() => navigate('/products/refill/survey/skincare')}

@@ -4,12 +4,6 @@ import { ArrowLeft, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ProgressBar } from './ProgressBar';
 
-// Types
-interface SurveyProps {
-  onBack?: () => void;
-  onNext?: (selectedItems: string[]) => void;
-}
-
 interface BabyCareItem {
   id: number;
   name: string;
@@ -17,25 +11,9 @@ interface BabyCareItem {
   category?: string;
 }
 
-const FALLBACK_BABYCARE: BabyCareItem[] = [
-  {
-    id: 3001,
-    name: 'Diapers & Wipes',
-    image: '/prefill-images/medicine bottle.svg',
-    category: 'Diapers & Wipes',
-  },
-  {
-    id: 3002,
-    name: 'Baby Food',
-    image: '/prefill-images/medicine bottle.svg',
-    category: 'Baby Food',
-  },
-];
-
-// Backend category ID for babycare = 2
 const BABYCARE_CATEGORY_ID = 2;
 
-const BabyCareComponent: React.FC<SurveyProps> = () => {
+const BabyCareComponent: React.FC = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
@@ -51,12 +29,10 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
   const [babycares, setBabycares] = useState<BabyCareItem[]>([]);
   const [isLoadingBabycare, setIsLoadingBabycare] = useState<boolean>(true);
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
-  const [hasFetchedProducts, setHasFetchedProducts] = useState<boolean>(false);
-  const [usingFallback, setUsingFallback] = useState(false);
 
   const categories = ['All', 'Diapers & Wipes', 'Baby Food'];
 
-  /** ---- Check session on mount ---- */
+  // Check session on mount
   useEffect(() => {
     console.log('BabyCare Survey mounted. Current sessionUuid:', sessionUuid);
 
@@ -72,33 +48,17 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
     return () => clearTimeout(timer);
   }, [sessionUuid, navigate]);
 
-  /** ---- Fetch babycare products ---- */
+  // Fetch babycare products
   useEffect(() => {
-    if (hasFetchedProducts || isCheckingSession || !sessionUuid) return;
+    if (isCheckingSession || !sessionUuid) return;
 
     const fetchProducts = async () => {
-      // Babycare has no subcategories on the backend — always fetch by its own category ID (2).
-      // Do NOT read selected_subcategory_id here; that value belongs to medicine.
-      const cacheKey = `babycares_${sessionUuid}`;
-      const cached = localStorage.getItem(cacheKey);
-
-      if (cached) {
-        console.log('[BabyCare] Using cached babycare products');
-        setBabycares(JSON.parse(cached));
-        setUsingFallback(false);
-        setIsLoadingBabycare(false);
-        setHasFetchedProducts(true);
-        return;
-      }
-
       try {
         setIsLoadingBabycare(true);
-        console.log(
-          `[BabyCare] Fetching products by category: ${BABYCARE_CATEGORY_ID}`,
-        );
+        console.log(`[BabyCare] Fetching by category: ${BABYCARE_CATEGORY_ID}`);
 
         const response = await getProductsByCategory(BABYCARE_CATEGORY_ID);
-        console.log('[BabyCare] Products fetched:', response);
+        console.log('[BabyCare] API Response:', response);
 
         const products: BabyCareItem[] = (response.products || []).map(
           (item: any) => ({
@@ -109,44 +69,28 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
           }),
         );
 
-        if (products.length === 0) {
-          console.warn(
-            '[BabyCare] No products returned from API, using fallback',
-          );
-          setBabycares(FALLBACK_BABYCARE);
-          setUsingFallback(true);
-        } else {
-          setBabycares(products);
-          setUsingFallback(false);
-          localStorage.setItem(cacheKey, JSON.stringify(products));
-        }
-      } catch (err) {
-        console.error(
-          '[BabyCare] Failed to fetch babycares, using fallback:',
-          err,
-        );
-        setBabycares(FALLBACK_BABYCARE);
-        setUsingFallback(true);
-      } finally {
+        console.log('[BabyCare] Parsed products:', products);
+        setBabycares(products);
         setIsLoadingBabycare(false);
-        setHasFetchedProducts(true);
+      } catch (err) {
+        console.error('[BabyCare] Failed to fetch products:', err);
+        alert('Failed to load babycare products. Please try again.');
+        setIsLoadingBabycare(false);
       }
     };
 
     fetchProducts();
-  }, [isCheckingSession, sessionUuid, hasFetchedProducts]);
+  }, [isCheckingSession, sessionUuid]);
 
-  /** ---- Toggle selection ---- */
   const toggleSelection = (id: number) => {
     setSelectedItems((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
-  /** ---- Handle next step ---- */
   const handleNext = async () => {
     if (!sessionUuid) {
-      console.error('[BabyCare] No sessionUuid available');
+      alert('Session expired. Please start over.');
       return;
     }
 
@@ -158,16 +102,15 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
     console.log('=== SAVING BABYCARE SURVEY ===');
     console.log('Session UUID:', sessionUuid);
     console.log('Selected items:', selectedItems);
-    console.log('Using fallback products:', usingFallback);
 
     try {
+      // Save survey
       const selectedNames = selectedItems
         .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
         .filter(Boolean) as string[];
 
       console.log('Selected names:', selectedNames);
 
-      // Save survey first
       await saveSurvey('baby_care', [
         {
           question_key: 'frequent_products',
@@ -177,80 +120,59 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
 
       console.log('[BabyCare] Survey saved successfully');
 
-      // Only update cart when we have real products from the API
-      if (!usingFallback) {
-        console.log('[BabyCare] Adding real products to cart...');
+      // Add items to cart one by one
+      console.log('[BabyCare] Adding products to cart...');
 
-        // Add items to cart sequentially with error handling
-        for (const id of selectedItems) {
-          try {
-            console.log(
-              `[BabyCare] Adding product ${id} to cart with session ${sessionUuid}`,
-            );
+      for (const id of selectedItems) {
+        try {
+          console.log(`[BabyCare] Adding product ${id} to cart`);
 
-            const cartItem = {
-              product_id: id,
-              quantity: 1,
-              purchase_type: 'buy_now' as const,
-            };
+          await updateCart(sessionUuid, {
+            product_id: id,
+            quantity: 1,
+            purchase_type: 'buy_now',
+          });
 
-            console.log('[BabyCare] Cart item payload:', cartItem);
-
-            const result = await updateCart(sessionUuid, cartItem);
-
-            console.log(
-              `[BabyCare] Product ${id} added to cart successfully:`,
-              result,
-            );
-          } catch (itemError) {
-            console.error(
-              `[BabyCare] Failed to add product ${id} to cart:`,
-              itemError,
-            );
-          }
+          console.log(`[BabyCare] Product ${id} added successfully`);
+        } catch (itemError) {
+          console.error(`[BabyCare] Failed to add product ${id}:`, itemError);
         }
-
-        console.log('[BabyCare] All cart operations completed');
-
-        // Verify cart was updated
-        console.log(
-          '[BabyCare] Waiting 500ms before navigation to ensure cart is updated...',
-        );
-        await new Promise((resolve) => setTimeout(resolve, 500));
-      } else {
-        console.warn(
-          '[BabyCare] Skipping cart update — using fallback products that do not exist on backend.',
-        );
       }
+
+      console.log('[BabyCare] All products processed');
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       navigate('/products/refill/survey/product-search');
     } catch (err) {
-      console.error('[BabyCare] Failed to save survey or update cart:', err);
-      console.error('[BabyCare] Error details:', err);
-
-      const continueAnyway = window.confirm(
-        'Failed to save your selection. Continue anyway?',
-      );
-      if (continueAnyway) navigate('/products/refill/survey/product-search');
+      console.error('[BabyCare] Error:', err);
+      alert('Failed to save. Please try again.');
     }
   };
-  // Filter babycares by active category
+
   const filteredBabycares =
     activeCategory === 'All'
       ? babycares
       : babycares.filter((s) => s.category === activeCategory);
 
-  /** ---- Loading states ---- */
   if (isCheckingSession || isLoadingBabycare) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
           <p className="text-gray-600">
-            {isCheckingSession
-              ? 'Checking session...'
-              : 'Loading babycare products...'}
+            {isCheckingSession ? 'Checking session...' : 'Loading products...'}
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (babycares.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">No babycare products available.</p>
+          <p className="text-sm text-gray-500">Please contact support.</p>
         </div>
       </div>
     );
@@ -262,7 +184,6 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
       style={{ fontFamily: 'Manrope, sans-serif' }}
     >
       <ProgressBar currentStep={4} totalSteps={9} />
-      {/* Back Button */}
       <button
         onClick={() => navigate('/products/refill/survey/skincare')}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-12 transition-colors"
@@ -271,7 +192,6 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         <span className="text-base font-medium">Back</span>
       </button>
 
-      {/* Header */}
       <div className="max-w-6xl mx-auto mb-12">
         <h1
           className="text-4xl lg:text-5xl mb-3"
@@ -302,7 +222,6 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         </div>
       )}
 
-      {/* Section Header */}
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex items-center justify-between mb-6">
           <h2
@@ -317,7 +236,6 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
           </h2>
         </div>
 
-        {/* Category Pills */}
         <div className="flex flex-wrap gap-3 mb-8">
           {categories.map((category) => (
             <button
@@ -339,7 +257,6 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         </div>
       </div>
 
-      {/* BabyCare Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
         {filteredBabycares.length === 0 ? (
           <div className="col-span-full text-center py-12">
@@ -360,7 +277,6 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
                     : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
               >
-                {/* Checkbox */}
                 <div
                   className={`absolute top-4 right-4 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
                     isSelected
@@ -371,7 +287,6 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
                   {isSelected && <Check className="w-4 h-4 text-white" />}
                 </div>
 
-                {/* Image and Name */}
                 <div className="flex flex-col items-center">
                   <div className="w-28 h-28 mb-4 flex items-center justify-center">
                     <img
@@ -393,7 +308,6 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         )}
       </div>
 
-      {/* Selection Counter */}
       {selectedItems.length > 0 && (
         <div className="max-w-6xl mx-auto mt-6">
           <p className="text-sm text-gray-600">
@@ -403,7 +317,6 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         </div>
       )}
 
-      {/* Action Buttons */}
       <div className="max-w-6xl mx-auto mt-8 flex justify-end gap-4">
         <button
           onClick={() => navigate('/products/refill/survey/product-search')}
