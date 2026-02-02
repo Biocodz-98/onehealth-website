@@ -149,6 +149,22 @@ const MonthlyPurchase: React.FC = () => {
         console.log('Total products:', productsList.length);
         console.log('Products:', productsList);
 
+        // Cache products in localStorage for cart persistence
+        const productsToCache = productsList.map((p) => ({
+          id: p.id,
+          name: p.name,
+          image: p.image,
+          price: parseFloat(p.price.replace(/[₦,]/g, '')),
+        }));
+
+        // Store in a format the cart can read
+        localStorage.setItem(
+          `cart_products_${sessionUuid}`,
+          JSON.stringify(productsToCache),
+        );
+
+        console.log('✅ Products cached to localStorage:', productsToCache);
+
         setProducts(productsList);
         // Pre-select everything that came back from the cart
         setSelectedProducts(productsList.map((p) => p.id));

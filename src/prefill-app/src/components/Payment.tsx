@@ -65,42 +65,62 @@ const PaymentSuccess: React.FC = () => {
   const [personaData, setPersonaData] = useState<any>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [loadingPersona, setLoadingPersona] = useState(true);
+  const [hasFetchedPersona, setHasFetchedPersona] = useState(false);
 
   // Get checkout_id from location state (passed from PaymentCallback)
   const checkoutId = location.state?.checkout_id;
 
   useEffect(() => {
+    // Prevent multiple fetches
+    if (hasFetchedPersona) {
+      console.log('PaymentSuccess: Persona already fetched, skipping...');
+      return;
+    }
+
     const fetchSuccessData = async () => {
       try {
         setLoadingPersona(true);
+        console.log('=== FETCHING SUCCESS DATA ===');
+        console.log('Checkout ID:', checkoutId);
+
         const data = await getSuccessData();
+
+        console.log('=== SUCCESS DATA RECEIVED ===');
+        console.log('Data:', data);
+
         setPersonaData(data);
+        setHasFetchedPersona(true);
+
+        console.log('✅ Persona data loaded successfully');
       } catch (err) {
-        console.error('Failed to load success data:', err);
+        console.error('❌ Failed to load success data:', err);
+        // Even on error, mark as fetched to prevent retry loops
+        setHasFetchedPersona(true);
       } finally {
         setLoadingPersona(false);
       }
     };
 
-    // Only fetch if we have a checkout_id
-    if (checkoutId) {
-      fetchSuccessData();
-    } else {
-      setLoadingPersona(false);
-    }
+    // Fetch success data on mount
+
+    fetchSuccessData();
 
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [getSuccessData, checkoutId]);
+  }, [hasFetchedPersona]);
 
   const handleSeePersona = () => {
-    navigate('/products/refill/persona');
+    console.log('Navigating to persona page with data:', personaData);
+    navigate('/products/refill/persona', {
+      state: { personaData },
+    });
   };
 
   const handleTrackOrder = () => {
+    // Navigate to orders page or home
     navigate('/');
   };
 
@@ -205,10 +225,10 @@ const PaymentSuccess: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button
                     onClick={handleSeePersona}
-                    disabled={loadingPersona || !personaData}
+                    disabled={loadingPersona}
                     className="w-full sm:w-auto bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loadingPersona ? 'Loading...' : 'See Your Persona'}
+                    {loadingPersona ? 'Loading Persona...' : 'See Your Persona'}
                   </button>
                   <button
                     onClick={handleTrackOrder}

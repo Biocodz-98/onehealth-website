@@ -511,10 +511,16 @@ const PharmacyCart: React.FC = () => {
   const [showCoupons, setShowCoupons] = useState(false);
   const [isLoadingCart, setIsLoadingCart] = useState(true);
   const [favoritedItems, setFavoritedItems] = useState<Set<string>>(new Set());
+  const [hasFetchedCart, setHasFetchedCart] = useState(false);
 
   //Fetch cart items on mount
-
   useEffect(() => {
+    // Prevent multiple fetches
+    if (hasFetchedCart) {
+      console.log('Cart already fetched, skipping...');
+      return;
+    }
+
     const fetchCartItems = async () => {
       if (!sessionUuid) {
         alert('Please complete the preferences form first');
@@ -524,49 +530,93 @@ const PharmacyCart: React.FC = () => {
 
       try {
         setIsLoadingCart(true);
+
+        console.log('=== FETCHING CART IN PHARMACY CART ===');
+        console.log('Session UUID:', sessionUuid);
+
         const cartData: any = await getCart();
 
-        // Get cached products from localStorage (saved during surveys)
-        const cachedMedicines = JSON.parse(
-          localStorage.getItem(`medicines_${sessionUuid}`) || '[]',
-        );
-        const cachedSkincares = JSON.parse(
-          localStorage.getItem(`skincares_${sessionUuid}`) || '[]',
-        );
-        const cachedBabycares = JSON.parse(
-          localStorage.getItem(`babycares_${sessionUuid}`) || '[]',
-        );
+        console.log('Cart data received:', cartData);
 
-        const allCachedProducts = [
-          ...cachedMedicines,
-          ...cachedSkincares,
-          ...cachedBabycares,
-        ];
+        // ✅ NEW: Get cached products from the MonthlyPurchase component
+        const cachedProductsJson = localStorage.getItem(
+          `cart_products_${sessionUuid}`,
+        );
+        console.log('Cached products JSON:', cachedProductsJson);
 
-        const items: CartItem[] = cartData.map((item: any) => {
-          const productId = item.product_id?.toString();
+        let cachedProducts: any[] = [];
+
+        if (cachedProductsJson) {
+          cachedProducts = JSON.parse(cachedProductsJson);
+          console.log('✅ Found cached products:', cachedProducts);
+        } else {
+          console.warn(
+            '⚠️ No cached products found. Checking old cache format...',
+          );
+
+          // Fallback: Try old cache format (from surveys)
+          const cachedMedicines = JSON.parse(
+            localStorage.getItem(`medicines_${sessionUuid}`) || '[]',
+          );
+          const cachedSkincares = JSON.parse(
+            localStorage.getItem(`skincares_${sessionUuid}`) || '[]',
+          );
+          const cachedBabycares = JSON.parse(
+            localStorage.getItem(`babycares_${sessionUuid}`) || '[]',
+          );
+
+          cachedProducts = [
+            ...cachedMedicines,
+            ...cachedSkincares,
+            ...cachedBabycares,
+          ];
+
+          console.log('Using old cache format:', cachedProducts);
+        }
+
+        const items: CartItem[] = cartData.map((item: any, index: number) => {
+          console.log(`\n=== Mapping cart item ${index + 1} ===`);
+          console.log('Cart item:', item);
+
+          const productId = item.product_id?.toString() || item.id?.toString();
+          console.log('Product ID:', productId);
 
           // Find matching product from cache
-          const cachedProduct = allCachedProducts.find(
+          const cachedProduct = cachedProducts.find(
             (p) => p.id.toString() === productId,
           );
 
+          console.log('Found cached product:', cachedProduct);
+
           return {
-            id: productId || '',
-            name: cachedProduct?.name || 'Unknown Product',
-            dosage: cachedProduct?.dosage || '10mg | 10 capsules',
-            price: item.amount || 0,
+            id: productId || `unknown-${index}`,
+            name:
+              cachedProduct?.name ||
+              item.product_name ||
+              item.name ||
+              'Unknown Product',
+            dosage:
+              cachedProduct?.dosage || item.dosage || '10mg | 10 capsules',
+            price: cachedProduct?.price || item.amount || item.price || 0,
             image:
-              cachedProduct?.image || '/prefill-images/medicine bottle.svg',
+              cachedProduct?.image ||
+              item.product_image ||
+              item.image ||
+              '/prefill-images/medicine bottle.svg',
             quantity: item.quantity || 1,
-            autoRefill: false,
+            autoRefill: item.purchase_type === 'subscription',
             refillDays: item.refill_days || 30,
           };
         });
 
+        console.log('=== FINAL CART ITEMS ===');
+        console.log('Total items:', items.length);
+        console.log('Items:', items);
+
         setCartItems(items);
+        setHasFetchedCart(true);
       } catch (err) {
-        console.error('Failed to fetch cart:', err);
+        console.error('❌ Failed to fetch cart:', err);
         setCartItems([]);
       } finally {
         setIsLoadingCart(false);
@@ -574,7 +624,8 @@ const PharmacyCart: React.FC = () => {
     };
 
     fetchCartItems();
-  }, [sessionUuid, navigate]);
+  }, [sessionUuid, navigate, hasFetchedCart]);
+
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
