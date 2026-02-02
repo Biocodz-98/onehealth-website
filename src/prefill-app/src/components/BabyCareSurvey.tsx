@@ -57,10 +57,10 @@ const BabyCareComponent: React.FC = () => {
         setIsLoadingBabycare(true);
         console.log(`[BabyCare] Fetching by category: ${BABYCARE_CATEGORY_ID}`);
 
-        const response = await getProductsByCategory(BABYCARE_CATEGORY_ID);
+        const response: any = await getProductsByCategory(BABYCARE_CATEGORY_ID);
         console.log('[BabyCare] API Response:', response);
 
-        const products: BabyCareItem[] = (response.products || []).map(
+        const products: BabyCareItem[] = (response || []).map(
           (item: any) => ({
             id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
             name: item.name,

@@ -89,7 +89,7 @@ const Survey: React.FC = () => {
 
         console.log('[Medicine] API Response:', response);
 
-        const products: MedicineItem[] = (response.products || []).map(
+        const products: MedicineItem[] = (response || []).map(
           (item: any) => ({
             id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
             name: item.name,

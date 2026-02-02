@@ -66,10 +66,10 @@ const SurveyComponent: React.FC = () => {
         setIsLoadingSkincare(true);
         console.log(`[Skincare] Fetching by category: ${SKINCARE_CATEGORY_ID}`);
 
-        const response = await getProductsByCategory(SKINCARE_CATEGORY_ID);
+        const response:any = await getProductsByCategory(SKINCARE_CATEGORY_ID);
         console.log('[Skincare] API Response:', response);
 
-        const products: SkincareItem[] = (response.products || []).map(
+        const products: SkincareItem[] = (response || []).map(
           (item: any) => ({
             id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
             name: item.name,
