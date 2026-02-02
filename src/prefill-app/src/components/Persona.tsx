@@ -7,6 +7,7 @@ interface PersonaItem {
   id: string;
   name: string;
   dosage?: string;
+  price?: number;
   image: string;
 }
 
@@ -23,43 +24,113 @@ const WellnessPersona: React.FC = () => {
   const [personaType, setPersonaType] = useState<string>('');
   const [items, setItems] = useState<PersonaItem[]>([]);
   const [loadingPersona, setLoadingPersona] = useState(true);
+  const [hasFetchedPersona, setHasFetchedPersona] = useState(false);
 
   useEffect(() => {
+    // Prevent multiple fetches
+    if (hasFetchedPersona) {
+      console.log('Persona already loaded, skipping...');
+      return;
+    }
+
     const loadPersona = async () => {
       try {
         setLoadingPersona(true);
 
+        console.log('=== LOADING PERSONA ===');
+        console.log('Session UUID:', sessionUuid);
+
         // Get persona name
-        const personaData = await getPersonaData();
-        setPersonaType(personaData.persona_name || 'Consistent');
+        const personaData = (await getPersonaData()) as any;
+        console.log('Persona data received:', personaData);
 
-        // Get cart items of (selected products)
-        if (sessionUuid) {
-          const cartData = await getCart();
+        const personaName =
+          personaData?.persona_name || personaData?.persona || 'Consistent';
+        setPersonaType(personaName);
+        console.log('Persona type:', personaName);
 
-          // Map cart items to PersonaItem format
-          const mappedItems: PersonaItem[] = cartData.items.map((item) => ({
-            id: item.product_id.toString(),
-            name: item.product_name,
-            dosage: item.dosage || '',
-            image: item.product_image || '/prefill-images/medicine bottle.svg',
-          }));
+        // Get cached products first (more reliable)
+        const cachedProductsJson = localStorage.getItem(
+          `cart_products_${sessionUuid}`,
+        );
 
+        if (cachedProductsJson) {
+          console.log('Found cached products');
+          const cachedProducts = JSON.parse(cachedProductsJson);
+
+          const mappedItems: PersonaItem[] = cachedProducts.map(
+            (item: any, index: number) => ({
+              id: item.id?.toString() || `item-${index}`,
+              name: item.name || 'Unknown Product',
+              dosage: item.dosage || '',
+              price: item.price || 0,
+              image: item.image || '/prefill-images/medicine bottle.svg',
+            }),
+          );
+
+          console.log('Mapped items from cache:', mappedItems);
           setItems(mappedItems);
+        } else {
+          // Fallback: Try to get from cart API
+          console.log('No cached products, fetching from cart...');
+
+          if (sessionUuid) {
+            const cartData = (await getCart()) as any;
+            console.log('Cart data received:', cartData);
+
+            // Handle different cart data structures
+            let cartItems: any[] = [];
+
+            if (Array.isArray(cartData)) {
+              cartItems = cartData;
+            } else if (cartData?.items && Array.isArray(cartData.items)) {
+              cartItems = cartData.items;
+            } else if (cartData?.data && Array.isArray(cartData.data)) {
+              cartItems = cartData.data;
+            }
+
+            console.log('Cart items extracted:', cartItems);
+
+            // Map cart items to PersonaItem format
+            const mappedItems: PersonaItem[] = cartItems.map(
+              (item: any, index: number) => {
+                const productId =
+                  item.product_id?.toString() ||
+                  item.id?.toString() ||
+                  `item-${index}`;
+
+                return {
+                  id: productId,
+                  name: item.product_name || item.name || 'Unknown Product',
+                  dosage: item.dosage || '',
+                  price: item.amount || item.price || 0,
+                  image:
+                    item.product_image ||
+                    item.image ||
+                    '/prefill-images/medicine bottle.svg',
+                };
+              },
+            );
+
+            console.log('Mapped items from cart:', mappedItems);
+            setItems(mappedItems);
+          }
         }
+
+        setHasFetchedPersona(true);
       } catch (err) {
-        console.error('Failed to load persona:', err);
+        console.error('❌ Failed to load persona:', err);
         // Fallback to default
         setPersonaType('Consistent');
         setItems([]);
+        setHasFetchedPersona(true);
       } finally {
         setLoadingPersona(false);
       }
     };
 
     loadPersona();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hasFetchedPersona]); // Removed dependencies that cause re-renders
 
   const handleShareWhatsApp = async () => {
     try {
@@ -98,6 +169,10 @@ const WellnessPersona: React.FC = () => {
         '_blank',
       );
     }
+  };
+
+  const handleContinueShopping = () => {
+    window.location.href = '/';
   };
 
   // Loading state
@@ -190,6 +265,15 @@ const WellnessPersona: React.FC = () => {
           >
             {personaType}
           </p>
+
+          {/* Continue Shopping Button */}
+          <button
+            onClick={handleContinueShopping}
+            className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors"
+            style={{ fontFamily: 'Manrope, sans-serif' }}
+          >
+            Continue Shopping
+          </button>
         </div>
 
         {/* Right Section - Persona Card */}
@@ -229,56 +313,68 @@ const WellnessPersona: React.FC = () => {
               </h2>
 
               {/* Item List */}
-              <div className="space-y-4 mb-8">
-                {items.slice(0, 5).map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center gap-4 pb-4 border-b border-gray-700"
-                  >
-                    {/* Number */}
-                    <span
-                      className="text-[#3da467] font-bold text-lg w-8"
-                      style={{
-                        fontFamily: 'Familjen Grotesk, sans-serif',
-                        fontWeight: 700,
-                      }}
+              {items.length > 0 ? (
+                <div className="space-y-4 mb-8">
+                  {items.slice(0, 5).map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-4 pb-4 border-b border-gray-700"
                     >
-                      #{index + 1}
-                    </span>
-
-                    {/* Item Image */}
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-10 h-10 object-contain"
-                    />
-
-                    {/* Item Info */}
-                    <div className="flex-1">
-                      <p
-                        className="text-white font-medium text-base"
+                      {/* Number */}
+                      <span
+                        className="text-[#3da467] font-bold text-lg w-8"
                         style={{
                           fontFamily: 'Familjen Grotesk, sans-serif',
-                          fontWeight: 400,
+                          fontWeight: 700,
                         }}
                       >
-                        {item.name}
-                      </p>
-                      {item.dosage && (
+                        #{index + 1}
+                      </span>
+
+                      {/* Item Image */}
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-10 h-10 object-contain"
+                        onError={(e) => {
+                          e.currentTarget.src =
+                            '/prefill-images/medicine bottle.svg';
+                        }}
+                      />
+
+                      {/* Item Info */}
+                      <div className="flex-1">
                         <p
-                          className="text-white text-xs"
+                          className="text-white font-medium text-base"
                           style={{
                             fontFamily: 'Familjen Grotesk, sans-serif',
                             fontWeight: 400,
                           }}
                         >
-                          {item.dosage}
+                          {item.name}
                         </p>
-                      )}
+                        {item.price && item.price > 0 && (
+                          <p
+                            className="text-[#3da467] text-sm font-semibold"
+                            style={{
+                              fontFamily: 'Familjen Grotesk, sans-serif',
+                              fontWeight: 600,
+                            }}
+                          >
+                            ₦{item.price.toLocaleString()}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mb-8 py-8 text-center">
+                  <p className="text-gray-400 text-sm">
+                    No products to display
+                  </p>
+                </div>
+              )}
 
               {/* Share Buttons */}
               <div className="space-y-3">
