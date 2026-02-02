@@ -19,49 +19,28 @@ interface BabyCareItem {
 
 const FALLBACK_BABYCARE: BabyCareItem[] = [
   {
-    id: 1,
+    id: 3001,
     name: 'Diapers & Wipes',
     image: '/prefill-images/medicine bottle.svg',
     category: 'Diapers & Wipes',
   },
   {
-    id: 2,
+    id: 3002,
     name: 'Baby Food',
     image: '/prefill-images/medicine bottle.svg',
     category: 'Baby Food',
   },
-  //   {
-  //     id: 3,
-  //     name: 'Moisturizer',
-  //     image: '/prefill-images/medicine bottle.svg',
-  //     category: 'Moisturizers',
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'Sunscreen',
-  //     image: '/prefill-images/medicine bottle.svg',
-  //     category: 'Sunscreens',
-  //   },
-  //   {
-  //     id: 5,
-  //     name: 'Body Wash',
-  //     image: '/prefill-images/medicine bottle.svg',
-  //     category: 'Body Wash',
-  //   },
-  //   {
-  //     id: 6,
-  //     name: 'Serum',
-  //     image: '/prefill-images/medicine bottle.svg',
-  //     category: 'Serums',
-  //   },
 ];
+
+// Backend category ID for babycare = 2
+const BABYCARE_CATEGORY_ID = 2;
 
 const BabyCareComponent: React.FC<SurveyProps> = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
     updateCart,
-    getBabyCareProducts,
+    getProductsByCategory,
     sessionUuid,
     isLoading,
     error,
@@ -72,17 +51,10 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
   const [babycares, setBabycares] = useState<BabyCareItem[]>([]);
   const [isLoadingBabycare, setIsLoadingBabycare] = useState<boolean>(true);
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
+  const [hasFetchedProducts, setHasFetchedProducts] = useState<boolean>(false);
+  const [usingFallback, setUsingFallback] = useState(false);
 
-  const categories = [
-    'All',
-    'Diapers & Wipes',
-    'Baby Food',
-    // 'Moisturizers',
-    // 'Facial Cleanser & Toners',
-    // 'Sunscreens',
-    // 'Serums',
-    // 'Sanitary Pads & Tampons',
-  ];
+  const categories = ['All', 'Diapers & Wipes', 'Baby Food'];
 
   /** ---- Check session on mount ---- */
   useEffect(() => {
@@ -100,45 +72,69 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
     return () => clearTimeout(timer);
   }, [sessionUuid, navigate]);
 
-  /** ---- Fetch babycare products with caching ---- */
+  /** ---- Fetch babycare products ---- */
   useEffect(() => {
-    const fetchProducts = async () => {
-      if (!sessionUuid) return;
+    if (hasFetchedProducts || isCheckingSession || !sessionUuid) return;
 
+    const fetchProducts = async () => {
+      // Babycare has no subcategories on the backend — always fetch by its own category ID (2).
+      // Do NOT read selected_subcategory_id here; that value belongs to medicine.
       const cacheKey = `babycares_${sessionUuid}`;
       const cached = localStorage.getItem(cacheKey);
 
       if (cached) {
+        console.log('[BabyCare] Using cached babycare products');
         setBabycares(JSON.parse(cached));
+        setUsingFallback(false);
         setIsLoadingBabycare(false);
+        setHasFetchedProducts(true);
         return;
       }
 
       try {
         setIsLoadingBabycare(true);
-        const response: any = await getBabyCareProducts();
+        console.log(
+          `[BabyCare] Fetching products by category: ${BABYCARE_CATEGORY_ID}`,
+        );
 
-        const products: BabyCareItem[] = (response || []).map((item: any) => ({
-          id: Number(item.id),
-          name: item.name,
-          image: item.image,
-          category: item.category || 'Diapers & Wipes',
-        }));
+        const response = await getProductsByCategory(BABYCARE_CATEGORY_ID);
+        console.log('[BabyCare] Products fetched:', response);
 
-        setBabycares(products);
-        localStorage.setItem(cacheKey, JSON.stringify(products));
+        const products: BabyCareItem[] = (response.products || []).map(
+          (item: any) => ({
+            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+            name: item.name,
+            image: item.image || '/prefill-images/medicine bottle.svg',
+            category: item.category || 'Diapers & Wipes',
+          }),
+        );
+
+        if (products.length === 0) {
+          console.warn(
+            '[BabyCare] No products returned from API, using fallback',
+          );
+          setBabycares(FALLBACK_BABYCARE);
+          setUsingFallback(true);
+        } else {
+          setBabycares(products);
+          setUsingFallback(false);
+          localStorage.setItem(cacheKey, JSON.stringify(products));
+        }
       } catch (err) {
-        console.error('Failed to fetch babycares:', err);
+        console.error(
+          '[BabyCare] Failed to fetch babycares, using fallback:',
+          err,
+        );
         setBabycares(FALLBACK_BABYCARE);
+        setUsingFallback(true);
       } finally {
         setIsLoadingBabycare(false);
+        setHasFetchedProducts(true);
       }
     };
 
-    if (!isCheckingSession && sessionUuid) {
-      fetchProducts();
-    }
-  }, [isCheckingSession, sessionUuid]); // ❗ removed getBabyCareProducts
+    fetchProducts();
+  }, [isCheckingSession, sessionUuid, hasFetchedProducts]);
 
   /** ---- Toggle selection ---- */
   const toggleSelection = (id: number) => {
@@ -148,50 +144,30 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
   };
 
   /** ---- Handle next step ---- */
-  // const handleNextOld = async () => {
-  //   if (!sessionUuid) return;
-  //
-  //   if (selectedItems.length === 0) {
-  //     alert('Please select at least one item');
-  //     return;
-  //   }
-  //
-  //   try {
-  //     const selectedNames = selectedItems
-  //       .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
-  //       .filter(Boolean) as string[];
-  //
-  //     await saveSurvey('baby_care', [
-  //       {
-  //         question_key: 'frequent_products',
-  //         value: selectedNames,
-  //       },
-  //     ]);
-  //
-  //     navigate('/products/refill/survey/product-search');
-  //   } catch (err) {
-  //     console.error('Failed to save survey:', err);
-  //     const continueAnyway = window.confirm(
-  //       'Failed to save survey data. Continue anyway?',
-  //     );
-  //     if (continueAnyway) navigate('/products/refill/survey/product-search');
-  //   }
-  // };
-
   const handleNext = async () => {
-    if (!sessionUuid) return;
+    if (!sessionUuid) {
+      console.error('[BabyCare] No sessionUuid available');
+      return;
+    }
 
     if (selectedItems.length === 0) {
       alert('Please select at least one item');
       return;
     }
 
+    console.log('=== SAVING BABYCARE SURVEY ===');
+    console.log('Session UUID:', sessionUuid);
+    console.log('Selected items:', selectedItems);
+    console.log('Using fallback products:', usingFallback);
+
     try {
-      // Save survey answers
       const selectedNames = selectedItems
         .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
         .filter(Boolean) as string[];
 
+      console.log('Selected names:', selectedNames);
+
+      // Save survey first
       await saveSurvey('baby_care', [
         {
           question_key: 'frequent_products',
@@ -199,28 +175,66 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         },
       ]);
 
-      // Save selected products in cart (bulk save)
-      await Promise.all(
-        selectedItems.map((id) =>
-          updateCart(sessionUuid, {
-            product_id: id,
-            quantity: 1,
-            purchase_type: 'buy_now',
-          }),
-        ),
-      );
+      console.log('[BabyCare] Survey saved successfully');
+
+      // Only update cart when we have real products from the API
+      if (!usingFallback) {
+        console.log('[BabyCare] Adding real products to cart...');
+
+        // Add items to cart sequentially with error handling
+        for (const id of selectedItems) {
+          try {
+            console.log(
+              `[BabyCare] Adding product ${id} to cart with session ${sessionUuid}`,
+            );
+
+            const cartItem = {
+              product_id: id,
+              quantity: 1,
+              purchase_type: 'buy_now' as const,
+            };
+
+            console.log('[BabyCare] Cart item payload:', cartItem);
+
+            const result = await updateCart(sessionUuid, cartItem);
+
+            console.log(
+              `[BabyCare] Product ${id} added to cart successfully:`,
+              result,
+            );
+          } catch (itemError) {
+            console.error(
+              `[BabyCare] Failed to add product ${id} to cart:`,
+              itemError,
+            );
+          }
+        }
+
+        console.log('[BabyCare] All cart operations completed');
+
+        // Verify cart was updated
+        console.log(
+          '[BabyCare] Waiting 500ms before navigation to ensure cart is updated...',
+        );
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      } else {
+        console.warn(
+          '[BabyCare] Skipping cart update — using fallback products that do not exist on backend.',
+        );
+      }
 
       navigate('/products/refill/survey/product-search');
     } catch (err) {
-      console.error('Failed to save survey or cart items:', err);
+      console.error('[BabyCare] Failed to save survey or update cart:', err);
+      console.error('[BabyCare] Error details:', err);
+
       const continueAnyway = window.confirm(
         'Failed to save your selection. Continue anyway?',
       );
       if (continueAnyway) navigate('/products/refill/survey/product-search');
     }
   };
-
-  // Filter skincares by active category
+  // Filter babycares by active category
   const filteredBabycares =
     activeCategory === 'All'
       ? babycares
@@ -288,7 +302,7 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         </div>
       )}
 
-      {/* Section Header with Next Button */}
+      {/* Section Header */}
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex items-center justify-between mb-6">
           <h2
@@ -325,50 +339,58 @@ const BabyCareComponent: React.FC<SurveyProps> = () => {
         </div>
       </div>
 
-      {/* Skincare Grid */}
+      {/* BabyCare Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-        {filteredBabycares.map((babycare) => {
-          const isSelected = selectedItems.includes(babycare.id);
-          return (
-            <button
-              key={babycare.id}
-              onClick={() => toggleSelection(babycare.id)}
-              className={`relative p-6 rounded-2xl border-2 transition-all hover:shadow-md ${
-                isSelected
-                  ? 'border-[#3da467] bg-[#ecf6ed]'
-                  : 'border-gray-200 bg-white hover:border-gray-300'
-              }`}
-            >
-              {/* Checkbox */}
-              <div
-                className={`absolute top-4 right-4 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
+        {filteredBabycares.length === 0 ? (
+          <div className="col-span-full text-center py-12">
+            <p className="text-gray-500 text-lg">
+              No baby care products found for the selected category.
+            </p>
+          </div>
+        ) : (
+          filteredBabycares.map((babycare) => {
+            const isSelected = selectedItems.includes(babycare.id);
+            return (
+              <button
+                key={babycare.id}
+                onClick={() => toggleSelection(babycare.id)}
+                className={`relative p-6 rounded-2xl border-2 transition-all hover:shadow-md ${
                   isSelected
-                    ? 'bg-[#3da467] border-[#3da467]'
-                    : 'bg-white border-gray-300'
+                    ? 'border-[#3da467] bg-[#ecf6ed]'
+                    : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
               >
-                {isSelected && <Check className="w-4 h-4 text-white" />}
-              </div>
-
-              {/* Image and Name */}
-              <div className="flex flex-col items-center">
-                <div className="w-28 h-28 mb-4 flex items-center justify-center">
-                  <img
-                    src={babycare.image}
-                    alt={babycare.name}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <p
-                  className="text-base font-medium text-[#323232] text-center"
-                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                {/* Checkbox */}
+                <div
+                  className={`absolute top-4 right-4 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
+                    isSelected
+                      ? 'bg-[#3da467] border-[#3da467]'
+                      : 'bg-white border-gray-300'
+                  }`}
                 >
-                  {babycare.name}
-                </p>
-              </div>
-            </button>
-          );
-        })}
+                  {isSelected && <Check className="w-4 h-4 text-white" />}
+                </div>
+
+                {/* Image and Name */}
+                <div className="flex flex-col items-center">
+                  <div className="w-28 h-28 mb-4 flex items-center justify-center">
+                    <img
+                      src={babycare.image}
+                      alt={babycare.name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <p
+                    className="text-base font-medium text-[#323232] text-center"
+                    style={{ fontFamily: 'Manrope, sans-serif' }}
+                  >
+                    {babycare.name}
+                  </p>
+                </div>
+              </button>
+            );
+          })
+        )}
       </div>
 
       {/* Selection Counter */}

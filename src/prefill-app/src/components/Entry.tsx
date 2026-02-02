@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useRefill } from '../Services/refillApi';
 import { useNavigate } from 'react-router-dom';
@@ -10,19 +10,53 @@ interface FormData {
   email: string;
   phoneNumber: string;
   condition: string;
+  conditionId: number | null;
+  categoryId: number | null;
   ndprConsent: boolean;
   dataProfileConsent: boolean;
 }
 
+interface Subcategory {
+  id: number;
+  category_id: number;
+  name: string;
+  code: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  code: string;
+  subcategories: Subcategory[];
+}
+
+interface ConditionOption {
+  id: number;
+  categoryId: number;
+  name: string;
+  code: string;
+  displayName: string;
+}
+
+const MEDICINE_CATEGORY_ID = 1;
+
 const PreferencesForm: React.FC = () => {
   const navigate = useNavigate();
-  const { startSession, isLoading, error } = useRefill();
+  const { startSession, getConditions, isLoading, error } = useRefill();
+
+  const [conditionOptions, setConditionOptions] = useState<ConditionOption[]>(
+    [],
+  );
+  const [isLoadingConditions, setIsLoadingConditions] = useState(true);
+  const [hasFetchedConditions, setHasFetchedConditions] = useState(false);
 
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     phoneNumber: '',
     condition: '',
+    conditionId: null,
+    categoryId: null,
     ndprConsent: false,
     dataProfileConsent: false,
   });
@@ -30,6 +64,129 @@ const PreferencesForm: React.FC = () => {
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string;
   }>({});
+
+  // Fetch conditions on component mount
+  useEffect(() => {
+    if (hasFetchedConditions) return;
+
+    const fetchConditions = async () => {
+      try {
+        setIsLoadingConditions(true);
+        const response = await getConditions();
+
+        console.log(
+          '[Conditions] Raw API response (full):',
+          JSON.stringify(response, null, 2),
+        );
+
+        const formatConditionName = (code: string): string => {
+          return code
+            .split(/[\s_]+/)
+            .map(
+              (word) =>
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+            )
+            .join(' ');
+        };
+
+        const categories: Category[] = Array.isArray(response)
+          ? response
+          : Array.isArray((response as any).data)
+            ? (response as any).data
+            : [];
+
+        console.log(
+          '[Conditions] Normalised categories count:',
+          categories.length,
+        );
+        categories.forEach((cat) => {
+          console.log(
+            `[Conditions]   category "${cat.name}" (id=${cat.id}) → ${cat.subcategories?.length ?? 0} subcategories`,
+          );
+        });
+
+        const medicineCategory = categories.find(
+          (cat) => cat.id === MEDICINE_CATEGORY_ID,
+        );
+
+        const options: ConditionOption[] = [];
+
+        if (medicineCategory?.subcategories?.length) {
+          medicineCategory.subcategories.forEach((subcategory) => {
+            options.push({
+              id: subcategory.id,
+              categoryId: medicineCategory.id,
+              name: subcategory.name,
+              code: subcategory.code,
+              displayName: formatConditionName(subcategory.code),
+            });
+          });
+        }
+
+        if (options.length > 0) {
+          options.push({
+            id: 999,
+            categoryId: MEDICINE_CATEGORY_ID,
+            name: 'others',
+            code: 'others',
+            displayName: 'Others',
+          });
+        }
+
+        console.log(
+          '[Conditions] Final dropdown options:',
+          options.map((o) => o.displayName),
+        );
+        setConditionOptions(options);
+        setHasFetchedConditions(true);
+      } catch (err) {
+        console.error('[Conditions] Failed to fetch conditions:', err);
+
+        setConditionOptions([
+          {
+            id: 1,
+            categoryId: MEDICINE_CATEGORY_ID,
+            name: 'chronic',
+            code: 'hypertension',
+            displayName: 'Hypertension',
+          },
+          {
+            id: 2,
+            categoryId: MEDICINE_CATEGORY_ID,
+            name: 'chronic',
+            code: 'diabetes',
+            displayName: 'Diabetes',
+          },
+          {
+            id: 3,
+            categoryId: MEDICINE_CATEGORY_ID,
+            name: 'chronic',
+            code: 'weight loss',
+            displayName: 'Weight Loss',
+          },
+          {
+            id: 4,
+            categoryId: MEDICINE_CATEGORY_ID,
+            name: 'chronic',
+            code: 'asthma',
+            displayName: 'Asthma',
+          },
+          {
+            id: 999,
+            categoryId: MEDICINE_CATEGORY_ID,
+            name: 'others',
+            code: 'others',
+            displayName: 'Others',
+          },
+        ]);
+        setHasFetchedConditions(true);
+      } finally {
+        setIsLoadingConditions(false);
+      }
+    };
+
+    fetchConditions();
+  }, [hasFetchedConditions, getConditions]);
 
   const handleInputChange = (
     e:
@@ -39,12 +196,21 @@ const PreferencesForm: React.FC = () => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    if (name === 'condition') {
+      const selectedCondition = conditionOptions.find((c) => c.code === value);
+      setFormData((prev) => ({
+        ...prev,
+        condition: value,
+        conditionId: selectedCondition?.id || null,
+        categoryId: selectedCondition?.categoryId || null,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    }
 
-    // Clear validation error when user starts typing
     if (validationErrors[name]) {
       setValidationErrors((prev) => {
         const newErrors = { ...prev };
@@ -100,9 +266,25 @@ const PreferencesForm: React.FC = () => {
         email: formData.email,
         phone: formData.phoneNumber,
         medicine_type: formData.condition.toLowerCase(),
+        subcategory_id: formData.conditionId,
+        category_id: formData.categoryId,
       });
 
-      // Call API to start session - medicine_type should be a single string
+      // Store subcategory and category IDs for the medicine survey step.
+
+      if (formData.conditionId) {
+        localStorage.setItem(
+          'selected_subcategory_id',
+          formData.conditionId.toString(),
+        );
+      }
+      if (formData.categoryId) {
+        localStorage.setItem(
+          'selected_category_id',
+          formData.categoryId.toString(),
+        );
+      }
+
       await startSession({
         name: formData.name,
         email: formData.email,
@@ -112,7 +294,6 @@ const PreferencesForm: React.FC = () => {
 
       console.log('Session created successfully!');
 
-      // Small delay to ensure state updates before navigation
       setTimeout(() => {
         navigate('/products/refill/survey');
       }, 100);
@@ -256,7 +437,6 @@ const PreferencesForm: React.FC = () => {
             </div>
 
             {/* Condition Field */}
-
             <div className="mb-8">
               <label
                 className="block text-base font-medium text-gray-800 mb-3"
@@ -268,19 +448,24 @@ const PreferencesForm: React.FC = () => {
                 name="condition"
                 value={formData.condition}
                 onChange={handleInputChange}
+                disabled={isLoadingConditions}
                 className={`w-full px-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-base ${
                   validationErrors.condition
                     ? 'border-red-500'
                     : 'border-gray-300'
-                }`}
+                } ${isLoadingConditions ? 'opacity-50 cursor-wait' : ''}`}
                 style={{ fontFamily: 'Lato, sans-serif' }}
               >
-                <option value="">Select a condition</option>
-                <option value="diabetes">Diabetes</option>
-                <option value="hypertension">Hypertension</option>
-                <option value="asthma">Asthma</option>
-                <option value="weight loss">Weight Loss</option>
-                <option value="others">Others</option>
+                <option value="">
+                  {isLoadingConditions
+                    ? 'Loading conditions...'
+                    : 'Select a condition'}
+                </option>
+                {conditionOptions.map((condition) => (
+                  <option key={condition.id} value={condition.code}>
+                    {condition.displayName}
+                  </option>
+                ))}
               </select>
               {validationErrors.condition && (
                 <p className="text-red-500 text-sm mt-2">
@@ -294,6 +479,7 @@ const PreferencesForm: React.FC = () => {
                 This will help us tailor your care.
               </p>
             </div>
+
             {/* Checkboxes */}
             <div className="space-y-5 mb-10">
               <label className="flex items-start gap-3 cursor-pointer">
@@ -352,7 +538,7 @@ const PreferencesForm: React.FC = () => {
             {/* Next Button */}
             <button
               onClick={handleNext}
-              disabled={isLoading}
+              disabled={isLoading || isLoadingConditions}
               className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-4 rounded-full text-base font-semibold transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ fontFamily: 'Manrope, sans-serif' }}
             >

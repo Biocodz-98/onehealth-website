@@ -14,74 +14,96 @@ interface ProductItem {
 
 const MonthlyPurchase: React.FC = () => {
   const navigate = useNavigate();
-  const { getCart, addToCart, addToWishlist, sessionUuid, isLoading, error } =
+  const { getCart, updateCart, addToWishlist, sessionUuid, isLoading, error } =
     useRefill();
 
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [selectedSubscription, setSelectedSubscription] = useState<string>('');
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [hasFetchedCart, setHasFetchedCart] = useState(false);
 
   // Fetch cart products on mount
   useEffect(() => {
-    const fetchCartProducts = async () => {
-      if (!sessionUuid) return;
+    if (hasFetchedCart || !sessionUuid) return;
 
+    const fetchCartProducts = async () => {
       try {
         setIsLoadingProducts(true);
+
         const cartData: any = await getCart();
 
-        console.log('Cart Data from API:', cartData);
+        console.log('=== CART API RESPONSE ===');
+        console.log('Cart data:', cartData);
 
-        // Get cached products from localStorage (saved during surveys)
-        const cachedMedicines = JSON.parse(
-          localStorage.getItem(`medicines_${sessionUuid}`) || '[]',
-        );
-        const cachedSkincares = JSON.parse(
-          localStorage.getItem(`skincares_${sessionUuid}`) || '[]',
-        );
-        const cachedBabycares = JSON.parse(
-          localStorage.getItem(`babycares_${sessionUuid}`) || '[]',
-        );
+        let cartItems: any[] = [];
 
-        // Combine all cached products
-        const allCachedProducts = [
-          ...cachedMedicines,
-          ...cachedSkincares,
-          ...cachedBabycares,
-        ];
+        if (Array.isArray(cartData)) {
+          // Raw array — use directly
+          cartItems = cartData;
+        } else if (cartData && typeof cartData === 'object') {
+          // Wrapped object — pull from the first key that holds an array
+          cartItems =
+            cartData.data ||
+            cartData.items ||
+            cartData.cart ||
+            cartData.products ||
+            [];
+        }
 
-        const productsList: ProductItem[] = cartData.map((item: any) => {
-          const productId = item.product_id?.toString();
+        console.log('=== CART ITEMS (normalised) ===');
+        console.log('Number of items:', cartItems.length);
 
-          // Find matching product from cache
-          const cachedProduct = allCachedProducts.find(
-            (p) => p.id.toString() === productId,
-          );
+        if (cartItems.length === 0) {
+          console.warn('No items in cart');
+          setProducts([]);
+          setIsLoadingProducts(false);
+          setHasFetchedCart(true);
+          return;
+        }
+
+        // Map cart items to display products
+        const productsList: ProductItem[] = cartItems.map((item: any) => {
+          // product_id is the canonical key; fall back to id
+          const productId = (item.product_id ?? item.id ?? '').toString();
+
+          // amount may come as a string like "13000.00"
+          const amount = parseFloat(item.amount || item.price || '0');
+
+          console.log('Processing cart item:', {
+            id: productId,
+            name: item.name,
+            amount,
+            image: item.image,
+          });
 
           return {
-            id: productId || '',
-            name: cachedProduct?.name || 'Unknown Product',
-            price: `₦${((cachedProduct as any)?.price || item.amount || 0).toLocaleString()}`,
-            image:
-              cachedProduct?.image || '/prefill-images/medicine bottle.svg',
+            id: productId,
+            name: item.name || 'Unknown Product',
+            price: `₦${amount.toLocaleString()}`,
+            image: item.image || '/prefill-images/medicine bottle.svg',
           };
         });
 
-        console.log('Parsed Products List:', productsList);
+        console.log('=== FINAL PRODUCTS ===');
+        console.log('Total:', productsList.length);
+        console.log('Products:', productsList);
 
         setProducts(productsList);
+        // Pre-select everything that came back from the cart
         setSelectedProducts(productsList.map((p) => p.id));
       } catch (err) {
-        console.error('Failed to fetch cart:', err);
+        console.error('=== ERROR fetching cart ===');
+        console.error(err);
         alert('Failed to load your selected products. Please try again.');
       } finally {
         setIsLoadingProducts(false);
+        setHasFetchedCart(true);
       }
     };
 
     fetchCartProducts();
-  }, [sessionUuid, navigate]);
+  }, [sessionUuid, hasFetchedCart, getCart]);
 
   const toggleProduct = (id: string) => {
     setSelectedProducts((prev) =>
@@ -89,6 +111,10 @@ const MonthlyPurchase: React.FC = () => {
     );
   };
 
+  // --- Buy Now ---
+  // Items are already in the cart from the survey steps (added via updateCart with purchase_type: 'buy_now').
+  // We just need to update the purchase_type for any items that were previously set differently,
+  // then navigate to checkout. No need to re-add everything.
   const handleBuyNow = async () => {
     if (selectedProducts.length === 0) {
       alert('Please select at least one product');
@@ -96,21 +122,26 @@ const MonthlyPurchase: React.FC = () => {
     }
 
     try {
-      for (const productId of selectedProducts) {
-        await addToCart({
+      if (!sessionUuid) return;
+
+      // Ensure all selected items are marked as buy_now (idempotent update)
+      const updates = selectedProducts.map((productId) =>
+        updateCart(sessionUuid, {
           product_id: parseInt(productId),
           quantity: 1,
           purchase_type: 'buy_now',
-        });
-      }
+        }),
+      );
 
+      await Promise.all(updates);
       navigate('/products/refill/pharmacy-cart');
     } catch (err) {
-      console.error('Failed to add to cart:', err);
+      console.error('Failed to update cart for buy now:', err);
       alert('Failed to add products to cart. Please try again.');
     }
   };
 
+  // --- Remind Me Later ---
   const handleRemindLater = async () => {
     if (selectedProducts.length === 0) {
       alert('Please select at least one product');
@@ -118,7 +149,6 @@ const MonthlyPurchase: React.FC = () => {
     }
 
     try {
-      // Add each selected product to wishlist
       for (const productId of selectedProducts) {
         await addToWishlist(parseInt(productId));
       }
@@ -136,6 +166,7 @@ const MonthlyPurchase: React.FC = () => {
     }
   };
 
+  // --- Subscribe & Save ---
   const handleSubscribe = async () => {
     if (!selectedSubscription) {
       alert('Please select a subscription plan');
@@ -147,22 +178,25 @@ const MonthlyPurchase: React.FC = () => {
       return;
     }
 
+    if (!sessionUuid) return;
+
     try {
-      let durationMonths: number = 1;
+      let durationMonths = 1;
       if (selectedSubscription === '3months') durationMonths = 3;
       else if (selectedSubscription === '6months') durationMonths = 6;
       else if (selectedSubscription === '1year') durationMonths = 12;
 
-      // Add products as subscription
-      for (const productId of selectedProducts) {
-        await addToCart({
+      // Update existing cart items to subscription purchase_type
+      const updates = selectedProducts.map((productId) =>
+        updateCart(sessionUuid, {
           product_id: parseInt(productId),
           quantity: 1,
           purchase_type: 'subscription',
           duration_months: durationMonths,
-        });
-      }
+        }),
+      );
 
+      await Promise.all(updates);
       navigate('/products/refill/pharmacy-cart');
     } catch (err) {
       console.error('Failed to subscribe:', err);
@@ -176,7 +210,6 @@ const MonthlyPurchase: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto mb-4"></div>
-          {/* <p className="text-gray-600">Loading your selected products...</p> */}
         </div>
       </div>
     );

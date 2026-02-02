@@ -105,6 +105,30 @@ interface ProductSurveyResponse {
   products: ProductSurveyItem[];
 }
 
+//New method for condition
+interface Subcategory {
+  id: number;
+  category_id: number;
+  name: string;
+  code: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  code: string;
+  subcategories: Subcategory[];
+}
+
+interface ConditionsResponse {
+  data: Category[];
+}
+
+// New interface for subcategory/category products
+interface ProductsByCategoryResponse {
+  products: ProductSurveyItem[];
+}
+
 interface FeedbackRequest {
   type: 'missing_product' | 'general' | 'issue';
   content: string;
@@ -142,6 +166,17 @@ interface RefillContextType {
   ) => Promise<CheckoutResponse>;
   getSuccessData: () => Promise<SuccessResponse>;
   getPersonaData: () => Promise<PersonaResponse>;
+
+  // New methods added below
+  getConditions: () => Promise<ConditionsResponse>;
+  getProductsBySubCategory: (
+    subcategoryId: number,
+  ) => Promise<ProductsByCategoryResponse>;
+  getProductsByCategory: (
+    categoryId: number,
+  ) => Promise<ProductsByCategoryResponse>;
+
+  // Existing methods continued for backward compatibility
   getMedicineProducts: () => Promise<ProductSurveyResponse>;
   getPersonalCareProducts: () => Promise<ProductSurveyResponse>;
   getBabyCareProducts: () => Promise<ProductSurveyResponse>;
@@ -229,6 +264,32 @@ class RefillAPIService {
     });
   }
 
+  // New methods for conditions and products by category/subcategory
+  async getConditions() {
+    return this.request<ConditionsResponse>('/product-surveys/conditions/all', {
+      method: 'GET',
+    });
+  }
+
+  async getProductsBySubCategory(subcategoryId: number) {
+    return this.request<ProductsByCategoryResponse>(
+      `/product-surveys/subcategory/${subcategoryId}/products`,
+      {
+        method: 'GET',
+      },
+    );
+  }
+
+  async getProductsByCategory(categoryId: number) {
+    return this.request<ProductsByCategoryResponse>(
+      `/product-surveys/category/${categoryId}/products`,
+      {
+        method: 'GET',
+      },
+    );
+  }
+
+  // Existing methods continued for backward compatibility
   async getMedicineProducts() {
     return this.request<ProductSurveyResponse>('/product-surveys/medicine', {
       method: 'GET',
@@ -535,6 +596,64 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // New methods for conditions and products by category/subcategory
+  const getConditions = async (): Promise<ConditionsResponse> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getConditions();
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to get conditions';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getProductsBySubCategory = async (
+    subcategoryId: number,
+  ): Promise<ProductsByCategoryResponse> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getProductsBySubCategory(subcategoryId);
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Failed to get products by subcategory';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getProductsByCategory = async (
+    categoryId: number,
+  ): Promise<ProductsByCategoryResponse> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getProductsByCategory(categoryId);
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Failed to get products by category';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Existing methods continued for backward compatibility
   const getMedicineProducts = async (): Promise<ProductSurveyResponse> => {
     setIsLoading(true);
     setError(null);
@@ -660,6 +779,11 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     getPersonaData,
     submitConsent,
     clearSession,
+    getConditions,
+    getProductsBySubCategory,
+    getProductsByCategory,
+
+    // Existing methods continued for backward compatibility
     getMedicineProducts,
     getPersonalCareProducts,
     getBabyCareProducts,

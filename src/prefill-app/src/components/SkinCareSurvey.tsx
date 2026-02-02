@@ -19,48 +19,51 @@ interface SkincareItem {
 
 const FALLBACK_SKINCARE: SkincareItem[] = [
   {
-    id: 1,
+    id: 2001,
     name: 'Body Cream',
     image: '/prefill-images/medicine bottle.svg',
     category: 'Body Cream',
   },
   {
-    id: 2,
+    id: 2002,
     name: 'Face Wash',
     image: '/prefill-images/medicine bottle.svg',
     category: 'Facial Cleanser & Toners',
   },
   {
-    id: 3,
+    id: 2003,
     name: 'Moisturizer',
     image: '/prefill-images/medicine bottle.svg',
     category: 'Moisturizers',
   },
   {
-    id: 4,
+    id: 2004,
     name: 'Sunscreen',
     image: '/prefill-images/medicine bottle.svg',
     category: 'Sunscreens',
   },
   {
-    id: 5,
+    id: 2005,
     name: 'Body Wash',
     image: '/prefill-images/medicine bottle.svg',
     category: 'Body Wash',
   },
   {
-    id: 6,
+    id: 2006,
     name: 'Serum',
     image: '/prefill-images/medicine bottle.svg',
     category: 'Serums',
   },
 ];
 
+// Backend category ID for skincare = 3
+const SKINCARE_CATEGORY_ID = 3;
+
 const SurveyComponent: React.FC<SurveyProps> = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
-    getPersonalCareProducts,
+    getProductsByCategory,
     updateCart,
     sessionUuid,
     isLoading,
@@ -72,6 +75,8 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
   const [skincares, setSkincares] = useState<SkincareItem[]>([]);
   const [isLoadingSkincare, setIsLoadingSkincare] = useState<boolean>(true);
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
+  const [hasFetchedProducts, setHasFetchedProducts] = useState<boolean>(false);
+  const [usingFallback, setUsingFallback] = useState(false);
 
   const categories = [
     'All',
@@ -100,44 +105,69 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
     return () => clearTimeout(timer);
   }, [sessionUuid, navigate]);
 
-  /** ---- Fetch skincare products with caching ---- */
+  /** ---- Fetch skincare products ---- */
   useEffect(() => {
-    const fetchProducts = async () => {
-      if (!sessionUuid) return;
+    if (hasFetchedProducts || isCheckingSession || !sessionUuid) return;
 
+    const fetchProducts = async () => {
+      // Skincare has no subcategories on the backend — always fetch by its own category ID (3).
+      // Do NOT read selected_subcategory_id here; that value belongs to medicine.
       const cacheKey = `skincares_${sessionUuid}`;
       const cached = localStorage.getItem(cacheKey);
+
       if (cached) {
+        console.log('[Skincare] Using cached skincare products');
         setSkincares(JSON.parse(cached));
+        setUsingFallback(false);
         setIsLoadingSkincare(false);
+        setHasFetchedProducts(true);
         return;
       }
 
       try {
         setIsLoadingSkincare(true);
-        const response: any = await getPersonalCareProducts();
+        console.log(
+          `[Skincare] Fetching products by category: ${SKINCARE_CATEGORY_ID}`,
+        );
 
-        const products: SkincareItem[] = (response || []).map((item: any) => ({
-          id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-          name: item.name,
-          image: item.image,
-          category: item.category || 'Body Cream',
-        }));
+        const response = await getProductsByCategory(SKINCARE_CATEGORY_ID);
+        console.log('[Skincare] Products fetched:', response);
 
-        setSkincares(products);
-        localStorage.setItem(cacheKey, JSON.stringify(products));
+        const products: SkincareItem[] = (response.products || []).map(
+          (item: any) => ({
+            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+            name: item.name,
+            image: item.image || '/prefill-images/medicine bottle.svg',
+            category: item.category || 'Body Cream',
+          }),
+        );
+
+        if (products.length === 0) {
+          console.warn(
+            '[Skincare] No products returned from API, using fallback',
+          );
+          setSkincares(FALLBACK_SKINCARE);
+          setUsingFallback(true);
+        } else {
+          setSkincares(products);
+          setUsingFallback(false);
+          localStorage.setItem(cacheKey, JSON.stringify(products));
+        }
       } catch (err) {
-        console.error('Failed to fetch skincares, using fallback:', err);
+        console.error(
+          '[Skincare] Failed to fetch skincares, using fallback:',
+          err,
+        );
         setSkincares(FALLBACK_SKINCARE);
+        setUsingFallback(true);
       } finally {
         setIsLoadingSkincare(false);
+        setHasFetchedProducts(true);
       }
     };
 
-    if (!isCheckingSession && sessionUuid) {
-      fetchProducts();
-    }
-  }, [isCheckingSession, sessionUuid, getPersonalCareProducts]);
+    fetchProducts();
+  }, [isCheckingSession, sessionUuid, hasFetchedProducts]);
 
   /** ---- Toggle selection ---- */
   const toggleSelection = (id: number) => {
@@ -148,18 +178,29 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
 
   /** ---- Handle next step ---- */
   const handleNext = async () => {
-    if (!sessionUuid) return;
+    if (!sessionUuid) {
+      console.error('[Skincare] No sessionUuid available');
+      return;
+    }
 
     if (selectedItems.length === 0) {
       alert('Please select at least one item');
       return;
     }
 
+    console.log('=== SAVING SKINCARE SURVEY ===');
+    console.log('Session UUID:', sessionUuid);
+    console.log('Selected items:', selectedItems);
+    console.log('Using fallback products:', usingFallback);
+
     try {
       const selectedNames = selectedItems
         .map((id) => skincares.find((p) => p.id === id)?.name.toLowerCase())
         .filter(Boolean) as string[];
 
+      console.log('Selected names:', selectedNames);
+
+      // Save survey first
       await saveSurvey('personal_care', [
         {
           question_key: 'frequent_products',
@@ -167,20 +208,60 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
         },
       ]);
 
-      // Save selected products in cart (bulk save)
-      await Promise.all(
-        selectedItems.map((id) =>
-          updateCart(sessionUuid, {
-            product_id: id,
-            quantity: 1,
-            purchase_type: 'buy_now',
-          }),
-        ),
-      );
+      console.log('[Skincare] Survey saved successfully');
+
+      // Only update cart when we have real products from the API
+      if (!usingFallback) {
+        console.log('[Skincare] Adding real products to cart...');
+
+        // Add items to cart sequentially with error handling
+        for (const id of selectedItems) {
+          try {
+            console.log(
+              `[Skincare] Adding product ${id} to cart with session ${sessionUuid}`,
+            );
+
+            const cartItem = {
+              product_id: id,
+              quantity: 1,
+              purchase_type: 'buy_now' as const,
+            };
+
+            console.log('[Skincare] Cart item payload:', cartItem);
+
+            const result = await updateCart(sessionUuid, cartItem);
+
+            console.log(
+              `[Skincare] Product ${id} added to cart successfully:`,
+              result,
+            );
+          } catch (itemError) {
+            console.error(
+              `[Skincare] Failed to add product ${id} to cart:`,
+              itemError,
+            );
+            // Continue with other items even if one fails
+          }
+        }
+
+        console.log('[Skincare] All cart operations completed');
+
+        // Verify cart was updated
+        console.log(
+          '[Skincare] Waiting 500ms before navigation to ensure cart is updated...',
+        );
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      } else {
+        console.warn(
+          '[Skincare] Skipping cart update — using fallback products that do not exist on backend.',
+        );
+      }
 
       navigate('/products/refill/survey/babycare');
     } catch (err) {
-      console.error('Failed to save survey:', err);
+      console.error('[Skincare] Failed to save survey or update cart:', err);
+      console.error('[Skincare] Error details:', err);
+
       const continueAnyway = window.confirm(
         'Failed to save survey data. Continue anyway?',
       );
@@ -256,7 +337,7 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
         </div>
       )}
 
-      {/* Section Header with Next Button */}
+      {/* Section Header */}
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex items-center justify-between mb-6">
           <h2
@@ -295,48 +376,56 @@ const SurveyComponent: React.FC<SurveyProps> = () => {
 
       {/* Skincare Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-        {filteredSkincares.map((skincare) => {
-          const isSelected = selectedItems.includes(skincare.id);
-          return (
-            <button
-              key={skincare.id}
-              onClick={() => toggleSelection(skincare.id)}
-              className={`relative p-6 rounded-2xl border-2 transition-all hover:shadow-md ${
-                isSelected
-                  ? 'border-[#3da467] bg-[#ecf6ed]'
-                  : 'border-gray-200 bg-white hover:border-gray-300'
-              }`}
-            >
-              {/* Checkbox */}
-              <div
-                className={`absolute top-4 right-4 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
+        {filteredSkincares.length === 0 ? (
+          <div className="col-span-full text-center py-12">
+            <p className="text-gray-500 text-lg">
+              No skincare products found for the selected category.
+            </p>
+          </div>
+        ) : (
+          filteredSkincares.map((skincare) => {
+            const isSelected = selectedItems.includes(skincare.id);
+            return (
+              <button
+                key={skincare.id}
+                onClick={() => toggleSelection(skincare.id)}
+                className={`relative p-6 rounded-2xl border-2 transition-all hover:shadow-md ${
                   isSelected
-                    ? 'bg-[#3da467] border-[#3da467]'
-                    : 'bg-white border-gray-300'
+                    ? 'border-[#3da467] bg-[#ecf6ed]'
+                    : 'border-gray-200 bg-white hover:border-gray-300'
                 }`}
               >
-                {isSelected && <Check className="w-4 h-4 text-white" />}
-              </div>
-
-              {/* Image and Name */}
-              <div className="flex flex-col items-center">
-                <div className="w-28 h-28 mb-4 flex items-center justify-center">
-                  <img
-                    src={skincare.image}
-                    alt={skincare.name}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <p
-                  className="text-base font-medium text-[#323232] text-center"
-                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                {/* Checkbox */}
+                <div
+                  className={`absolute top-4 right-4 w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
+                    isSelected
+                      ? 'bg-[#3da467] border-[#3da467]'
+                      : 'bg-white border-gray-300'
+                  }`}
                 >
-                  {skincare.name}
-                </p>
-              </div>
-            </button>
-          );
-        })}
+                  {isSelected && <Check className="w-4 h-4 text-white" />}
+                </div>
+
+                {/* Image and Name */}
+                <div className="flex flex-col items-center">
+                  <div className="w-28 h-28 mb-4 flex items-center justify-center">
+                    <img
+                      src={skincare.image}
+                      alt={skincare.name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <p
+                    className="text-base font-medium text-[#323232] text-center"
+                    style={{ fontFamily: 'Manrope, sans-serif' }}
+                  >
+                    {skincare.name}
+                  </p>
+                </div>
+              </button>
+            );
+          })
+        )}
       </div>
 
       {/* Selection Counter */}
