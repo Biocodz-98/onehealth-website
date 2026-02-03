@@ -11,15 +11,16 @@ interface BabyCareItem {
   category?: string;
 }
 
-const BABYCARE_CATEGORY_ID = 2;
+// const BABYCARE_CATEGORY_ID = 2;
 
 const BabyCareComponent: React.FC = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
     updateCart,
-    getProductsByCategory,
+    // getProductsByCategory,
     sessionUuid,
+    getProductsV2,
     isLoading,
     error,
   } = useRefill();
@@ -29,8 +30,10 @@ const BabyCareComponent: React.FC = () => {
   const [babycares, setBabycares] = useState<BabyCareItem[]>([]);
   const [isLoadingBabycare, setIsLoadingBabycare] = useState<boolean>(true);
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
+  const [categories, setCategories] = useState([])
 
-  const categories = ['All', 'Diapers & Wipes', 'Baby Food'];
+
+  // const categories = ['All', 'Diapers & Wipes', 'Baby Food'];
 
   // Check session on mount
   useEffect(() => {
@@ -52,29 +55,76 @@ const BabyCareComponent: React.FC = () => {
   useEffect(() => {
     if (isCheckingSession || !sessionUuid) return;
 
+    // const fetchProducts = async () => {
+    //   try {
+    //     setIsLoadingBabycare(true);
+    //     console.log(`[BabyCare] Fetching by category: ${BABYCARE_CATEGORY_ID}`);
+    //
+    //     const response: any = await getProductsByCategory(BABYCARE_CATEGORY_ID);
+    //     console.log('[BabyCare] API Response:', response);
+    //
+    //     const products: BabyCareItem[] = (response || []).map(
+    //       (item: any) => ({
+    //         id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+    //         name: item.name,
+    //         image: item.image || '/prefill-images/medicine bottle.svg',
+    //         category: item.category || 'Diapers & Wipes',
+    //       }),
+    //     );
+    //
+    //     console.log('[BabyCare] Parsed products:', products);
+    //     setBabycares(products);
+    //     setIsLoadingBabycare(false);
+    //   } catch (err) {
+    //     console.error('[BabyCare] Failed to fetch products:', err);
+    //     alert('Failed to load babycare products. Please try again.');
+    //     setIsLoadingBabycare(false);
+    //   }
+    // };
+
     const fetchProducts = async () => {
       try {
         setIsLoadingBabycare(true);
-        console.log(`[BabyCare] Fetching by category: ${BABYCARE_CATEGORY_ID}`);
 
-        const response: any = await getProductsByCategory(BABYCARE_CATEGORY_ID);
+        const response = await getProductsV2("babycare");
+
         console.log('[BabyCare] API Response:', response);
 
-        const products: BabyCareItem[] = (response || []).map(
-          (item: any) => ({
-            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-            name: item.name,
-            image: item.image || '/prefill-images/medicine bottle.svg',
-            category: item.category || 'Diapers & Wipes',
-          }),
-        );
+        // Populate categories dynamically
+        const babycareCategories: string[] =
+            response?.filter((cat: any) => cat.product_type === 'babycare')
+                .map((cat: any) => cat.name) || [];
+        // @ts-ignore
+        setCategories(["All", ...babycareCategories]);
 
-        console.log('[BabyCare] Parsed products:', products);
+        // Flatten products from subcategories
+        const products: BabyCareItem[] =
+            response?.flatMap((category: any) => {
+              if (!category.subcategories || category.subcategories.length === 0)
+                return []; // skip categories without subcategories
+
+              return category.subcategories.flatMap((subcat: any) => {
+                if (!subcat.products || subcat.products.length === 0) return [];
+
+                return subcat.products.map((item: any) => ({
+                  id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+                  name: item.name,
+                  image: item.image || '/prefill-images/medicine bottle.svg',
+                  dosage: item.dosage,
+                  auto_refill: item.auto_refill,
+                  refill_days: item.refill_days,
+                  category: category.name, // top-level category
+                  subcategory: subcat.name, // optional
+                }));
+              });
+            }) || [];
+
+        console.log('[Medicine] Flattened products:', products);
         setBabycares(products);
         setIsLoadingBabycare(false);
       } catch (err) {
-        console.error('[BabyCare] Failed to fetch products:', err);
-        alert('Failed to load babycare products. Please try again.');
+        console.error('[Medicine] Failed to fetch products:', err);
+        alert('Failed to load products. Please try again.');
         setIsLoadingBabycare(false);
       }
     };

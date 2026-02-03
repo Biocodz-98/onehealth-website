@@ -166,7 +166,7 @@ interface RefillContextType {
   ) => Promise<CheckoutResponse>;
   getSuccessData: () => Promise<SuccessResponse>;
   getPersonaData: () => Promise<PersonaResponse>;
-  getProductsV2: () => Promise<any>;
+  getProductsV2: (productType: string) => Promise<any>;
 
 
   // New methods added below
@@ -291,9 +291,9 @@ class RefillAPIService {
     );
   }
 
-  async getProductsV2() {
+  async getProductsV2(productType:string) {
     return this.request<ProductsByCategoryResponse>(
-        `/product-surveys/products-categories/medicine`,
+        `/product-surveys/products-categories/${productType}`,
         {
           method: 'GET',
         },
@@ -644,11 +644,11 @@ const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const getProductsV2: any = async (): Promise<any> => {
+  const getProductsV2: any = async (productType: string): Promise<any> => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await apiService.getProductsV2();
+      const response = await apiService.getProductsV2(productType);
       return response;
     } catch (err) {
       const message =

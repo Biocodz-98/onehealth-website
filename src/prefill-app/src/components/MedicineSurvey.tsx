@@ -60,7 +60,7 @@ const Survey: React.FC = () => {
       try {
         setIsLoadingProducts(true);
 
-        const response = await getProductsV2();
+        const response = await getProductsV2("medicine");
 
         console.log('[Medicine] API Response:', response);
 

@@ -11,13 +11,14 @@ interface SkincareItem {
   category?: string;
 }
 
-const SKINCARE_CATEGORY_ID = 3;
+// const SKINCARE_CATEGORY_ID = 3;
 
 const SurveyComponent: React.FC = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
-    getProductsByCategory,
+    // getProductsByCategory,
+    getProductsV2,
     updateCart,
     sessionUuid,
     isLoading,
@@ -29,17 +30,19 @@ const SurveyComponent: React.FC = () => {
   const [skincares, setSkincares] = useState<SkincareItem[]>([]);
   const [isLoadingSkincare, setIsLoadingSkincare] = useState<boolean>(true);
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
+  const [categories, setCategories] = useState([])
 
-  const categories = [
-    'All',
-    'Body Cream',
-    'Body Wash',
-    'Moisturizers',
-    'Facial Cleanser & Toners',
-    'Sunscreens',
-    'Serums',
-    'Sanitary Pads & Tampons',
-  ];
+
+  // const categories = [
+  //   'All',
+  //   'Body Cream',
+  //   'Body Wash',
+  //   'Moisturizers',
+  //   'Facial Cleanser & Toners',
+  //   'Sunscreens',
+  //   'Serums',
+  //   'Sanitary Pads & Tampons',
+  // ];
 
   // Check session on mount
   useEffect(() => {
@@ -61,29 +64,76 @@ const SurveyComponent: React.FC = () => {
   useEffect(() => {
     if (isCheckingSession || !sessionUuid) return;
 
+    // const fetchProductsOld = async () => {
+    //   try {
+    //     setIsLoadingSkincare(true);
+    //     console.log(`[Skincare] Fetching by category: ${SKINCARE_CATEGORY_ID}`);
+    //
+    //     const response:any = await getProductsByCategory(SKINCARE_CATEGORY_ID);
+    //     console.log('[Skincare] API Response:', response);
+    //
+    //     const products: SkincareItem[] = (response || []).map(
+    //       (item: any) => ({
+    //         id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+    //         name: item.name,
+    //         image: item.image || '/prefill-images/medicine bottle.svg',
+    //         category: item.category || 'Body Cream',
+    //       }),
+    //     );
+    //
+    //     console.log('[Skincare] Parsed products:', products);
+    //     setSkincares(products);
+    //     setIsLoadingSkincare(false);
+    //   } catch (err) {
+    //     console.error('[Skincare] Failed to fetch products:', err);
+    //     alert('Failed to load skincare products. Please try again.');
+    //     setIsLoadingSkincare(false);
+    //   }
+    // };
+
     const fetchProducts = async () => {
       try {
         setIsLoadingSkincare(true);
-        console.log(`[Skincare] Fetching by category: ${SKINCARE_CATEGORY_ID}`);
 
-        const response:any = await getProductsByCategory(SKINCARE_CATEGORY_ID);
+        const response = await getProductsV2("skincare");
+
         console.log('[Skincare] API Response:', response);
 
-        const products: SkincareItem[] = (response || []).map(
-          (item: any) => ({
-            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-            name: item.name,
-            image: item.image || '/prefill-images/medicine bottle.svg',
-            category: item.category || 'Body Cream',
-          }),
-        );
+        // Populate categories dynamically
+        const skincareCategories: string[] =
+            response?.filter((cat: any) => cat.product_type === 'skincare')
+                .map((cat: any) => cat.name) || [];
+        // @ts-ignore
+        setCategories(["All", ...skincareCategories]);
 
-        console.log('[Skincare] Parsed products:', products);
+        // Flatten products from subcategories
+        const products: SkincareItem[] =
+            response?.flatMap((category: any) => {
+              if (!category.subcategories || category.subcategories.length === 0)
+                return []; // skip categories without subcategories
+
+              return category.subcategories.flatMap((subcat: any) => {
+                if (!subcat.products || subcat.products.length === 0) return [];
+
+                return subcat.products.map((item: any) => ({
+                  id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+                  name: item.name,
+                  image: item.image || '/prefill-images/medicine bottle.svg',
+                  dosage: item.dosage,
+                  auto_refill: item.auto_refill,
+                  refill_days: item.refill_days,
+                  category: category.name, // top-level category
+                  subcategory: subcat.name, // optional
+                }));
+              });
+            }) || [];
+
+        console.log('[Medicine] Flattened products:', products);
         setSkincares(products);
         setIsLoadingSkincare(false);
       } catch (err) {
-        console.error('[Skincare] Failed to fetch products:', err);
-        alert('Failed to load skincare products. Please try again.');
+        console.error('[Medicine] Failed to fetch products:', err);
+        alert('Failed to load products. Please try again.');
         setIsLoadingSkincare(false);
       }
     };
