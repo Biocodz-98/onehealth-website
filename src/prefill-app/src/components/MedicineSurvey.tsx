@@ -89,17 +89,15 @@ const Survey: React.FC = () => {
 
         console.log('[Medicine] API Response:', response);
 
-        const products: MedicineItem[] = (response || []).map(
-          (item: any) => ({
-            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-            name: item.name,
-            image: item.image || '/prefill-images/medicine bottle.svg',
-            dosage: item.dosage,
-            auto_refill: item.auto_refill,
-            refill_days: item.refill_days,
-            category: item.category || 'Chronic',
-          }),
-        );
+        const products: MedicineItem[] = (response || []).map((item: any) => ({
+          id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+          name: item.name,
+          image: item.image || '/prefill-images/medicine bottle.svg',
+          dosage: item.dosage,
+          auto_refill: item.auto_refill,
+          refill_days: item.refill_days,
+          category: item.category || 'Chronic',
+        }));
 
         console.log('[Medicine] Parsed products:', products);
         setMedicines(products);
@@ -176,6 +174,58 @@ const Survey: React.FC = () => {
       console.error('[Medicine] Error:', err);
       alert('Failed to save. Please try again.');
     }
+  };
+
+  const handleSkip = async () => {
+    // Save selected items even on skip
+    if (selectedItems.length > 0 && sessionUuid) {
+      console.log('=== SAVING SELECTED ITEMS BEFORE SKIP ===');
+      console.log('Session UUID:', sessionUuid);
+      console.log('Selected items:', selectedItems);
+
+      try {
+        // Save survey
+        const selectedNames = selectedItems
+          .map((id) => medicines.find((m) => m.id === id)?.name.toLowerCase())
+          .filter(Boolean) as string[];
+
+        console.log('Selected names:', selectedNames);
+
+        await saveSurvey('medicines', [
+          { question_key: 'frequent_products', value: selectedNames },
+        ]);
+
+        console.log('[Medicine] Survey saved successfully');
+
+        // Add items to cart one by one
+        console.log('[Medicine] Adding products to cart...');
+
+        for (const id of selectedItems) {
+          try {
+            console.log(`[Medicine] Adding product ${id} to cart`);
+
+            await updateCart(sessionUuid, {
+              product_id: id,
+              quantity: 1,
+              purchase_type: 'buy_now',
+            });
+
+            console.log(`[Medicine] Product ${id} added successfully`);
+          } catch (itemError) {
+            console.error(`[Medicine] Failed to add product ${id}:`, itemError);
+          }
+        }
+
+        console.log('[Medicine] All products processed');
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      } catch (err) {
+        console.error('[Medicine] Error saving before skip:', err);
+        // Don't block navigation even if save fails
+      }
+    }
+
+    // Navigate to next page
+    navigate('/products/refill/survey/skincare');
   };
 
   const filteredMedicines =
@@ -322,7 +372,7 @@ const Survey: React.FC = () => {
 
       <div className="max-w-6xl mx-auto mt-8 flex justify-end gap-4">
         <button
-          onClick={() => navigate('/products/refill/survey/skincare')}
+          onClick={handleSkip}
           className="px-6 py-2.5 rounded-full text-base font-semibold border-2 border-[#3da467] text-[#3da467] hover:bg-green-50 transition-colors"
         >
           Skip

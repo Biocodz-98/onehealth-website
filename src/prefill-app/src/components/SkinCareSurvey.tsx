@@ -66,17 +66,15 @@ const SurveyComponent: React.FC = () => {
         setIsLoadingSkincare(true);
         console.log(`[Skincare] Fetching by category: ${SKINCARE_CATEGORY_ID}`);
 
-        const response:any = await getProductsByCategory(SKINCARE_CATEGORY_ID);
+        const response: any = await getProductsByCategory(SKINCARE_CATEGORY_ID);
         console.log('[Skincare] API Response:', response);
 
-        const products: SkincareItem[] = (response || []).map(
-          (item: any) => ({
-            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-            name: item.name,
-            image: item.image || '/prefill-images/medicine bottle.svg',
-            category: item.category || 'Body Cream',
-          }),
-        );
+        const products: SkincareItem[] = (response || []).map((item: any) => ({
+          id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+          name: item.name,
+          image: item.image || '/prefill-images/medicine bottle.svg',
+          category: item.category || 'Body Cream',
+        }));
 
         console.log('[Skincare] Parsed products:', products);
         setSkincares(products);
@@ -156,6 +154,60 @@ const SurveyComponent: React.FC = () => {
       console.error('[Skincare] Error:', err);
       alert('Failed to save. Please try again.');
     }
+  };
+
+  const handleSkip = async () => {
+    // Save selected items even on skip
+    if (selectedItems.length > 0 && sessionUuid) {
+      console.log('=== SAVING SELECTED ITEMS BEFORE SKIP ===');
+      console.log('Session UUID:', sessionUuid);
+      console.log('Selected items:', selectedItems);
+
+      try {
+        // Save survey
+        const selectedNames = selectedItems
+          .map((id) => skincares.find((p) => p.id === id)?.name.toLowerCase())
+          .filter(Boolean) as string[];
+
+        console.log('Selected names:', selectedNames);
+
+        await saveSurvey('personal_care', [
+          {
+            question_key: 'frequent_products',
+            value: selectedNames,
+          },
+        ]);
+
+        console.log('[Skincare] Survey saved successfully');
+
+        // Add items to cart one by one
+        console.log('[Skincare] Adding products to cart...');
+
+        for (const id of selectedItems) {
+          try {
+            console.log(`[Skincare] Adding product ${id} to cart`);
+
+            await updateCart(sessionUuid, {
+              product_id: id,
+              quantity: 1,
+              purchase_type: 'buy_now',
+            });
+
+            console.log(`[Skincare] Product ${id} added successfully`);
+          } catch (itemError) {
+            console.error(`[Skincare] Failed to add product ${id}:`, itemError);
+          }
+        }
+
+        console.log('[Skincare] All products processed');
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      } catch (err) {
+        console.error('[Skincare] Error saving before skip:', err);
+      }
+    }
+
+    // Navigate to next page
+    navigate('/products/refill/survey/babycare');
   };
 
   const filteredSkincares =
@@ -328,7 +380,7 @@ const SurveyComponent: React.FC = () => {
 
       <div className="max-w-6xl mx-auto mt-8 flex justify-end gap-4">
         <button
-          onClick={() => navigate('/products/refill/survey/babycare')}
+          onClick={handleSkip}
           className="px-6 py-2.5 rounded-full text-base font-semibold border-2 border-[#3da467] text-[#3da467] hover:bg-green-50 transition-colors"
           style={{
             fontFamily: 'Manrope, sans-serif',

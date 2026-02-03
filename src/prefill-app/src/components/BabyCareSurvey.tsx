@@ -60,14 +60,12 @@ const BabyCareComponent: React.FC = () => {
         const response: any = await getProductsByCategory(BABYCARE_CATEGORY_ID);
         console.log('[BabyCare] API Response:', response);
 
-        const products: BabyCareItem[] = (response || []).map(
-          (item: any) => ({
-            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-            name: item.name,
-            image: item.image || '/prefill-images/medicine bottle.svg',
-            category: item.category || 'Diapers & Wipes',
-          }),
-        );
+        const products: BabyCareItem[] = (response || []).map((item: any) => ({
+          id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+          name: item.name,
+          image: item.image || '/prefill-images/medicine bottle.svg',
+          category: item.category || 'Diapers & Wipes',
+        }));
 
         console.log('[BabyCare] Parsed products:', products);
         setBabycares(products);
@@ -147,6 +145,60 @@ const BabyCareComponent: React.FC = () => {
       console.error('[BabyCare] Error:', err);
       alert('Failed to save. Please try again.');
     }
+  };
+
+  const handleSkip = async () => {
+    // Save selected items even on skip
+    if (selectedItems.length > 0 && sessionUuid) {
+      console.log('=== SAVING SELECTED ITEMS BEFORE SKIP ===');
+      console.log('Session UUID:', sessionUuid);
+      console.log('Selected items:', selectedItems);
+
+      try {
+        // Save survey
+        const selectedNames = selectedItems
+          .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
+          .filter(Boolean) as string[];
+
+        console.log('Selected names:', selectedNames);
+
+        await saveSurvey('baby_care', [
+          {
+            question_key: 'frequent_products',
+            value: selectedNames,
+          },
+        ]);
+
+        console.log('[BabyCare] Survey saved successfully');
+
+        // Add items to cart one by one
+        console.log('[BabyCare] Adding products to cart...');
+
+        for (const id of selectedItems) {
+          try {
+            console.log(`[BabyCare] Adding product ${id} to cart`);
+
+            await updateCart(sessionUuid, {
+              product_id: id,
+              quantity: 1,
+              purchase_type: 'buy_now',
+            });
+
+            console.log(`[BabyCare] Product ${id} added successfully`);
+          } catch (itemError) {
+            console.error(`[BabyCare] Failed to add product ${id}:`, itemError);
+          }
+        }
+
+        console.log('[BabyCare] All products processed');
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      } catch (err) {
+        console.error('[BabyCare] Error saving before skip:', err);
+      }
+    }
+
+    // Navigate to next page
+    navigate('/products/refill/survey/product-search');
   };
 
   const filteredBabycares =
@@ -319,7 +371,7 @@ const BabyCareComponent: React.FC = () => {
 
       <div className="max-w-6xl mx-auto mt-8 flex justify-end gap-4">
         <button
-          onClick={() => navigate('/products/refill/survey/product-search')}
+          onClick={handleSkip}
           className="px-6 py-2.5 rounded-full text-base font-semibold border-2 border-[#3da467] text-[#3da467] hover:bg-green-50 transition-colors"
           style={{
             fontFamily: 'Manrope, sans-serif',
