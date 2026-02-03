@@ -14,14 +14,15 @@ interface MedicineItem {
   category?: string;
 }
 
-const MEDICINE_CATEGORY_ID = 1;
+// const MEDICINE_CATEGORY_ID = 1;
 
 const Survey: React.FC = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
-    getProductsByCategory,
-    getProductsBySubCategory,
+    // getProductsByCategory,
+    // getProductsBySubCategory,
+      getProductsV2,
     updateCart,
     sessionUuid,
     isLoading,
@@ -33,15 +34,7 @@ const Survey: React.FC = () => {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [medicines, setMedicines] = useState<MedicineItem[]>([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
-
-  const categories = [
-    'All',
-    'Chronic',
-    'OTC & Childcare',
-    "Women's Health",
-    'Sexual Health',
-    'Vitamins and Supplement',
-  ];
+  const [categories, setCategories] = useState([])
 
   // Check session on mount
   useEffect(() => {
@@ -59,7 +52,7 @@ const Survey: React.FC = () => {
     return () => clearTimeout(timer);
   }, [sessionUuid, navigate]);
 
-  // Fetch medicine products
+
   useEffect(() => {
     if (isCheckingSession || !sessionUuid) return;
 
@@ -67,41 +60,40 @@ const Survey: React.FC = () => {
       try {
         setIsLoadingProducts(true);
 
-        const subcategoryId = localStorage.getItem('selected_subcategory_id');
-        const storedCategoryId = localStorage.getItem('selected_category_id');
-
-        let response: any;
-
-        // If user selected a subcategory AND it's for medicine category
-        if (
-          subcategoryId &&
-          storedCategoryId &&
-          Number(storedCategoryId) === MEDICINE_CATEGORY_ID
-        ) {
-          console.log(`[Medicine] Fetching by subcategory: ${subcategoryId}`);
-          response = await getProductsBySubCategory(Number(subcategoryId));
-        } else {
-          console.log(
-            `[Medicine] Fetching by category: ${MEDICINE_CATEGORY_ID}`,
-          );
-          response = await getProductsByCategory(MEDICINE_CATEGORY_ID);
-        }
+        const response = await getProductsV2();
 
         console.log('[Medicine] API Response:', response);
 
-        const products: MedicineItem[] = (response || []).map(
-          (item: any) => ({
-            id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-            name: item.name,
-            image: item.image || '/prefill-images/medicine bottle.svg',
-            dosage: item.dosage,
-            auto_refill: item.auto_refill,
-            refill_days: item.refill_days,
-            category: item.category || 'Chronic',
-          }),
-        );
+        // Populate categories dynamically
+        const medicineCategories: string[] =
+            response?.filter((cat: any) => cat.product_type === 'medicine')
+                .map((cat: any) => cat.name) || [];
+        // @ts-ignore
+        setCategories(["All", ...medicineCategories]);
 
-        console.log('[Medicine] Parsed products:', products);
+        // Flatten products from subcategories
+        const products: MedicineItem[] =
+            response?.flatMap((category: any) => {
+              if (!category.subcategories || category.subcategories.length === 0)
+                return []; // skip categories without subcategories
+
+              return category.subcategories.flatMap((subcat: any) => {
+                if (!subcat.products || subcat.products.length === 0) return [];
+
+                return subcat.products.map((item: any) => ({
+                  id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+                  name: item.name,
+                  image: item.image || '/prefill-images/medicine bottle.svg',
+                  dosage: item.dosage,
+                  auto_refill: item.auto_refill,
+                  refill_days: item.refill_days,
+                  category: category.name, // top-level category
+                  subcategory: subcat.name, // optional
+                }));
+              });
+            }) || [];
+
+        console.log('[Medicine] Flattened products:', products);
         setMedicines(products);
         setIsLoadingProducts(false);
       } catch (err) {
@@ -113,6 +105,8 @@ const Survey: React.FC = () => {
 
     fetchProducts();
   }, [isCheckingSession, sessionUuid]);
+
+
 
   const toggleSelection = (id: number) => {
     setSelectedItems((prev) =>
@@ -247,7 +241,7 @@ const Survey: React.FC = () => {
           </h2>
         </div>
         <div className="max-w-6xl mx-auto mb-6 flex flex-wrap gap-3">
-          {categories.map((cat) => (
+          {categories.map((cat: any) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}

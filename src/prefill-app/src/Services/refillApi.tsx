@@ -166,6 +166,8 @@ interface RefillContextType {
   ) => Promise<CheckoutResponse>;
   getSuccessData: () => Promise<SuccessResponse>;
   getPersonaData: () => Promise<PersonaResponse>;
+  getProductsV2: () => Promise<any>;
+
 
   // New methods added below
   getConditions: () => Promise<ConditionsResponse>;
@@ -282,10 +284,19 @@ class RefillAPIService {
 
   async getProductsByCategory(categoryId: number) {
     return this.request<ProductsByCategoryResponse>(
-      `/product-surveys/category/${categoryId}/products`,
+      `/product-surveys/products/${categoryId}/products`,
       {
         method: 'GET',
       },
+    );
+  }
+
+  async getProductsV2() {
+    return this.request<ProductsByCategoryResponse>(
+        `/product-surveys/products-categories/medicine`,
+        {
+          method: 'GET',
+        },
     );
   }
 
@@ -381,7 +392,7 @@ const apiService = new RefillAPIService();
 
 const RefillContext = createContext<RefillContextType | undefined>(undefined);
 
-export const RefillProvider = ({ children }: { children: ReactNode }) => {
+const RefillProvider = ({ children }: { children: ReactNode }) => {
   const [sessionUuid, setSessionUuid] = useState<string | null>(() =>
     localStorage.getItem('refill_session_uuid'),
   );
@@ -633,6 +644,24 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const getProductsV2: any = async (): Promise<any> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.getProductsV2();
+      return response;
+    } catch (err) {
+      const message =
+          err instanceof Error
+              ? err.message
+              : 'Failed to get products by category';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   const getProductsByCategory = async (
     categoryId: number,
   ): Promise<ProductsByCategoryResponse> => {
@@ -782,7 +811,7 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     getConditions,
     getProductsBySubCategory,
     getProductsByCategory,
-
+    getProductsV2,
     // Existing methods continued for backward compatibility
     getMedicineProducts,
     getPersonalCareProducts,
@@ -797,6 +826,7 @@ export const RefillProvider = ({ children }: { children: ReactNode }) => {
     <RefillContext.Provider value={value}>{children}</RefillContext.Provider>
   );
 };
+export default RefillProvider
 
 export const useRefill = () => {
   const context = useContext(RefillContext);

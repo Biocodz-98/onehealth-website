@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { RefillProvider } from './Services/refillApi';
+import RefillProvider from './Services/refillApi';
 
 import Header from './components/header/Header';
 import HeroSection from './components/Hero';
