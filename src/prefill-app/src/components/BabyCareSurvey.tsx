@@ -11,15 +11,16 @@ interface BabyCareItem {
   category?: string;
 }
 
-const BABYCARE_CATEGORY_ID = 2;
+// const BABYCARE_CATEGORY_ID = 2;
 
 const BabyCareComponent: React.FC = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
     updateCart,
-    getProductsByCategory,
+    // getProductsByCategory,
     sessionUuid,
+    getProductsV2,
     isLoading,
     error,
   } = useRefill();
@@ -29,8 +30,9 @@ const BabyCareComponent: React.FC = () => {
   const [babycares, setBabycares] = useState<BabyCareItem[]>([]);
   const [isLoadingBabycare, setIsLoadingBabycare] = useState<boolean>(true);
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
+  const [categories, setCategories] = useState([]);
 
-  const categories = ['All', 'Diapers & Wipes', 'Baby Food'];
+  // const categories = ['All', 'Diapers & Wipes', 'Baby Food'];
 
   // Check session on mount
   useEffect(() => {
@@ -52,12 +54,39 @@ const BabyCareComponent: React.FC = () => {
   useEffect(() => {
     if (isCheckingSession || !sessionUuid) return;
 
+    // const fetchProducts = async () => {
+    //   try {
+    //     setIsLoadingBabycare(true);
+    //     console.log(`[BabyCare] Fetching by category: ${BABYCARE_CATEGORY_ID}`);
+    //
+    //     const response: any = await getProductsByCategory(BABYCARE_CATEGORY_ID);
+    //     console.log('[BabyCare] API Response:', response);
+    //
+    //     const products: BabyCareItem[] = (response || []).map(
+    //       (item: any) => ({
+    //         id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+    //         name: item.name,
+    //         image: item.image || '/prefill-images/medicine bottle.svg',
+    //         category: item.category || 'Diapers & Wipes',
+    //       }),
+    //     );
+    //
+    //     console.log('[BabyCare] Parsed products:', products);
+    //     setBabycares(products);
+    //     setIsLoadingBabycare(false);
+    //   } catch (err) {
+    //     console.error('[BabyCare] Failed to fetch products:', err);
+    //     alert('Failed to load babycare products. Please try again.');
+    //     setIsLoadingBabycare(false);
+    //   }
+    // };
+
     const fetchProducts = async () => {
       try {
         setIsLoadingBabycare(true);
-        console.log(`[BabyCare] Fetching by category: ${BABYCARE_CATEGORY_ID}`);
 
-        const response: any = await getProductsByCategory(BABYCARE_CATEGORY_ID);
+        const response = await getProductsV2('babycare');
+
         console.log('[BabyCare] API Response:', response);
 
         const products: BabyCareItem[] = (response || []).map((item: any) => ({
@@ -71,8 +100,8 @@ const BabyCareComponent: React.FC = () => {
         setBabycares(products);
         setIsLoadingBabycare(false);
       } catch (err) {
-        console.error('[BabyCare] Failed to fetch products:', err);
-        alert('Failed to load babycare products. Please try again.');
+        console.error('[Medicine] Failed to fetch products:', err);
+        alert('Failed to load products. Please try again.');
         setIsLoadingBabycare(false);
       }
     };

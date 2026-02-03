@@ -11,13 +11,14 @@ interface SkincareItem {
   category?: string;
 }
 
-const SKINCARE_CATEGORY_ID = 3;
+// const SKINCARE_CATEGORY_ID = 3;
 
 const SurveyComponent: React.FC = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
-    getProductsByCategory,
+    // getProductsByCategory,
+    getProductsV2,
     updateCart,
     sessionUuid,
     isLoading,
@@ -29,17 +30,18 @@ const SurveyComponent: React.FC = () => {
   const [skincares, setSkincares] = useState<SkincareItem[]>([]);
   const [isLoadingSkincare, setIsLoadingSkincare] = useState<boolean>(true);
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
+  const [categories, setCategories] = useState([]);
 
-  const categories = [
-    'All',
-    'Body Cream',
-    'Body Wash',
-    'Moisturizers',
-    'Facial Cleanser & Toners',
-    'Sunscreens',
-    'Serums',
-    'Sanitary Pads & Tampons',
-  ];
+  // const categories = [
+  //   'All',
+  //   'Body Cream',
+  //   'Body Wash',
+  //   'Moisturizers',
+  //   'Facial Cleanser & Toners',
+  //   'Sunscreens',
+  //   'Serums',
+  //   'Sanitary Pads & Tampons',
+  // ];
 
   // Check session on mount
   useEffect(() => {
@@ -61,10 +63,38 @@ const SurveyComponent: React.FC = () => {
   useEffect(() => {
     if (isCheckingSession || !sessionUuid) return;
 
+    // const fetchProductsOld = async () => {
+    //   try {
+    //     setIsLoadingSkincare(true);
+    //     console.log(`[Skincare] Fetching by category: ${SKINCARE_CATEGORY_ID}`);
+    //
+    //     const response:any = await getProductsByCategory(SKINCARE_CATEGORY_ID);
+    //     console.log('[Skincare] API Response:', response);
+    //
+    //     const products: SkincareItem[] = (response || []).map(
+    //       (item: any) => ({
+    //         id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+    //         name: item.name,
+    //         image: item.image || '/prefill-images/medicine bottle.svg',
+    //         category: item.category || 'Body Cream',
+    //       }),
+    //     );
+    //
+    //     console.log('[Skincare] Parsed products:', products);
+    //     setSkincares(products);
+    //     setIsLoadingSkincare(false);
+    //   } catch (err) {
+    //     console.error('[Skincare] Failed to fetch products:', err);
+    //     alert('Failed to load skincare products. Please try again.');
+    //     setIsLoadingSkincare(false);
+    //   }
+    // };
+
     const fetchProducts = async () => {
       try {
         setIsLoadingSkincare(true);
-        console.log(`[Skincare] Fetching by category: ${SKINCARE_CATEGORY_ID}`);
+
+        const response = await getProductsV2('skincare');
 
         const response: any = await getProductsByCategory(SKINCARE_CATEGORY_ID);
         console.log('[Skincare] API Response:', response);
@@ -80,8 +110,8 @@ const SurveyComponent: React.FC = () => {
         setSkincares(products);
         setIsLoadingSkincare(false);
       } catch (err) {
-        console.error('[Skincare] Failed to fetch products:', err);
-        alert('Failed to load skincare products. Please try again.');
+        console.error('[Medicine] Failed to fetch products:', err);
+        alert('Failed to load products. Please try again.');
         setIsLoadingSkincare(false);
       }
     };
