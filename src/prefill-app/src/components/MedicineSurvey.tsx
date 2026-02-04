@@ -172,8 +172,16 @@ const Survey: React.FC = () => {
     }
   };
 
+  /*
+  const filteredMedicines =
+    activeCategory === 'All'
+      ? medicines
+      : medicines.filter((m) => m.category === activeCategory);
+  */
+
+  // Handle Skip to sve products
   const handleSkip = async () => {
-    // Save selected items even on skip
+    // If items are selected, save them before skipping
     if (selectedItems.length > 0 && sessionUuid) {
       console.log('=== SAVING SELECTED ITEMS BEFORE SKIP ===');
       console.log('Session UUID:', sessionUuid);
@@ -219,19 +227,13 @@ const Survey: React.FC = () => {
         await new Promise((resolve) => setTimeout(resolve, 500));
       } catch (err) {
         console.error('[Medicine] Error saving before skip:', err);
+        // Don't block navigation even if save fails
       }
     }
 
     // Navigate to next page
     navigate('/products/refill/survey/skincare');
   };
-
-  /*
-  const filteredMedicines =
-    activeCategory === 'All'
-      ? medicines
-      : medicines.filter((m) => m.category === activeCategory);
-  */
 
   const selectedCondition =
     localStorage.getItem('selected_condition')?.toLowerCase() || null;
