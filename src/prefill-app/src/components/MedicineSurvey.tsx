@@ -36,6 +36,7 @@ const Survey: React.FC = () => {
   const [medicines, setMedicines] = useState<MedicineItem[]>([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [rawCategories, setRawCategories] = useState<any[]>([]);
 
   // Check session on mount
   useEffect(() => {
@@ -63,6 +64,7 @@ const Survey: React.FC = () => {
         const response = await getProductsV2('medicine');
 
         console.log('[Medicine] API Response:', response);
+        setRawCategories(response);
 
         // Populate categories dynamically
         const medicineCategories: string[] =
@@ -140,11 +142,6 @@ const Survey: React.FC = () => {
       await saveSurvey('medicines', [
         { question_key: 'frequent_products', value: selectedNames },
       ]);
-
-      console.log('[Medicine] Survey saved successfully');
-
-      // Add items to cart one by one
-      console.log('[Medicine] Adding products to cart...');
 
       for (const id of selectedItems) {
         try {
@@ -229,10 +226,58 @@ const Survey: React.FC = () => {
     navigate('/products/refill/survey/skincare');
   };
 
+  /*
   const filteredMedicines =
     activeCategory === 'All'
       ? medicines
       : medicines.filter((m) => m.category === activeCategory);
+  */
+
+  const selectedCondition =
+    localStorage.getItem('selected_condition')?.toLowerCase() || null;
+
+  const filteredMedicines = (() => {
+    if (activeCategory === 'All') return medicines;
+
+    // Find the active category object
+    const category = rawCategories.find(
+      (cat: any) => cat.name === activeCategory,
+    );
+
+    if (!category) return [];
+
+    // 🔥 SPECIAL RULE FOR CHRONIC
+    if (category.code?.toLowerCase() === 'chronic' && selectedCondition) {
+      const matchingSubcategory = category.subcategories.find(
+        (sub: any) => sub.name.toLowerCase() === selectedCondition,
+      );
+
+      if (!matchingSubcategory) return [];
+
+      return matchingSubcategory.products.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        image: item.image || '/prefill-images/medicine bottle.svg',
+        dosage: item.dosage,
+        auto_refill: item.auto_refill,
+        refill_days: item.refill_days,
+        category: category.name,
+      }));
+    }
+
+    // ✅ Normal category behavior
+    return category.subcategories.flatMap((sub: any) =>
+      sub.products.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        image: item.image || '/prefill-images/medicine bottle.svg',
+        dosage: item.dosage,
+        auto_refill: item.auto_refill,
+        refill_days: item.refill_days,
+        category: category.name,
+      })),
+    );
+  })();
 
   if (isCheckingSession || isLoadingProducts) {
     return (
@@ -322,7 +367,7 @@ const Survey: React.FC = () => {
             </p>
           </div>
         ) : (
-          filteredMedicines.map((medicine) => {
+          filteredMedicines.map((medicine: any) => {
             const isSelected = selectedItems.includes(medicine.id);
             return (
               <button

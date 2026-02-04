@@ -260,6 +260,12 @@ const PreferencesForm: React.FC = () => {
       return;
     }
 
+    // set the selected condition chosen by the user in the local storage
+    localStorage.setItem(
+        'selected_condition',
+        formData.condition.toLowerCase(),
+    );
+
     try {
       console.log('Starting session with data:', {
         name: formData.name,
