@@ -31,6 +31,7 @@ interface CartItem {
   quantity: number;
   purchase_type: 'buy_now' | 'subscription';
   duration_months?: number;
+  price?: number;
 }
 
 interface DeliveryInfo {
@@ -168,7 +169,6 @@ interface RefillContextType {
   getPersonaData: () => Promise<PersonaResponse>;
   getProductsV2: (productType: string) => Promise<any>;
 
-
   // New methods added below
   getConditions: () => Promise<ConditionsResponse>;
   getProductsBySubCategory: (
@@ -291,12 +291,12 @@ class RefillAPIService {
     );
   }
 
-  async getProductsV2(productType:string) {
+  async getProductsV2(productType: string) {
     return this.request<ProductsByCategoryResponse>(
-        `/product-surveys/products-categories/${productType}`,
-        {
-          method: 'GET',
-        },
+      `/product-surveys/products-categories/${productType}`,
+      {
+        method: 'GET',
+      },
     );
   }
 
@@ -652,15 +652,15 @@ const RefillProvider = ({ children }: { children: ReactNode }) => {
       return response;
     } catch (err) {
       const message =
-          err instanceof Error
-              ? err.message
-              : 'Failed to get products by category';
+        err instanceof Error
+          ? err.message
+          : 'Failed to get products by category';
       setError(message);
       throw err;
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   const getProductsByCategory = async (
     categoryId: number,
@@ -826,7 +826,7 @@ const RefillProvider = ({ children }: { children: ReactNode }) => {
     <RefillContext.Provider value={value}>{children}</RefillContext.Provider>
   );
 };
-export default RefillProvider
+export default RefillProvider;
 
 export const useRefill = () => {
   const context = useContext(RefillContext);

@@ -574,40 +574,48 @@ const PharmacyCart: React.FC = () => {
           console.log('Using old cache format:', cachedProducts);
         }
 
-        const items: CartItem[] = cartData.map((item: any, index: number) => {
-          console.log(`\n=== Mapping cart item ${index + 1} ===`);
-          console.log('Cart item:', item);
+        const items: CartItem[] = cartData
+          .filter((item: any) => {
+            const quantity = item.quantity || 0;
 
-          const productId = item.product_id?.toString() || item.id?.toString();
-          console.log('Product ID:', productId);
+            console.log(`Item ${item.product_id} has quantity: ${quantity}`);
+            return quantity > 0;
+          })
+          .map((item: any, index: number) => {
+            console.log(`\n=== Mapping cart item ${index + 1} ===`);
+            console.log('Cart item:', item);
 
-          // Find matching product from cache
-          const cachedProduct = cachedProducts.find(
-            (p) => p.id.toString() === productId,
-          );
+            const productId =
+              item.product_id?.toString() || item.id?.toString();
+            console.log('Product ID:', productId);
 
-          console.log('Found cached product:', cachedProduct);
+            // Find matching product from cache
+            const cachedProduct = cachedProducts.find(
+              (p) => p.id.toString() === productId,
+            );
 
-          return {
-            id: productId || `unknown-${index}`,
-            name:
-              cachedProduct?.name ||
-              item.product_name ||
-              item.name ||
-              'Unknown Product',
-            dosage:
-              cachedProduct?.dosage || item.dosage || '10mg | 10 capsules',
-            price: cachedProduct?.price || item.amount || item.price || 0,
-            image:
-              cachedProduct?.image ||
-              item.product_image ||
-              item.image ||
-              '/prefill-images/medicine bottle.svg',
-            quantity: item.quantity || 1,
-            autoRefill: item.purchase_type === 'subscription',
-            refillDays: item.refill_days || 30,
-          };
-        });
+            console.log('Found cached product:', cachedProduct);
+
+            return {
+              id: productId || `unknown-${index}`,
+              name:
+                cachedProduct?.name ||
+                item.product_name ||
+                item.name ||
+                'Unknown Product',
+              dosage:
+                cachedProduct?.dosage || item.dosage || '10mg | 10 capsules',
+              price: cachedProduct?.price || item.amount || item.price || 0,
+              image:
+                cachedProduct?.image ||
+                item.product_image ||
+                item.image ||
+                '/prefill-images/medicine bottle.svg',
+              quantity: item.quantity || 1,
+              autoRefill: item.purchase_type === 'subscription',
+              refillDays: item.refill_days || 30,
+            };
+          });
 
         console.log('=== FINAL CART ITEMS ===');
         console.log('Total items:', items.length);
@@ -756,7 +764,7 @@ const PharmacyCart: React.FC = () => {
         <div className="text-center">
           <p className="text-gray-600 mb-4">Your cart is empty.</p>
           <button
-            onClick={() => navigate('/products/refill/product-selection')}
+            onClick={() => navigate('/products/refill/survey')}
             className="bg-[#3da467] text-white px-6 py-2 rounded-full"
           >
             Continue Shopping

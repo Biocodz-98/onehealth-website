@@ -9,6 +9,7 @@ interface SkincareItem {
   name: string;
   image: string;
   category?: string;
+  price?: number;
 }
 
 // const SKINCARE_CATEGORY_ID = 3;
@@ -96,17 +97,40 @@ const SurveyComponent: React.FC = () => {
 
         const response = await getProductsV2('skincare');
 
-        const response: any = await getProductsByCategory(SKINCARE_CATEGORY_ID);
         console.log('[Skincare] API Response:', response);
 
-        const products: SkincareItem[] = (response || []).map((item: any) => ({
-          id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-          name: item.name,
-          image: item.image || '/prefill-images/medicine bottle.svg',
-          category: item.category || 'Body Cream',
-        }));
+        // Populate categories dynamically
+        const skincareCategories: string[] =
+          response
+            ?.filter((cat: any) => cat.product_type === 'skincare')
+            .map((cat: any) => cat.name) || [];
+        // @ts-ignore
+        setCategories(['All', ...skincareCategories]);
 
-        console.log('[Skincare] Parsed products:', products);
+        // Flatten products from subcategories
+        const products: SkincareItem[] =
+          response?.flatMap((category: any) => {
+            if (!category.subcategories || category.subcategories.length === 0)
+              return []; // skip categories without subcategories
+
+            return category.subcategories.flatMap((subcat: any) => {
+              if (!subcat.products || subcat.products.length === 0) return [];
+
+              return subcat.products.map((item: any) => ({
+                id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+                name: item.name,
+                image: item.image || '/prefill-images/medicine bottle.svg',
+                dosage: item.dosage,
+                auto_refill: item.auto_refill,
+                refill_days: item.refill_days,
+                category: category.name, // top-level category
+                subcategory: subcat.name, // optional
+                price: item.price || 0,
+              }));
+            });
+          }) || [];
+
+        console.log('[Medicine] Flattened products:', products);
         setSkincares(products);
         setIsLoadingSkincare(false);
       } catch (err) {
@@ -164,10 +188,13 @@ const SurveyComponent: React.FC = () => {
         try {
           console.log(`[Skincare] Adding product ${id} to cart`);
 
+          const skincare = skincares.find((p) => p.id === id);
+
           await updateCart(sessionUuid, {
             product_id: id,
             quantity: 1,
             purchase_type: 'buy_now',
+            price: skincare?.price || 0,
           });
 
           console.log(`[Skincare] Product ${id} added successfully`);
@@ -187,9 +214,9 @@ const SurveyComponent: React.FC = () => {
   };
 
   const handleSkip = async () => {
-    // Save selected items even on skip
+    // Save selected items before skipping, if any
     if (selectedItems.length > 0 && sessionUuid) {
-      console.log('=== SAVING SELECTED ITEMS BEFORE SKIP ===');
+      console.log('=== SAVING SKINCARE SURVEY BEFORE SKIP ===');
       console.log('Session UUID:', sessionUuid);
       console.log('Selected items:', selectedItems);
 
@@ -217,10 +244,13 @@ const SurveyComponent: React.FC = () => {
           try {
             console.log(`[Skincare] Adding product ${id} to cart`);
 
+            const skincare = skincares.find((p) => p.id === id); //find specific product to get price
+
             await updateCart(sessionUuid, {
               product_id: id,
               quantity: 1,
               purchase_type: 'buy_now',
+              price: skincare?.price || 0,
             });
 
             console.log(`[Skincare] Product ${id} added successfully`);
@@ -233,6 +263,7 @@ const SurveyComponent: React.FC = () => {
         await new Promise((resolve) => setTimeout(resolve, 500));
       } catch (err) {
         console.error('[Skincare] Error saving before skip:', err);
+        // Don't block navigation even if save fails
       }
     }
 

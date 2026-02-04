@@ -12,6 +12,7 @@ interface MedicineItem {
   auto_refill?: boolean;
   refill_days?: number | null;
   category?: string;
+  price?: number;
 }
 
 // const MEDICINE_CATEGORY_ID = 1;
@@ -63,15 +64,6 @@ const Survey: React.FC = () => {
 
         console.log('[Medicine] API Response:', response);
 
-        const products: MedicineItem[] = (response || []).map((item: any) => ({
-          id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-          name: item.name,
-          image: item.image || '/prefill-images/medicine bottle.svg',
-          dosage: item.dosage,
-          auto_refill: item.auto_refill,
-          refill_days: item.refill_days,
-          category: item.category || 'Chronic',
-        }));
         // Populate categories dynamically
         const medicineCategories: string[] =
           response
@@ -98,6 +90,7 @@ const Survey: React.FC = () => {
                 refill_days: item.refill_days,
                 category: category.name, // top-level category
                 subcategory: subcat.name, // optional
+                price: item.price || 0,
               }));
             });
           }) || [];
@@ -157,10 +150,13 @@ const Survey: React.FC = () => {
         try {
           console.log(`[Medicine] Adding product ${id} to cart`);
 
+          const medicine = medicines.find((m) => m.id === id);
+
           await updateCart(sessionUuid, {
             product_id: id,
             quantity: 1,
             purchase_type: 'buy_now',
+            price: medicine?.price || 0,
           });
 
           console.log(`[Medicine] Product ${id} added successfully`);
@@ -207,10 +203,13 @@ const Survey: React.FC = () => {
           try {
             console.log(`[Medicine] Adding product ${id} to cart`);
 
+            const medicine = medicines.find((m) => m.id === id);
+
             await updateCart(sessionUuid, {
               product_id: id,
               quantity: 1,
               purchase_type: 'buy_now',
+              price: medicine?.price || 0,
             });
 
             console.log(`[Medicine] Product ${id} added successfully`);
@@ -223,7 +222,6 @@ const Survey: React.FC = () => {
         await new Promise((resolve) => setTimeout(resolve, 500));
       } catch (err) {
         console.error('[Medicine] Error saving before skip:', err);
-        // Don't block navigation even if save fails
       }
     }
 

@@ -116,14 +116,35 @@ const MonthlyPurchase: React.FC = () => {
 
             // Try multiple ways to get the price
             let price = 0;
-            if (item.amount) {
-              price = parseFloat(item.amount);
-              console.log('Found amount:', price);
-            } else if (item.price) {
+            if (item.price) {
               price = parseFloat(item.price);
               console.log('Found price:', price);
+            } else if (item.amount) {
+              price = parseFloat(item.amount);
+              console.log('Found amount:', price);
+            } else if (item.product_price) {
+              price = parseFloat(item.product_price);
+              console.log('Found product_price:', price);
             } else {
               console.warn('⚠️ No price found for item:', item);
+              // Fallback: try to get from localStorage cache
+              const cachedProducts = localStorage.getItem(
+                `cart_products_${sessionUuid}`,
+              );
+              if (cachedProducts) {
+                try {
+                  const parsed = JSON.parse(cachedProducts);
+                  const cached = parsed.find(
+                    (p: any) =>
+                      p.id?.toString() === productId ||
+                      p.id?.toString() === item.product_id?.toString(),
+                  );
+                  price = cached?.price || 0;
+                  console.log('Using cached price:', price);
+                } catch (e) {
+                  console.error('Failed to parse cached products:', e);
+                }
+              }
             }
 
             // Try multiple ways to get the image
@@ -171,7 +192,7 @@ const MonthlyPurchase: React.FC = () => {
 
         console.log('✅ Cart loaded successfully');
       } catch (err) {
-        console.error('=== ❌ ERROR FETCHING CART ===');
+        console.error('=== ERROR FETCHING CART ===');
         console.error(
           'Error type:',
           err instanceof Error ? err.name : typeof err,
@@ -211,9 +232,41 @@ const MonthlyPurchase: React.FC = () => {
 
     console.log('=== BUY NOW ===');
     console.log('Selected products:', selectedProducts);
+    console.log(
+      'All products:',
+      products.map((p) => p.id),
+    );
 
     try {
-      // Update items sequentially instead of Promise.all
+      const allProductIds = products.map((p) => p.id);
+      const deselectedProductIds = allProductIds.filter(
+        (id) => !selectedProducts.includes(id),
+      );
+
+      console.log('Deselected products:', deselectedProductIds);
+
+      // Update quantity to 0 for deselected items
+      if (deselectedProductIds.length > 0) {
+        console.log('Setting deselected items quantity to 0...');
+        for (const productId of deselectedProductIds) {
+          try {
+            console.log(`Setting product ${productId} quantity to 0`);
+
+            await updateCart(sessionUuid, {
+              product_id: parseInt(productId),
+              quantity: 0,
+              purchase_type: 'buy_now',
+            });
+
+            console.log(`Product ${productId} quantity set to 0`);
+          } catch (itemError) {
+            console.error(`Failed to update product ${productId}:`, itemError);
+          }
+        }
+      }
+
+      // Update selected items to buy_now with quantity 1
+      console.log('Updating selected items...');
       for (const productId of selectedProducts) {
         try {
           console.log(`Updating product ${productId} to buy_now`);
@@ -309,7 +362,35 @@ const MonthlyPurchase: React.FC = () => {
 
       console.log('Duration months:', durationMonths);
 
-      // Update items sequentially instead of Promise.all
+      const allProductIds = products.map((p) => p.id);
+      const deselectedProductIds = allProductIds.filter(
+        (id) => !selectedProducts.includes(id),
+      );
+
+      console.log('Deselected products:', deselectedProductIds);
+
+      // Update quantity to 0 for deselected items
+      if (deselectedProductIds.length > 0) {
+        console.log('Setting deselected items quantity to 0...');
+        for (const productId of deselectedProductIds) {
+          try {
+            console.log(`Setting product ${productId} quantity to 0`);
+
+            await updateCart(sessionUuid, {
+              product_id: parseInt(productId),
+              quantity: 0,
+              purchase_type: 'subscription',
+            });
+
+            console.log(`Product ${productId} quantity set to 0`);
+          } catch (itemError) {
+            console.error(`Failed to update product ${productId}:`, itemError);
+          }
+        }
+      }
+
+      // Update selected items to subscription
+      console.log('Adding selected items as subscriptions...');
       for (const productId of selectedProducts) {
         try {
           console.log(`Updating product ${productId} to subscription`);

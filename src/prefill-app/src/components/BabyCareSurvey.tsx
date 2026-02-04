@@ -9,6 +9,7 @@ interface BabyCareItem {
   name: string;
   image: string;
   category?: string;
+  price?: number;
 }
 
 // const BABYCARE_CATEGORY_ID = 2;
@@ -89,14 +90,38 @@ const BabyCareComponent: React.FC = () => {
 
         console.log('[BabyCare] API Response:', response);
 
-        const products: BabyCareItem[] = (response || []).map((item: any) => ({
-          id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-          name: item.name,
-          image: item.image || '/prefill-images/medicine bottle.svg',
-          category: item.category || 'Diapers & Wipes',
-        }));
+        // Populate categories dynamically
+        const babycareCategories: string[] =
+          response
+            ?.filter((cat: any) => cat.product_type === 'babycare')
+            .map((cat: any) => cat.name) || [];
+        // @ts-ignore
+        setCategories(['All', ...babycareCategories]);
 
-        console.log('[BabyCare] Parsed products:', products);
+        // Flatten products from subcategories
+        const products: BabyCareItem[] =
+          response?.flatMap((category: any) => {
+            if (!category.subcategories || category.subcategories.length === 0)
+              return []; // skip categories without subcategories
+
+            return category.subcategories.flatMap((subcat: any) => {
+              if (!subcat.products || subcat.products.length === 0) return [];
+
+              return subcat.products.map((item: any) => ({
+                id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
+                name: item.name,
+                image: item.image || '/prefill-images/medicine bottle.svg',
+                dosage: item.dosage,
+                auto_refill: item.auto_refill,
+                refill_days: item.refill_days,
+                category: category.name, // top-level category
+                subcategory: subcat.name, // optional
+                price: item.price || 0,
+              }));
+            });
+          }) || [];
+
+        console.log('[Medicine] Flattened products:', products);
         setBabycares(products);
         setIsLoadingBabycare(false);
       } catch (err) {
@@ -154,10 +179,13 @@ const BabyCareComponent: React.FC = () => {
         try {
           console.log(`[BabyCare] Adding product ${id} to cart`);
 
+          const babycare = babycares.find((p) => p.id === id);
+
           await updateCart(sessionUuid, {
             product_id: id,
             quantity: 1,
             purchase_type: 'buy_now',
+            price: babycare?.price || 0,
           });
 
           console.log(`[BabyCare] Product ${id} added successfully`);
@@ -177,7 +205,7 @@ const BabyCareComponent: React.FC = () => {
   };
 
   const handleSkip = async () => {
-    // Save selected items even on skip
+    // save selected items if any
     if (selectedItems.length > 0 && sessionUuid) {
       console.log('=== SAVING SELECTED ITEMS BEFORE SKIP ===');
       console.log('Session UUID:', sessionUuid);
@@ -207,10 +235,13 @@ const BabyCareComponent: React.FC = () => {
           try {
             console.log(`[BabyCare] Adding product ${id} to cart`);
 
+            const babycare = babycares.find((p) => p.id === id);
+
             await updateCart(sessionUuid, {
               product_id: id,
               quantity: 1,
               purchase_type: 'buy_now',
+              price: babycare?.price || 0,
             });
 
             console.log(`[BabyCare] Product ${id} added successfully`);
@@ -223,6 +254,7 @@ const BabyCareComponent: React.FC = () => {
         await new Promise((resolve) => setTimeout(resolve, 500));
       } catch (err) {
         console.error('[BabyCare] Error saving before skip:', err);
+        // Don't block navigation even if save fails
       }
     }
 
