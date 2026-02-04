@@ -6,6 +6,7 @@ import { Heart, Trash2, ChevronDown, ArrowLeft } from 'lucide-react';
 //Types
 interface CartItem {
   id: string;
+  cartItemId: number;
   name: string;
   dosage: string;
   price: number;
@@ -504,7 +505,15 @@ const CartItem: React.FC<CartItemProps> = ({
 // MAIN PHARMACY CART COMPONENT
 const PharmacyCart: React.FC = () => {
   const navigate = useNavigate();
-  const { getCart, addToCart, sessionUuid, isLoading, error } = useRefill();
+  const {
+    getCart,
+    addToCart,
+    clearCart,
+    removeCartItem,
+    sessionUuid,
+    isLoading,
+    error,
+  } = useRefill();
 
   const [currentStep] = useState(1);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -598,6 +607,7 @@ const PharmacyCart: React.FC = () => {
 
             return {
               id: productId || `unknown-${index}`,
+              cartItemId: item.id,
               name:
                 cachedProduct?.name ||
                 item.product_name ||
@@ -675,8 +685,29 @@ const PharmacyCart: React.FC = () => {
     });
   };
 
-  const handleRemoveItem = (id: string) => {
-    setCartItems((items) => items.filter((item) => item.id !== id));
+  const handleRemoveItem = async (productId: string) => {
+    try {
+      // Find the cart item to get its database ID for removal
+      const cartItem = cartItems.find((item) => item.id === productId);
+
+      if (!cartItem) {
+        console.error('Cart item not found');
+        return;
+      }
+
+      console.log(
+        `Removing cart item ${cartItem.cartItemId} (product ${productId})`,
+      );
+
+      // Call API to remove item from cart using the cart item ID
+      await removeCartItem(cartItem.cartItemId);
+
+      // Update UI by removing from state
+      setCartItems((items) => items.filter((item) => item.id !== productId));
+    } catch (err) {
+      console.error('Failed to remove item:', err);
+      alert('Failed to remove item. Please try again.');
+    }
   };
 
   const handleToggleAutoRefill = async (id: string, enabled: boolean) => {
@@ -739,6 +770,30 @@ const PharmacyCart: React.FC = () => {
   //   alert(`${product.name} added to cart!`);
   // };
 
+  const handleEmptyCart = async () => {
+    if (!sessionUuid) return;
+
+    try {
+      //Fetch the API to clear cart
+      await clearCart();
+
+      // Clear cart items in UI immediately
+      setCartItems([]);
+
+      // Clear cached products from localStorage
+      localStorage.removeItem(`cart_products_${sessionUuid}`);
+      localStorage.removeItem(`medicines_${sessionUuid}`);
+      localStorage.removeItem(`skincares_${sessionUuid}`);
+      localStorage.removeItem(`babycares_${sessionUuid}`);
+
+      // Reset the fetch so cart can be reloaded
+      setHasFetchedCart(false);
+    } catch (err) {
+      console.error('Failed to empty cart:', err);
+      alert('Failed to empty cart. Please try again.');
+    }
+  };
+
   const handleProceedToCheckout = () => {
     navigate('/products/refill/checkout', {
       state: { cartItems, sessionUuid },
@@ -760,20 +815,86 @@ const PharmacyCart: React.FC = () => {
   // Empty Cart State
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600 mb-4">Your cart is empty.</p>
+      <div className="min-h-screen bg-white flex items-center justify-center px-8">
+        <div className="text-center max-w-md">
+          <div className="mb-8 flex justify-center">
+            <svg
+              className="w-48 h-48 text-gray-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+              <line
+                x1="9"
+                y1="13"
+                x2="15"
+                y2="13"
+                strokeLinecap="round"
+                strokeWidth={1.5}
+                className="text-gray-400"
+              />
+            </svg>
+          </div>
+
+          <h2
+            className="text-3xl font-bold text-[#2b2b2b] mb-3"
+            style={{
+              fontFamily: 'Familjen Grotesk, sans-serif',
+              fontWeight: 700,
+              lineHeight: '110%',
+            }}
+          >
+            Your cart is empty
+          </h2>
+
+          <p
+            className="text-black mb-8 font-normal"
+            style={{
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '16px',
+              lineHeight: '150%',
+            }}
+          >
+            Your cart is currently empty. Browse the store and add items to get
+            started.
+          </p>
+
           <button
             onClick={() => navigate('/products/refill/survey')}
-            className="bg-[#3da467] text-white px-6 py-2 rounded-full"
+            className="bg-[#3da467] hover:bg-[#2e8a39] text-white px-8 py-3 rounded-full font-medium transition-colors inline-flex items-center gap-2"
+            style={{
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '16px',
+              lineHeight: '150%',
+              fontWeight: 500,
+            }}
           >
-            Continue Shopping
+            Start Shopping
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </button>
         </div>
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16">
       {/* Back Button */}
@@ -829,7 +950,7 @@ const PharmacyCart: React.FC = () => {
                   </p>
                 </div>
                 <button
-                  onClick={() => setCartItems([])}
+                  onClick={handleEmptyCart}
                   className="text-[#3da647] text-sm font-medium"
                   style={{
                     fontFamily: 'Manrope, sans-serif',

@@ -12,13 +12,10 @@ interface SkincareItem {
   price?: number;
 }
 
-// const SKINCARE_CATEGORY_ID = 3;
-
 const SurveyComponent: React.FC = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
-    // getProductsByCategory,
     getProductsV2,
     updateCart,
     sessionUuid,
@@ -33,21 +30,8 @@ const SurveyComponent: React.FC = () => {
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
   const [categories, setCategories] = useState([]);
 
-  // const categories = [
-  //   'All',
-  //   'Body Cream',
-  //   'Body Wash',
-  //   'Moisturizers',
-  //   'Facial Cleanser & Toners',
-  //   'Sunscreens',
-  //   'Serums',
-  //   'Sanitary Pads & Tampons',
-  // ];
-
   // Check session on mount
   useEffect(() => {
-    console.log('Skincare Survey mounted. Current sessionUuid:', sessionUuid);
-
     const timer = setTimeout(() => {
       if (!sessionUuid) {
         alert('Please complete the preferences form first');
@@ -64,40 +48,11 @@ const SurveyComponent: React.FC = () => {
   useEffect(() => {
     if (isCheckingSession || !sessionUuid) return;
 
-    // const fetchProductsOld = async () => {
-    //   try {
-    //     setIsLoadingSkincare(true);
-    //     console.log(`[Skincare] Fetching by category: ${SKINCARE_CATEGORY_ID}`);
-    //
-    //     const response:any = await getProductsByCategory(SKINCARE_CATEGORY_ID);
-    //     console.log('[Skincare] API Response:', response);
-    //
-    //     const products: SkincareItem[] = (response || []).map(
-    //       (item: any) => ({
-    //         id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-    //         name: item.name,
-    //         image: item.image || '/prefill-images/medicine bottle.svg',
-    //         category: item.category || 'Body Cream',
-    //       }),
-    //     );
-    //
-    //     console.log('[Skincare] Parsed products:', products);
-    //     setSkincares(products);
-    //     setIsLoadingSkincare(false);
-    //   } catch (err) {
-    //     console.error('[Skincare] Failed to fetch products:', err);
-    //     alert('Failed to load skincare products. Please try again.');
-    //     setIsLoadingSkincare(false);
-    //   }
-    // };
-
     const fetchProducts = async () => {
       try {
         setIsLoadingSkincare(true);
 
         const response = await getProductsV2('skincare');
-
-        console.log('[Skincare] API Response:', response);
 
         // Populate categories dynamically
         const skincareCategories: string[] =
@@ -111,7 +66,7 @@ const SurveyComponent: React.FC = () => {
         const products: SkincareItem[] =
           response?.flatMap((category: any) => {
             if (!category.subcategories || category.subcategories.length === 0)
-              return []; // skip categories without subcategories
+              return [];
 
             return category.subcategories.flatMap((subcat: any) => {
               if (!subcat.products || subcat.products.length === 0) return [];
@@ -123,19 +78,18 @@ const SurveyComponent: React.FC = () => {
                 dosage: item.dosage,
                 auto_refill: item.auto_refill,
                 refill_days: item.refill_days,
-                category: category.name, // top-level category
-                subcategory: subcat.name, // optional
+                category: category.name,
+                subcategory: subcat.name,
                 price: item.price || 0,
               }));
             });
           }) || [];
 
-        console.log('[Medicine] Flattened products:', products);
         setSkincares(products);
         setIsLoadingSkincare(false);
       } catch (err) {
-        console.error('[Medicine] Failed to fetch products:', err);
-        alert('Failed to load products. Please try again.');
+        console.error('[Skincare] Failed to fetch products:', err);
+        alert('Failed to load skincare products. Please try again.');
         setIsLoadingSkincare(false);
       }
     };
@@ -160,17 +114,10 @@ const SurveyComponent: React.FC = () => {
       return;
     }
 
-    console.log('=== SAVING SKINCARE SURVEY ===');
-    console.log('Session UUID:', sessionUuid);
-    console.log('Selected items:', selectedItems);
-
     try {
-      // Save survey
       const selectedNames = selectedItems
         .map((id) => skincares.find((p) => p.id === id)?.name.toLowerCase())
         .filter(Boolean) as string[];
-
-      console.log('Selected names:', selectedNames);
 
       await saveSurvey('personal_care', [
         {
@@ -179,15 +126,8 @@ const SurveyComponent: React.FC = () => {
         },
       ]);
 
-      console.log('[Skincare] Survey saved successfully');
-
-      // Add items to cart one by one
-      console.log('[Skincare] Adding products to cart...');
-
       for (const id of selectedItems) {
         try {
-          console.log(`[Skincare] Adding product ${id} to cart`);
-
           const skincare = skincares.find((p) => p.id === id);
 
           await updateCart(sessionUuid, {
@@ -196,14 +136,11 @@ const SurveyComponent: React.FC = () => {
             purchase_type: 'buy_now',
             price: skincare?.price || 0,
           });
-
-          console.log(`[Skincare] Product ${id} added successfully`);
         } catch (itemError) {
           console.error(`[Skincare] Failed to add product ${id}:`, itemError);
         }
       }
 
-      console.log('[Skincare] All products processed');
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       navigate('/products/refill/survey/babycare');
@@ -214,19 +151,11 @@ const SurveyComponent: React.FC = () => {
   };
 
   const handleSkip = async () => {
-    // Save selected items before skipping, if any
     if (selectedItems.length > 0 && sessionUuid) {
-      console.log('=== SAVING SKINCARE SURVEY BEFORE SKIP ===');
-      console.log('Session UUID:', sessionUuid);
-      console.log('Selected items:', selectedItems);
-
       try {
-        // Save survey
         const selectedNames = selectedItems
           .map((id) => skincares.find((p) => p.id === id)?.name.toLowerCase())
           .filter(Boolean) as string[];
-
-        console.log('Selected names:', selectedNames);
 
         await saveSurvey('personal_care', [
           {
@@ -235,16 +164,9 @@ const SurveyComponent: React.FC = () => {
           },
         ]);
 
-        console.log('[Skincare] Survey saved successfully');
-
-        // Add items to cart one by one
-        console.log('[Skincare] Adding products to cart...');
-
         for (const id of selectedItems) {
           try {
-            console.log(`[Skincare] Adding product ${id} to cart`);
-
-            const skincare = skincares.find((p) => p.id === id); //find specific product to get price
+            const skincare = skincares.find((p) => p.id === id);
 
             await updateCart(sessionUuid, {
               product_id: id,
@@ -252,22 +174,17 @@ const SurveyComponent: React.FC = () => {
               purchase_type: 'buy_now',
               price: skincare?.price || 0,
             });
-
-            console.log(`[Skincare] Product ${id} added successfully`);
           } catch (itemError) {
             console.error(`[Skincare] Failed to add product ${id}:`, itemError);
           }
         }
 
-        console.log('[Skincare] All products processed');
         await new Promise((resolve) => setTimeout(resolve, 500));
       } catch (err) {
         console.error('[Skincare] Error saving before skip:', err);
-        // Don't block navigation even if save fails
       }
     }
 
-    // Navigate to next page
     navigate('/products/refill/survey/babycare');
   };
 

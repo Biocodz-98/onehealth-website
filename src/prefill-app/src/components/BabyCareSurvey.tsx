@@ -12,14 +12,11 @@ interface BabyCareItem {
   price?: number;
 }
 
-// const BABYCARE_CATEGORY_ID = 2;
-
 const BabyCareComponent: React.FC = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
     updateCart,
-    // getProductsByCategory,
     sessionUuid,
     getProductsV2,
     isLoading,
@@ -33,12 +30,8 @@ const BabyCareComponent: React.FC = () => {
   const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
   const [categories, setCategories] = useState([]);
 
-  // const categories = ['All', 'Diapers & Wipes', 'Baby Food'];
-
   // Check session on mount
   useEffect(() => {
-    console.log('BabyCare Survey mounted. Current sessionUuid:', sessionUuid);
-
     const timer = setTimeout(() => {
       if (!sessionUuid) {
         alert('Please complete the preferences form first');
@@ -55,40 +48,11 @@ const BabyCareComponent: React.FC = () => {
   useEffect(() => {
     if (isCheckingSession || !sessionUuid) return;
 
-    // const fetchProducts = async () => {
-    //   try {
-    //     setIsLoadingBabycare(true);
-    //     console.log(`[BabyCare] Fetching by category: ${BABYCARE_CATEGORY_ID}`);
-    //
-    //     const response: any = await getProductsByCategory(BABYCARE_CATEGORY_ID);
-    //     console.log('[BabyCare] API Response:', response);
-    //
-    //     const products: BabyCareItem[] = (response || []).map(
-    //       (item: any) => ({
-    //         id: typeof item.id === 'string' ? parseInt(item.id) : item.id,
-    //         name: item.name,
-    //         image: item.image || '/prefill-images/medicine bottle.svg',
-    //         category: item.category || 'Diapers & Wipes',
-    //       }),
-    //     );
-    //
-    //     console.log('[BabyCare] Parsed products:', products);
-    //     setBabycares(products);
-    //     setIsLoadingBabycare(false);
-    //   } catch (err) {
-    //     console.error('[BabyCare] Failed to fetch products:', err);
-    //     alert('Failed to load babycare products. Please try again.');
-    //     setIsLoadingBabycare(false);
-    //   }
-    // };
-
     const fetchProducts = async () => {
       try {
         setIsLoadingBabycare(true);
 
         const response = await getProductsV2('babycare');
-
-        console.log('[BabyCare] API Response:', response);
 
         // Populate categories dynamically
         const babycareCategories: string[] =
@@ -102,7 +66,7 @@ const BabyCareComponent: React.FC = () => {
         const products: BabyCareItem[] =
           response?.flatMap((category: any) => {
             if (!category.subcategories || category.subcategories.length === 0)
-              return []; // skip categories without subcategories
+              return [];
 
             return category.subcategories.flatMap((subcat: any) => {
               if (!subcat.products || subcat.products.length === 0) return [];
@@ -114,19 +78,18 @@ const BabyCareComponent: React.FC = () => {
                 dosage: item.dosage,
                 auto_refill: item.auto_refill,
                 refill_days: item.refill_days,
-                category: category.name, // top-level category
-                subcategory: subcat.name, // optional
+                category: category.name,
+                subcategory: subcat.name,
                 price: item.price || 0,
               }));
             });
           }) || [];
 
-        console.log('[Medicine] Flattened products:', products);
         setBabycares(products);
         setIsLoadingBabycare(false);
       } catch (err) {
-        console.error('[Medicine] Failed to fetch products:', err);
-        alert('Failed to load products. Please try again.');
+        console.error('[BabyCare] Failed to fetch products:', err);
+        alert('Failed to load babycare products. Please try again.');
         setIsLoadingBabycare(false);
       }
     };
@@ -151,17 +114,10 @@ const BabyCareComponent: React.FC = () => {
       return;
     }
 
-    console.log('=== SAVING BABYCARE SURVEY ===');
-    console.log('Session UUID:', sessionUuid);
-    console.log('Selected items:', selectedItems);
-
     try {
-      // Save survey
       const selectedNames = selectedItems
         .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
         .filter(Boolean) as string[];
-
-      console.log('Selected names:', selectedNames);
 
       await saveSurvey('baby_care', [
         {
@@ -170,15 +126,8 @@ const BabyCareComponent: React.FC = () => {
         },
       ]);
 
-      console.log('[BabyCare] Survey saved successfully');
-
-      // Add items to cart one by one
-      console.log('[BabyCare] Adding products to cart...');
-
       for (const id of selectedItems) {
         try {
-          console.log(`[BabyCare] Adding product ${id} to cart`);
-
           const babycare = babycares.find((p) => p.id === id);
 
           await updateCart(sessionUuid, {
@@ -187,14 +136,11 @@ const BabyCareComponent: React.FC = () => {
             purchase_type: 'buy_now',
             price: babycare?.price || 0,
           });
-
-          console.log(`[BabyCare] Product ${id} added successfully`);
         } catch (itemError) {
           console.error(`[BabyCare] Failed to add product ${id}:`, itemError);
         }
       }
 
-      console.log('[BabyCare] All products processed');
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       navigate('/products/refill/survey/product-search');
@@ -205,19 +151,11 @@ const BabyCareComponent: React.FC = () => {
   };
 
   const handleSkip = async () => {
-    // save selected items if any
     if (selectedItems.length > 0 && sessionUuid) {
-      console.log('=== SAVING SELECTED ITEMS BEFORE SKIP ===');
-      console.log('Session UUID:', sessionUuid);
-      console.log('Selected items:', selectedItems);
-
       try {
-        // Save survey
         const selectedNames = selectedItems
           .map((id) => babycares.find((p) => p.id === id)?.name.toLowerCase())
           .filter(Boolean) as string[];
-
-        console.log('Selected names:', selectedNames);
 
         await saveSurvey('baby_care', [
           {
@@ -226,15 +164,8 @@ const BabyCareComponent: React.FC = () => {
           },
         ]);
 
-        console.log('[BabyCare] Survey saved successfully');
-
-        // Add items to cart one by one
-        console.log('[BabyCare] Adding products to cart...');
-
         for (const id of selectedItems) {
           try {
-            console.log(`[BabyCare] Adding product ${id} to cart`);
-
             const babycare = babycares.find((p) => p.id === id);
 
             await updateCart(sessionUuid, {
@@ -243,22 +174,17 @@ const BabyCareComponent: React.FC = () => {
               purchase_type: 'buy_now',
               price: babycare?.price || 0,
             });
-
-            console.log(`[BabyCare] Product ${id} added successfully`);
           } catch (itemError) {
             console.error(`[BabyCare] Failed to add product ${id}:`, itemError);
           }
         }
 
-        console.log('[BabyCare] All products processed');
         await new Promise((resolve) => setTimeout(resolve, 500));
       } catch (err) {
         console.error('[BabyCare] Error saving before skip:', err);
-        // Don't block navigation even if save fails
       }
     }
 
-    // Navigate to next page
     navigate('/products/refill/survey/product-search');
   };
 

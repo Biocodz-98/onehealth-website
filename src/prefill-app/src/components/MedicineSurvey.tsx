@@ -15,14 +15,10 @@ interface MedicineItem {
   price?: number;
 }
 
-// const MEDICINE_CATEGORY_ID = 1;
-
 const Survey: React.FC = () => {
   const navigate = useNavigate();
   const {
     saveSurvey,
-    // getProductsByCategory,
-    // getProductsBySubCategory,
     getProductsV2,
     updateCart,
     sessionUuid,
@@ -40,8 +36,6 @@ const Survey: React.FC = () => {
 
   // Check session on mount
   useEffect(() => {
-    console.log('Survey mounted. Current sessionUuid:', sessionUuid);
-
     const timer = setTimeout(() => {
       if (!sessionUuid) {
         alert('Please complete the preferences form first');
@@ -63,7 +57,6 @@ const Survey: React.FC = () => {
 
         const response = await getProductsV2('medicine');
 
-        console.log('[Medicine] API Response:', response);
         setRawCategories(response);
 
         // Populate categories dynamically
@@ -78,7 +71,7 @@ const Survey: React.FC = () => {
         const products: MedicineItem[] =
           response?.flatMap((category: any) => {
             if (!category.subcategories || category.subcategories.length === 0)
-              return []; // skip categories without subcategories
+              return [];
 
             return category.subcategories.flatMap((subcat: any) => {
               if (!subcat.products || subcat.products.length === 0) return [];
@@ -90,14 +83,13 @@ const Survey: React.FC = () => {
                 dosage: item.dosage,
                 auto_refill: item.auto_refill,
                 refill_days: item.refill_days,
-                category: category.name, // top-level category
-                subcategory: subcat.name, // optional
+                category: category.name,
+                subcategory: subcat.name,
                 price: item.price || 0,
               }));
             });
           }) || [];
 
-        console.log('[Medicine] Flattened products:', products);
         setMedicines(products);
         setIsLoadingProducts(false);
       } catch (err) {
@@ -127,17 +119,10 @@ const Survey: React.FC = () => {
       return;
     }
 
-    console.log('=== SAVING MEDICINE SURVEY ===');
-    console.log('Session UUID:', sessionUuid);
-    console.log('Selected items:', selectedItems);
-
     try {
-      // Save survey
       const selectedNames = selectedItems
         .map((id) => medicines.find((m) => m.id === id)?.name.toLowerCase())
         .filter(Boolean) as string[];
-
-      console.log('Selected names:', selectedNames);
 
       await saveSurvey('medicines', [
         { question_key: 'frequent_products', value: selectedNames },
@@ -145,8 +130,6 @@ const Survey: React.FC = () => {
 
       for (const id of selectedItems) {
         try {
-          console.log(`[Medicine] Adding product ${id} to cart`);
-
           const medicine = medicines.find((m) => m.id === id);
 
           await updateCart(sessionUuid, {
@@ -155,14 +138,11 @@ const Survey: React.FC = () => {
             purchase_type: 'buy_now',
             price: medicine?.price || 0,
           });
-
-          console.log(`[Medicine] Product ${id} added successfully`);
         } catch (itemError) {
           console.error(`[Medicine] Failed to add product ${id}:`, itemError);
         }
       }
 
-      console.log('[Medicine] All products processed');
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       navigate('/products/refill/survey/skincare');
@@ -172,42 +152,19 @@ const Survey: React.FC = () => {
     }
   };
 
-  /*
-  const filteredMedicines =
-    activeCategory === 'All'
-      ? medicines
-      : medicines.filter((m) => m.category === activeCategory);
-  */
-
-  // Handle Skip to sve products
   const handleSkip = async () => {
-    // If items are selected, save them before skipping
     if (selectedItems.length > 0 && sessionUuid) {
-      console.log('=== SAVING SELECTED ITEMS BEFORE SKIP ===');
-      console.log('Session UUID:', sessionUuid);
-      console.log('Selected items:', selectedItems);
-
       try {
-        // Save survey
         const selectedNames = selectedItems
           .map((id) => medicines.find((m) => m.id === id)?.name.toLowerCase())
           .filter(Boolean) as string[];
-
-        console.log('Selected names:', selectedNames);
 
         await saveSurvey('medicines', [
           { question_key: 'frequent_products', value: selectedNames },
         ]);
 
-        console.log('[Medicine] Survey saved successfully');
-
-        // Add items to cart one by one
-        console.log('[Medicine] Adding products to cart...');
-
         for (const id of selectedItems) {
           try {
-            console.log(`[Medicine] Adding product ${id} to cart`);
-
             const medicine = medicines.find((m) => m.id === id);
 
             await updateCart(sessionUuid, {
@@ -216,22 +173,17 @@ const Survey: React.FC = () => {
               purchase_type: 'buy_now',
               price: medicine?.price || 0,
             });
-
-            console.log(`[Medicine] Product ${id} added successfully`);
           } catch (itemError) {
             console.error(`[Medicine] Failed to add product ${id}:`, itemError);
           }
         }
 
-        console.log('[Medicine] All products processed');
         await new Promise((resolve) => setTimeout(resolve, 500));
       } catch (err) {
         console.error('[Medicine] Error saving before skip:', err);
-        // Don't block navigation even if save fails
       }
     }
 
-    // Navigate to next page
     navigate('/products/refill/survey/skincare');
   };
 
@@ -241,14 +193,12 @@ const Survey: React.FC = () => {
   const filteredMedicines = (() => {
     if (activeCategory === 'All') return medicines;
 
-    // Find the active category object
     const category = rawCategories.find(
       (cat: any) => cat.name === activeCategory,
     );
 
     if (!category) return [];
 
-    // 🔥 SPECIAL RULE FOR CHRONIC
     if (category.code?.toLowerCase() === 'chronic' && selectedCondition) {
       const matchingSubcategory = category.subcategories.find(
         (sub: any) => sub.name.toLowerCase() === selectedCondition,
@@ -267,7 +217,6 @@ const Survey: React.FC = () => {
       }));
     }
 
-    // ✅ Normal category behavior
     return category.subcategories.flatMap((sub: any) =>
       sub.products.map((item: any) => ({
         id: item.id,

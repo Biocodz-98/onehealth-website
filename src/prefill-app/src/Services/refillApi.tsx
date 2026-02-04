@@ -187,6 +187,8 @@ interface RefillContextType {
   submitFeedback: (feedback: FeedbackRequest) => Promise<FeedbackResponse>;
   getFeedback: () => Promise<FeedbackListResponse>;
   updateCart: (sessionId: string, item: CartItem) => Promise<any>;
+  clearCart: () => Promise<void>;
+  removeCartItem: (cartItemId: number) => Promise<void>;
   clearSession: () => void;
 }
 
@@ -331,6 +333,24 @@ class RefillAPIService {
       {
         method: 'PATCH',
         body: JSON.stringify(item),
+      },
+    );
+  }
+
+  async clearCart(sessionUuid: string) {
+    return this.request<{ success: boolean }>(
+      `/sessions/${sessionUuid}/cart-items`,
+      {
+        method: 'DELETE',
+      },
+    );
+  }
+
+  async removeCartItem(sessionUuid: string, cartItemId: number) {
+    return this.request<{ success: boolean }>(
+      `/sessions/${sessionUuid}/cart-items/${cartItemId}`,
+      {
+        method: 'DELETE',
       },
     );
   }
@@ -511,6 +531,38 @@ const RefillProvider = ({ children }: { children: ReactNode }) => {
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Failed to add to cart';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const clearCart = async () => {
+    if (!sessionUuid) throw new Error('No active session');
+    setIsLoading(true);
+    setError(null);
+    try {
+      await apiService.clearCart(sessionUuid);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to clear cart';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const removeCartItem = async (cartItemId: number) => {
+    if (!sessionUuid) throw new Error('No active session');
+    setIsLoading(true);
+    setError(null);
+    try {
+      await apiService.removeCartItem(sessionUuid, cartItemId);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to remove cart item';
       setError(message);
       throw err;
     } finally {
@@ -818,6 +870,8 @@ const RefillProvider = ({ children }: { children: ReactNode }) => {
     getBabyCareProducts,
     updateCart,
     getCart,
+    clearCart,
+    removeCartItem,
     submitFeedback,
     getFeedback,
   };
