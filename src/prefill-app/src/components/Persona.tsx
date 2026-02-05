@@ -27,7 +27,8 @@ const WellnessPersona: React.FC = () => {
   const [hasFetchedPersona, setHasFetchedPersona] = useState(false);
 
   useEffect(() => {
-    if (hasFetchedPersona) {
+    // Prevent multiple fetches OR if we already have the data
+    if (hasFetchedPersona || (personaType && items.length > 0)) {
       console.log('Persona already loaded, skipping...');
       return;
     }
@@ -39,16 +40,24 @@ const WellnessPersona: React.FC = () => {
         console.log('=== LOADING PERSONA ===');
         console.log('Session UUID:', sessionUuid);
 
-        // Get persona name
-        const personaData = (await getPersonaData()) as any;
-        console.log('Persona data received:', personaData);
+        // Get persona name - wrap in try-catch to handle API errors
+        try {
+          const personaData = (await getPersonaData()) as any;
+          console.log('Persona data received:', personaData);
 
-        const personaName =
-          personaData?.persona_name || personaData?.persona || '';
-        setPersonaType(personaName);
-        console.log('Persona type:', personaName);
+          const personaName =
+            personaData?.persona_name || personaData?.persona || '';
+          setPersonaType(personaName);
+          console.log('Persona type:', personaName);
+        } catch (personaError) {
+          console.error('Failed to fetch persona name:', personaError);
+          // If we already have personaType in state, don't fail completely
+          if (!personaType) {
+            throw personaError;
+          }
+        }
 
-        //fetch from cart API to get the latest products
+        // ALWAYS fetch from cart API to get the latest products
         if (sessionUuid) {
           const cartData = (await getCart()) as any;
           console.log('Cart data received:', cartData);
@@ -66,7 +75,7 @@ const WellnessPersona: React.FC = () => {
 
           console.log('Cart items extracted:', cartItems);
 
-          // Get cached products for enrichment
+          // Get cached products for additional data (images, dosage, etc.)
           const cachedProductsJson = localStorage.getItem(
             `cart_products_${sessionUuid}`,
           );
@@ -113,7 +122,6 @@ const WellnessPersona: React.FC = () => {
                 item.id?.toString() ||
                 `item-${index}`;
 
-              // Find matching product from cache for additional data
               const cachedProduct = cachedProducts.find(
                 (p) => p.id.toString() === productId,
               );
@@ -141,8 +149,7 @@ const WellnessPersona: React.FC = () => {
 
         setHasFetchedPersona(true);
       } catch (err) {
-        console.error('Failed to load persona:', err);
-
+        console.error(' Failed to load persona:', err);
         setPersonaType('');
         setItems([]);
         setHasFetchedPersona(true);
@@ -152,17 +159,29 @@ const WellnessPersona: React.FC = () => {
     };
 
     loadPersona();
-  }, [hasFetchedPersona, sessionUuid, getPersonaData, getCart]);
+  }, [
+    hasFetchedPersona,
+    personaType,
+    items.length,
+    sessionUuid,
+    getPersonaData,
+    getCart,
+  ]);
 
   const handleShareWhatsApp = async () => {
     try {
       await submitConsent(true);
+
+      // Mark that consent has been submitted
+      localStorage.setItem(`consent_submitted_${sessionUuid}`, 'true');
+
       const message = encodeURIComponent(
         `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours.`,
       );
       window.open(`https://wa.me/?text=${message}`, '_blank');
     } catch (err) {
       console.error('Failed to submit consent:', err);
+      // Still allow sharing even if consent fails
       const message = encodeURIComponent(
         `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours.`,
       );
@@ -173,6 +192,10 @@ const WellnessPersona: React.FC = () => {
   const handleShareTwitter = async () => {
     try {
       await submitConsent(true);
+
+      // Mark that consent has been submitted
+      localStorage.setItem(`consent_submitted_${sessionUuid}`, 'true');
+
       const tweetText = encodeURIComponent(
         `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours.`,
       );
@@ -182,7 +205,6 @@ const WellnessPersona: React.FC = () => {
       );
     } catch (err) {
       console.error('Failed to submit consent:', err);
-      // Still allow sharing even if consent fails
       const tweetText = encodeURIComponent(
         `My 2026 wellness vibe is ${personaType}, visit https://onehealthng.com/products/refill to check yours.`,
       );
