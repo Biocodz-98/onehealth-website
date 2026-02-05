@@ -27,7 +27,6 @@ const WellnessPersona: React.FC = () => {
   const [hasFetchedPersona, setHasFetchedPersona] = useState(false);
 
   useEffect(() => {
-    // Prevent multiple fetches
     if (hasFetchedPersona) {
       console.log('Persona already loaded, skipping...');
       return;
@@ -45,83 +44,106 @@ const WellnessPersona: React.FC = () => {
         console.log('Persona data received:', personaData);
 
         const personaName =
-          personaData?.persona_name || personaData?.persona || 'Consistent';
+          personaData?.persona_name || personaData?.persona || '';
         setPersonaType(personaName);
         console.log('Persona type:', personaName);
 
-        // Get cached products first (more reliable)
-        const cachedProductsJson = localStorage.getItem(
-          `cart_products_${sessionUuid}`,
-        );
+        //fetch from cart API to get the latest products
+        if (sessionUuid) {
+          const cartData = (await getCart()) as any;
+          console.log('Cart data received:', cartData);
 
-        if (cachedProductsJson) {
-          console.log('Found cached products');
-          const cachedProducts = JSON.parse(cachedProductsJson);
+          // Handle different cart data structures
+          let cartItems: any[] = [];
 
-          const mappedItems: PersonaItem[] = cachedProducts.map(
-            (item: any, index: number) => ({
-              id: item.id?.toString() || `item-${index}`,
-              name: item.name || 'Unknown Product',
-              dosage: item.dosage || '',
-              price: item.price || 0,
-              image: item.image || '/prefill-images/medicine bottle.svg',
-            }),
+          if (Array.isArray(cartData)) {
+            cartItems = cartData;
+          } else if (cartData?.items && Array.isArray(cartData.items)) {
+            cartItems = cartData.items;
+          } else if (cartData?.data && Array.isArray(cartData.data)) {
+            cartItems = cartData.data;
+          }
+
+          console.log('Cart items extracted:', cartItems);
+
+          // Get cached products for enrichment
+          const cachedProductsJson = localStorage.getItem(
+            `cart_products_${sessionUuid}`,
           );
+          let cachedProducts: any[] = [];
 
-          console.log('Mapped items from cache:', mappedItems);
-          setItems(mappedItems);
-        } else {
-          // Fallback: Try to get from cart API
-          console.log('No cached products, fetching from cart...');
-
-          if (sessionUuid) {
-            const cartData = (await getCart()) as any;
-            console.log('Cart data received:', cartData);
-
-            // Handle different cart data structures
-            let cartItems: any[] = [];
-
-            if (Array.isArray(cartData)) {
-              cartItems = cartData;
-            } else if (cartData?.items && Array.isArray(cartData.items)) {
-              cartItems = cartData.items;
-            } else if (cartData?.data && Array.isArray(cartData.data)) {
-              cartItems = cartData.data;
-            }
-
-            console.log('Cart items extracted:', cartItems);
-
-            // Map cart items to PersonaItem format
-            const mappedItems: PersonaItem[] = cartItems.map(
-              (item: any, index: number) => {
-                const productId =
-                  item.product_id?.toString() ||
-                  item.id?.toString() ||
-                  `item-${index}`;
-
-                return {
-                  id: productId,
-                  name: item.product_name || item.name || 'Unknown Product',
-                  dosage: item.dosage || '',
-                  price: item.amount || item.price || 0,
-                  image:
-                    item.product_image ||
-                    item.image ||
-                    '/prefill-images/medicine bottle.svg',
-                };
-              },
+          if (cachedProductsJson) {
+            cachedProducts = JSON.parse(cachedProductsJson);
+            console.log(
+              'Found cached products for enrichment:',
+              cachedProducts,
+            );
+          } else {
+            // Try old cache format as fallback
+            const cachedMedicines = JSON.parse(
+              localStorage.getItem(`medicines_${sessionUuid}`) || '[]',
+            );
+            const cachedSkincares = JSON.parse(
+              localStorage.getItem(`skincares_${sessionUuid}`) || '[]',
+            );
+            const cachedBabycares = JSON.parse(
+              localStorage.getItem(`babycares_${sessionUuid}`) || '[]',
             );
 
-            console.log('Mapped items from cart:', mappedItems);
-            setItems(mappedItems);
+            cachedProducts = [
+              ...cachedMedicines,
+              ...cachedSkincares,
+              ...cachedBabycares,
+            ];
+            console.log(
+              'Using old cache format for enrichment:',
+              cachedProducts,
+            );
           }
+
+          // Map cart items to PersonaItem format, enriching with cached data
+          const mappedItems: PersonaItem[] = cartItems
+            .filter((item: any) => {
+              const quantity = item.quantity || 0;
+              return quantity > 0;
+            })
+            .map((item: any, index: number) => {
+              const productId =
+                item.product_id?.toString() ||
+                item.id?.toString() ||
+                `item-${index}`;
+
+              // Find matching product from cache for additional data
+              const cachedProduct = cachedProducts.find(
+                (p) => p.id.toString() === productId,
+              );
+
+              return {
+                id: productId,
+                name:
+                  cachedProduct?.name ||
+                  item.product_name ||
+                  item.name ||
+                  'Unknown Product',
+                dosage: cachedProduct?.dosage || item.dosage || '',
+                price: cachedProduct?.price || item.amount || item.price || 0,
+                image:
+                  cachedProduct?.image ||
+                  item.product_image ||
+                  item.image ||
+                  '/prefill-images/medicine bottle.svg',
+              };
+            });
+
+          console.log('Mapped items for persona:', mappedItems);
+          setItems(mappedItems);
         }
 
         setHasFetchedPersona(true);
       } catch (err) {
-        console.error('❌ Failed to load persona:', err);
-        // Fallback to default
-        setPersonaType('Consistent');
+        console.error('Failed to load persona:', err);
+
+        setPersonaType('');
         setItems([]);
         setHasFetchedPersona(true);
       } finally {
@@ -130,7 +152,7 @@ const WellnessPersona: React.FC = () => {
     };
 
     loadPersona();
-  }, [hasFetchedPersona]); // Removed dependencies that cause re-renders
+  }, [hasFetchedPersona, sessionUuid, getPersonaData, getCart]);
 
   const handleShareWhatsApp = async () => {
     try {

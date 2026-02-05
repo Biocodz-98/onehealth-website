@@ -258,11 +258,11 @@ const CartItem: React.FC<CartItemProps> = ({
 }) => {
   return (
     <div className="border-b border-gray-200 py-6">
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
         <img
           src={item.image}
           alt={item.name}
-          className="w-32 h-32 object-contain rounded-lg "
+          className="w-24 h-24 sm:w-32 sm:h-32 object-contain rounded-lg mx-auto sm:mx-0"
           onError={(e) => {
             e.currentTarget.src =
               'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="80"%3E%3Crect fill="%23FED7AA" width="80" height="80"/%3E%3C/svg%3E';
@@ -270,8 +270,8 @@ const CartItem: React.FC<CartItemProps> = ({
         />
 
         <div className="flex-1">
-          <div className="flex justify-between items-start">
-            <div>
+          <div className="flex justify-between items-start gap-2">
+            <div className="flex-1 min-w-0">
               <h3
                 className="font-medium text-[#000000]"
                 style={{
@@ -297,49 +297,51 @@ const CartItem: React.FC<CartItemProps> = ({
               </p>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2 flex-shrink-0">
               <button
                 onClick={() => onToggleFavorite(item.id)}
-                className={`p-2 rounded-full transition-colors ${
+                className={`p-1.5 sm:p-2 rounded-full transition-colors ${
                   isFavorited
                     ? 'bg-red-50 hover:bg-red-100'
                     : 'hover:bg-gray-100'
                 }`}
               >
                 <Heart
-                  className={`w-5 h-5 transition-colors ${
+                  className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors ${
                     isFavorited ? 'text-red-500 fill-red-500' : 'text-gray-600'
                   }`}
                 />
               </button>
               <button
                 onClick={() => onRemove(item.id)}
-                className="p-2 hover:bg-gray-100 rounded-full"
+                className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full"
               >
-                <Trash2 className="w-5 h-5 text-gray-600" />
+                <Trash2 className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
               </button>
             </div>
           </div>
 
-          <div className="flex items-center justify-between mt-4">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-3 mt-3 sm:mt-4">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 onClick={() => onQuantityChange(item.id, item.quantity - 1)}
-                className="w-8 h-8 border rounded-md flex items-center justify-center hover:bg-gray-50"
+                className="w-7 h-7 sm:w-8 sm:h-8 border rounded-md flex items-center justify-center hover:bg-gray-50 text-sm sm:text-base"
               >
                 -
               </button>
-              <span className="w-8 text-center">{item.quantity}</span>
+              <span className="w-6 sm:w-8 text-center text-sm sm:text-base">
+                {item.quantity}
+              </span>
               <button
                 onClick={() => onQuantityChange(item.id, item.quantity + 1)}
-                className="w-8 h-8 border rounded-md flex items-center justify-center hover:bg-gray-50"
+                className="w-7 h-7 sm:w-8 sm:h-8 border rounded-md flex items-center justify-center hover:bg-gray-50 text-sm sm:text-base"
               >
                 +
               </button>
             </div>
 
             <div
-              className="text-lg font-medium text-[#000000]"
+              className="text-base sm:text-lg font-medium text-[#000000]"
               style={{
                 fontFamily: 'Manrope, sans-serif',
                 fontWeight: 500,
@@ -351,7 +353,7 @@ const CartItem: React.FC<CartItemProps> = ({
             </div>
           </div>
 
-          <div className="mt-4 flex items-center gap-3">
+          <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -360,7 +362,7 @@ const CartItem: React.FC<CartItemProps> = ({
                 className="w-4 h-4 text-green-600 rounded border-gray-300 focus:ring-green-500"
               />
               <span
-                className="text-sm text-[#323232]"
+                className="text-xs sm:text-sm text-[#323232]"
                 style={{
                   fontFamily: 'Lato, sans-serif',
                   fontWeight: 400,
@@ -372,13 +374,13 @@ const CartItem: React.FC<CartItemProps> = ({
               </span>
             </label>
 
-            <div className="relative">
+            <div className="relative w-full sm:w-auto">
               <select
                 value={item.refillDays}
                 onChange={(e) =>
                   onRefillDaysChange(item.id, parseInt(e.target.value))
                 }
-                className="pl-3 pr-8 py-1 text-sm border border-gray-300 rounded-md appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full sm:w-auto pl-3 pr-8 py-1.5 sm:py-1 text-xs sm:text-sm border border-gray-300 rounded-md appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 style={{
                   fontFamily: 'Lato, sans-serif',
                   fontWeight: 400,
@@ -896,15 +898,15 @@ const PharmacyCart: React.FC = () => {
     );
   }
   return (
-    <div className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16">
+    <div className="min-h-screen bg-white px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-12 lg:px-20 lg:py-16">
       {/* Back Button */}
       <button
         onClick={() => navigate('/products/refill/product-selection')}
-        className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-8 transition-colors"
+        className="flex items-center gap-2 text-gray-700 hover:text-gray-900 mb-6 sm:mb-8 transition-colors"
       >
-        <ArrowLeft className="w-5 h-5" />
+        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         <span
-          className="text-base font-medium"
+          className="text-sm sm:text-base font-medium"
           style={{ fontFamily: 'Manrope, sans-serif' }}
         >
           Back
@@ -913,23 +915,25 @@ const PharmacyCart: React.FC = () => {
 
       {/* Error Display */}
       {error && (
-        <div className="max-w-7xl mx-auto mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
           <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}
 
       {/* Step Indicator */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <ProgressSteps currentStep={currentStep} />
+        <div className="overflow-x-auto pb-4">
+          <ProgressSteps currentStep={currentStep} />
+        </div>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex justify-between items-center mb-6">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 sm:mb-6">
                 <div>
                   <h2
-                    className="text-2xl font-bold text-[#2b2b2b]"
+                    className="text-xl sm:text-2xl font-bold text-[#2b2b2b]"
                     style={{
                       fontFamily: 'Familjen Grotesk, sans-serif',
                       fontWeight: 700,
@@ -939,7 +943,7 @@ const PharmacyCart: React.FC = () => {
                     Cart
                   </h2>
                   <p
-                    className="text-gray-600 mt-1"
+                    className="text-sm sm:text-base text-gray-600 mt-1"
                     style={{
                       fontFamily: 'Manrope, sans-serif',
                       lineHeight: 1.5,
@@ -951,7 +955,7 @@ const PharmacyCart: React.FC = () => {
                 </div>
                 <button
                   onClick={handleEmptyCart}
-                  className="text-[#3da647] text-sm font-medium"
+                  className="text-[#3da647] text-sm font-medium self-start sm:self-auto hover:text-[#2e8a39] transition-colors"
                   style={{
                     fontFamily: 'Manrope, sans-serif',
                     lineHeight: 1.5,
@@ -1003,14 +1007,14 @@ const PharmacyCart: React.FC = () => {
 
           {/* Summary Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-4">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 lg:sticky lg:top-4">
               <button
                 onClick={() => setShowCoupons(!showCoupons)}
-                className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg mb-6 hover:bg-gray-50"
+                className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg mb-4 sm:mb-6 hover:bg-gray-50"
               >
                 <div className="flex items-center gap-2">
                   <svg
-                    className="w-5 h-5 text-green-600"
+                    className="w-4 h-4 sm:w-5 sm:h-5 text-green-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1023,7 +1027,7 @@ const PharmacyCart: React.FC = () => {
                     />
                   </svg>
                   <span
-                    className="text-sm font-medium text-[#323232] "
+                    className="text-xs sm:text-sm font-medium text-[#323232] "
                     style={{
                       fontFamily: 'Manrope, sans-serif',
                       fontWeight: 400,
@@ -1042,7 +1046,7 @@ const PharmacyCart: React.FC = () => {
               </button>
 
               <h3
-                className="text-lg font-bold mb-4"
+                className="text-base sm:text-lg font-bold mb-3 sm:mb-4"
                 style={{
                   fontFamily: 'Familjen Grotesk, sans-serif',
                   fontWeight: 700,
@@ -1052,9 +1056,9 @@ const PharmacyCart: React.FC = () => {
                 Summary
               </h3>
 
-              <div className="space-y-3 mb-6">
+              <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
                 <div
-                  className="flex justify-between text-[#575757]"
+                  className="flex justify-between text-[#575757] text-sm sm:text-base"
                   style={{
                     fontFamily: 'Manrope, sans-serif',
                     fontWeight: 400,
@@ -1065,16 +1069,16 @@ const PharmacyCart: React.FC = () => {
                   <span>Subtotal</span>
                   <span>₦{subtotal.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-[#575757]">
+                <div className="flex justify-between text-[#575757] text-sm sm:text-base">
                   <span>Shipping</span>
                   <span>₦{shipping.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-[#575757]">
+                <div className="flex justify-between text-[#575757] text-sm sm:text-base">
                   <span>Discount</span>
                   <span>₦{discount.toFixed(2)}</span>
                 </div>
                 <div
-                  className="border-t pt-3 flex justify-between text-lg font-bold"
+                  className="border-t pt-2 sm:pt-3 flex justify-between text-base sm:text-lg font-bold"
                   style={{
                     fontFamily: 'Manrope, sans-serif',
                     fontWeight: 700,
@@ -1090,7 +1094,7 @@ const PharmacyCart: React.FC = () => {
               <button
                 onClick={handleProceedToCheckout}
                 disabled={isLoading || cartItems.length === 0}
-                className="w-full bg-[#3da647] text-white py-3 rounded-3xl font-medium hover:bg-[#2e8a39] transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#3da647] text-white py-2.5 sm:py-3 rounded-3xl font-medium hover:bg-[#2e8a39] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 style={{
                   fontFamily: 'Manrope, sans-serif',
                   fontWeight: 500,
