@@ -36,19 +36,13 @@ const WellnessPersona: React.FC = () => {
     const loadPersona = async () => {
       try {
         setLoadingPersona(true);
-
-        console.log('=== LOADING PERSONA ===');
-        console.log('Session UUID:', sessionUuid);
-
         // Get persona name - wrap in try-catch to handle API errors
         try {
           const personaData = (await getPersonaData()) as any;
           console.log('Persona data received:', personaData);
 
-          const personaName =
-            personaData?.persona_name || personaData?.persona || '';
+          const personaName = personaData?.persona_name || personaData?.persona || '';
           setPersonaType(personaName);
-          console.log('Persona type:', personaName);
         } catch (personaError) {
           console.error('Failed to fetch persona name:', personaError);
           // If we already have personaType in state, don't fail completely
@@ -60,7 +54,6 @@ const WellnessPersona: React.FC = () => {
         // ALWAYS fetch from cart API to get the latest products
         if (sessionUuid) {
           const cartData = (await getCart()) as any;
-          console.log('Cart data received:', cartData);
 
           // Handle different cart data structures
           let cartItems: any[] = [];
@@ -72,8 +65,6 @@ const WellnessPersona: React.FC = () => {
           } else if (cartData?.data && Array.isArray(cartData.data)) {
             cartItems = cartData.data;
           }
-
-          console.log('Cart items extracted:', cartItems);
 
           // Get cached products for additional data (images, dosage, etc.)
           const cachedProductsJson = localStorage.getItem(
@@ -104,10 +95,6 @@ const WellnessPersona: React.FC = () => {
               ...cachedSkincares,
               ...cachedBabycares,
             ];
-            console.log(
-              'Using old cache format for enrichment:',
-              cachedProducts,
-            );
           }
 
           // Map cart items to PersonaItem format, enriching with cached data
@@ -143,13 +130,11 @@ const WellnessPersona: React.FC = () => {
               };
             });
 
-          console.log('Mapped items for persona:', mappedItems);
           setItems(mappedItems);
         }
 
         setHasFetchedPersona(true);
       } catch (err) {
-        console.error(' Failed to load persona:', err);
         setPersonaType('');
         setItems([]);
         setHasFetchedPersona(true);
