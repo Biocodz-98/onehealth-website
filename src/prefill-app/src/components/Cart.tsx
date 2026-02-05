@@ -617,7 +617,12 @@ const PharmacyCart: React.FC = () => {
                 'Unknown Product',
               dosage:
                 cachedProduct?.dosage || item.dosage || '10mg | 10 capsules',
-              price: cachedProduct?.price || item.amount || item.price || 0,
+              price:
+                cachedProduct?.price ||
+                item.unit_price ||
+                item.amount ||
+                item.price ||
+                0,
               image:
                 cachedProduct?.image ||
                 item.product_image ||
@@ -636,7 +641,7 @@ const PharmacyCart: React.FC = () => {
         setCartItems(items);
         setHasFetchedCart(true);
       } catch (err) {
-        console.error('❌ Failed to fetch cart:', err);
+        console.error('Failed to fetch cart:', err);
         setCartItems([]);
       } finally {
         setIsLoadingCart(false);
@@ -796,10 +801,87 @@ const PharmacyCart: React.FC = () => {
     }
   };
 
-  const handleProceedToCheckout = () => {
-    navigate('/products/refill/checkout', {
-      state: { cartItems, sessionUuid },
-    });
+  const handleProceedToCheckout = async () => {
+    try {
+      // Fetch fresh cart data before proceeding to checkout
+      const freshCartData: any = await getCart();
+
+      // Get cached products
+      const cachedProductsJson = localStorage.getItem(
+        `cart_products_${sessionUuid}`,
+      );
+      let cachedProducts: any[] = [];
+
+      if (cachedProductsJson) {
+        cachedProducts = JSON.parse(cachedProductsJson);
+      } else {
+        // Fallback to old cache format
+        const cachedMedicines = JSON.parse(
+          localStorage.getItem(`medicines_${sessionUuid}`) || '[]',
+        );
+        const cachedSkincares = JSON.parse(
+          localStorage.getItem(`skincares_${sessionUuid}`) || '[]',
+        );
+        const cachedBabycares = JSON.parse(
+          localStorage.getItem(`babycares_${sessionUuid}`) || '[]',
+        );
+        cachedProducts = [
+          ...cachedMedicines,
+          ...cachedSkincares,
+          ...cachedBabycares,
+        ];
+      }
+
+      // Map fresh cart data with updated quantities
+      const freshCartItems: CartItem[] = freshCartData
+        .filter((item: any) => (item.quantity || 0) > 0)
+        .map((item: any, index: number) => {
+          const productId = item.product_id?.toString() || item.id?.toString();
+          const cachedProduct = cachedProducts.find(
+            (p) => p.id.toString() === productId,
+          );
+
+          return {
+            id: productId || `unknown-${index}`,
+            cartItemId: item.id,
+            name:
+              cachedProduct?.name ||
+              item.product_name ||
+              item.name ||
+              'Unknown Product',
+            dosage:
+              cachedProduct?.dosage || item.dosage || '10mg | 10 capsules',
+            price: cachedProduct?.price || item.amount || item.price || 0,
+            image:
+              cachedProduct?.image ||
+              item.product_image ||
+              item.image ||
+              '/prefill-images/medicine bottle.svg',
+            quantity: item.quantity || 1,
+            autoRefill: item.purchase_type === 'subscription',
+            refillDays: item.refill_days || 30,
+          };
+        });
+
+      // console.log('=== NAVIGATING TO CHECKOUT ===');
+      // console.log('Fresh cart items for checkout:', freshCartItems);
+      // console.log('Item details:');
+      // freshCartItems.forEach((item) => {
+      //   console.log(
+      //     `${item.name}: price=${item.price}, qty=${item.quantity}, total=${item.price * item.quantity}`,
+      //   );
+      // });
+
+      navigate('/products/refill/checkout', {
+        state: { cartItems: freshCartItems, sessionUuid },
+      });
+    } catch (err) {
+      console.error('Failed to fetch fresh cart data:', err);
+      // Fallback to current cart items if fetch fails
+      navigate('/products/refill/checkout', {
+        state: { cartItems, sessionUuid },
+      });
+    }
   };
 
   // Loading State

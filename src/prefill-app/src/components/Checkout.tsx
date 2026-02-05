@@ -475,7 +475,7 @@ const CheckoutPage: React.FC = () => {
                         fontWeight: 500,
                       }}
                     >
-                      ₦{item.price.toLocaleString()}
+                      ₦{(item.price * item.quantity).toLocaleString()}
                     </p>
                   </div>
                 </div>
