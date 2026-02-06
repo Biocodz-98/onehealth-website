@@ -41,7 +41,8 @@ const WellnessPersona: React.FC = () => {
           const personaData = (await getPersonaData()) as any;
           console.log('Persona data received:', personaData);
 
-          const personaName = personaData?.persona_name || personaData?.persona || '';
+          const personaName =
+            personaData?.persona_name || personaData?.persona || '';
           setPersonaType(personaName);
         } catch (personaError) {
           console.error('Failed to fetch persona name:', personaError);
