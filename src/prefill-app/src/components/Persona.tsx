@@ -114,6 +114,13 @@ const WellnessPersona: React.FC = () => {
                 (p) => p.id.toString() === productId,
               );
 
+              // Parse price from cart API (comes as string like "500.00")
+              const cartPrice = item.amount || item.price;
+              const parsedPrice =
+                typeof cartPrice === 'string'
+                  ? parseFloat(cartPrice)
+                  : cartPrice;
+
               return {
                 id: productId,
                 name:
@@ -122,7 +129,8 @@ const WellnessPersona: React.FC = () => {
                   item.name ||
                   'Unknown Product',
                 dosage: cachedProduct?.dosage || item.dosage || '',
-                price: cachedProduct?.price || item.amount || item.price || 0,
+
+                price: parsedPrice || cachedProduct?.price || 0,
                 image:
                   cachedProduct?.image ||
                   item.product_image ||
@@ -136,6 +144,7 @@ const WellnessPersona: React.FC = () => {
 
         setHasFetchedPersona(true);
       } catch (err) {
+        console.error('Failed to load persona data:', err);
         setPersonaType('');
         setItems([]);
         setHasFetchedPersona(true);
