@@ -9,6 +9,7 @@ interface PersonaItem {
   dosage?: string;
   price?: number;
   image: string;
+  quantity?: number;
 }
 
 const WellnessPersona: React.FC = () => {
@@ -114,7 +115,7 @@ const WellnessPersona: React.FC = () => {
                 (p) => p.id.toString() === productId,
               );
 
-              // Parse price from cart API (comes as string like "500.00")
+              // Parse price from cart API
               const cartPrice = item.amount || item.price;
               const parsedPrice =
                 typeof cartPrice === 'string'
@@ -129,13 +130,13 @@ const WellnessPersona: React.FC = () => {
                   item.name ||
                   'Unknown Product',
                 dosage: cachedProduct?.dosage || item.dosage || '',
-
                 price: parsedPrice || cachedProduct?.price || 0,
                 image:
                   cachedProduct?.image ||
                   item.product_image ||
                   item.image ||
                   '/prefill-images/medicine bottle.svg',
+                quantity: item.quantity || 1,
               };
             });
 
@@ -404,7 +405,10 @@ const WellnessPersona: React.FC = () => {
                                 fontWeight: 600,
                               }}
                             >
-                              ₦{item.price.toLocaleString()}
+                              ₦
+                              {(
+                                (item.price || 0) * (item.quantity || 1)
+                              ).toLocaleString()}
                             </p>
                           )}
                         </div>
