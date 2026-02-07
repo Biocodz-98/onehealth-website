@@ -121,12 +121,12 @@ const PaymentSuccess: React.FC = () => {
 
   const handleTrackOrder = () => {
     // Navigate to orders page or home
-    navigate('/');
+    navigate('/products/refill/track-order');
   };
 
   return (
     <div
-      className="min-h-screen bg-gray-50 px-8 py-12 lg:px-20 lg:py-16"
+      className="min-h-screen bg-white px-8 py-12 lg:px-20 lg:py-16"
       style={{ fontFamily: 'Manrope, sans-serif' }}
     >
       <ProgressBar currentStep={8} totalSteps={9} />

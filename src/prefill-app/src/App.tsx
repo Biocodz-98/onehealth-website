@@ -16,6 +16,7 @@ import CheckoutPage from './components/Checkout.tsx';
 import PaymentSuccess from './components/Payment';
 import PaymentFailed from './components/PaymentFail';
 import WellnessPersona from './components/Persona';
+import TrackOrder from './components/TrackOrder';
 
 // Home Page Component
 function HomePage() {
@@ -91,6 +92,10 @@ function WellnessPersonaPage() {
   return <WellnessPersona />;
 }
 
+function TrackOrderPage() {
+  return <TrackOrder />;
+}
+
 function RefillApp() {
   return (
     <Routes>
@@ -110,6 +115,7 @@ function RefillApp() {
       <Route path="payment-success" element={<PaymentSuccessPage />} />
       <Route path="payment-failed" element={<PaymentFailedPage />} />
       <Route path="persona" element={<WellnessPersonaPage />} />
+      <Route path="track-order" element={<TrackOrderPage />} />
     </Routes>
   );
 }

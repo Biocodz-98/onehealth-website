@@ -96,8 +96,12 @@ const RemindMeLaterPersona: React.FC = () => {
     }
   };
 
+  const handleGoToShopping = () => {
+    navigate('/products/refill/product-selection');
+  };
+
   const handleGoToHome = () => {
-    navigate('/products/refill');
+    navigate('/');
   };
 
   // Loading state
@@ -156,13 +160,21 @@ const RemindMeLaterPersona: React.FC = () => {
               {personaType}
             </p>
 
-            {/* Action Button */}
+            {/* Action Buttons */}
+            <button
+              onClick={handleGoToShopping}
+              className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full text-base font-semibold transition-colors"
+              style={{ fontFamily: 'Manrope, sans-serif' }}
+            >
+              Continue Shopping
+            </button>
+
             <button
               onClick={handleGoToHome}
               className="bg-[#3da467] hover:bg-green-700 text-white px-8 py-3 rounded-full text-base font-semibold transition-colors"
               style={{ fontFamily: 'Manrope, sans-serif' }}
             >
-              Continue Shopping
+              Back to Home
             </button>
           </div>
 
