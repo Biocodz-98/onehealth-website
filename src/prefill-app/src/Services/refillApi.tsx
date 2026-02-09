@@ -146,6 +146,22 @@ interface FeedbackListResponse {
   feedbacks: FeedbackResponse[];
 }
 
+interface TrackingEvent {
+  date: string;
+  status: string;
+  location: string;
+  description: string;
+}
+
+interface TrackOrderResponse {
+  batch_id: string;
+  order_id?: string;
+  status: string;
+  estimated_delivery?: string;
+  current_location?: string;
+  tracking_history?: TrackingEvent[];
+}
+
 interface RefillContextType {
   sessionUuid: string | null;
   user: User | null;
@@ -187,6 +203,7 @@ interface RefillContextType {
   submitFeedback: (feedback: FeedbackRequest) => Promise<FeedbackResponse>;
   getFeedback: () => Promise<FeedbackListResponse>;
   updateCart: (sessionId: string, item: CartItem) => Promise<any>;
+  trackOrder: (batchId: string) => Promise<TrackOrderResponse>;
   clearCart: () => Promise<void>;
   removeCartItem: (cartItemId: number) => Promise<void>;
   clearSession: () => void;
@@ -390,6 +407,12 @@ class RefillAPIService {
         body: JSON.stringify({ consent }),
       },
     );
+  }
+
+  async trackOrder(batchId: string) {
+    return this.request<TrackOrderResponse>(`/track/${batchId}`, {
+      method: 'GET',
+    });
   }
   async submitFeedback(sessionUuid: string, feedback: FeedbackRequest) {
     return this.request<FeedbackResponse>(`/sessions/${sessionUuid}/feedback`, {
@@ -643,6 +666,22 @@ const RefillProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const trackOrder = async (batchId: string): Promise<TrackOrderResponse> => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await apiService.trackOrder(batchId);
+      return response;
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to track order';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const submitConsent = async (consent: boolean) => {
     if (!sessionUuid) throw new Error('No active session');
     setIsLoading(true);
@@ -874,6 +913,7 @@ const RefillProvider = ({ children }: { children: ReactNode }) => {
     removeCartItem,
     submitFeedback,
     getFeedback,
+    trackOrder,
   };
 
   return (
