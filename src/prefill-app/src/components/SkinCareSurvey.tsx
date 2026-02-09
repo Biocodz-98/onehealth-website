@@ -276,23 +276,31 @@ const SurveyComponent: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap gap-3 mb-8">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-colors border ${
-                activeCategory === category
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-white text-[#10071e] hover:bg-gray-100'
-              }`}
-              style={{
-                fontFamily: 'Manrope, sans-serif',
-                fontWeight: 500,
-              }}
-            >
-              {category}
-            </button>
-          ))}
+          {categories.map((category) => {
+            const toTitleCase = (str: string) => {
+              return str
+                .split('-')
+                .map(
+                  (word) =>
+                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+                )
+                .join(' ');
+            };
+
+            return (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`px-5 py-2 rounded-full text-sm font-medium border transition-colors ${
+                  activeCategory === category
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-white text-[#10071e] hover:bg-gray-100'
+                }`}
+              >
+                {toTitleCase(category)}
+              </button>
+            );
+          })}
         </div>
       </div>
 

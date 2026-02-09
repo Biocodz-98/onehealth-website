@@ -50,10 +50,10 @@ export default function Navbar() {
 
   return (
     <>
-      {/* {hasAdvertisement && ( */}
-      <div className="fixed bg-[#10441E] top-0 md:z-50 z-30 h-fit w-full  py-2 flex">
-        <div className="px-4 flex flex-col items-center w-full ">
-          {/* <div className="flex items-center justify-center w-full text-white ">
+      {hasAdvertisement && (
+        <div className="fixed bg-[#10441E] top-0 md:z-50 z-30 h-fit w-full  py-2 flex">
+          <div className="px-4 flex flex-col items-center w-full ">
+            {/* <div className="flex items-center justify-center w-full text-white ">
               <svg
                 width={37}
                 height={36}
@@ -103,13 +103,13 @@ export default function Navbar() {
                 </button>
               </Link>
             </div> */}
-        </div>
-        {/* <RxCross2
+          </div>
+          {/* <RxCross2
 						onClick={() => setHasAdvertisement((prev) => !prev)}
 						className="ml-auto text-3xl md:text-4xl text-red-600 Click here to buy now 👈🏽"
 					/> */}
-      </div>
-      {/* )} */}
+        </div>
+      )}
       <div
         className={cn(
           'fixed bg-background  md:z-50 z-30 inset-0 h-fit flex items-end md:mb-0 mb-5 ',

@@ -27,6 +27,13 @@ const WellnessPersona: React.FC = () => {
   const [loadingPersona, setLoadingPersona] = useState(true);
   const [hasFetchedPersona, setHasFetchedPersona] = useState(false);
 
+  const toTitleCase = (str: string) => {
+    return str
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
   useEffect(() => {
     // Prevent multiple fetches OR if we already have the data
     if (hasFetchedPersona || (personaType && items.length > 0)) {
@@ -307,7 +314,7 @@ const WellnessPersona: React.FC = () => {
                 fontWeight: 700,
               }}
             >
-              {personaType}
+              {toTitleCase(personaType)}
             </p>
 
             {/* Continue Shopping Button */}
@@ -378,7 +385,7 @@ const WellnessPersona: React.FC = () => {
                         {/* Item Image */}
                         <img
                           src={item.image}
-                          alt={item.name}
+                          alt={toTitleCase(item.name)}
                           className="w-10 h-10 object-contain"
                           onError={(e) => {
                             e.currentTarget.src =
@@ -395,7 +402,7 @@ const WellnessPersona: React.FC = () => {
                               fontWeight: 400,
                             }}
                           >
-                            {item.name}
+                            {toTitleCase(item.name)}
                           </p>
                           {item.price && item.price > 0 && (
                             <p
