@@ -19,7 +19,7 @@ interface ShippingAddress {
   street: string;
   city: string;
   state: string;
-  postalCode: string;
+  phone: string;
 }
 
 // Step indicator component
@@ -82,7 +82,7 @@ const CheckoutPage: React.FC = () => {
     street: '',
     city: '',
     state: '',
-    postalCode: '',
+    phone: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -103,13 +103,13 @@ const CheckoutPage: React.FC = () => {
       price: 3000,
       icon: Home,
     },
-    {
-      id: 'express',
-      name: 'Express Delivery',
-      description: 'Delivered between 2 - 3 hrs',
-      price: 6000,
-      icon: Truck,
-    },
+    // {
+    //   id: 'express',
+    //   name: 'Express Delivery',
+    //   description: 'Delivered between 2 - 3 hrs',
+    //   price: 6000,
+    //   icon: Truck,
+    // },
     // {
     //   id: 'pickup',
     //   name: 'Pick up from pharmacy',
@@ -136,7 +136,7 @@ const CheckoutPage: React.FC = () => {
       !shippingAddress.street ||
       !shippingAddress.city ||
       !shippingAddress.state ||
-      !shippingAddress.postalCode
+      !shippingAddress.phone
     ) {
       return setError('Please fill in all shipping information');
     }
@@ -153,7 +153,7 @@ const CheckoutPage: React.FC = () => {
           address: shippingAddress.street,
           city: shippingAddress.city,
           state: shippingAddress.state,
-          postalCode: shippingAddress.postalCode,
+          phone: shippingAddress.phone,
         },
         cart_items: cartItems.map((item) => ({
           product_id: item.id,
@@ -307,10 +307,8 @@ const CheckoutPage: React.FC = () => {
                 <input
                   type="tel"
                   id="phone"
-                  value={shippingAddress.postalCode}
-                  onChange={(e) =>
-                    handleAddressChange('postalCode', e.target.value)
-                  }
+                  value={shippingAddress.phone}
+                  onChange={(e) => handleAddressChange('phone', e.target.value)}
                   placeholder="+234 808 611 0548"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
                   style={{ fontFamily: 'Manrope, sans-serif' }}
