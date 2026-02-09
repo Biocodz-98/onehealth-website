@@ -1,21 +1,21 @@
-import MaxWithWrapper from "./MaxWithWrapper";
-import { Link, NavLink } from "react-router-dom";
+import MaxWithWrapper from './MaxWithWrapper';
+import { NavLink } from 'react-router-dom';
 // import { RxCross2 } from "react-icons/rx";
-import { Icons } from "./Icons";
-import NavItems from "./NavItems";
-import Search from "./search/Search";
-import { MobileNavData } from "./Header/data";
-import Whatsapp from "./Whatsapp";
-import MobileNavItem from "./MobileNavItem";
-import ResourcePage from "./Header/Resource";
-import Popup from "./Popup";
-import Login from "./Login";
-import Product from "./Products";
-import Services from "./Services";
-import Callus from "./Callus";
-import SearchBody from "./SearchBody";
-import useNavbar from "@/hooks/useNavbar";
-import { cn } from "@/lib/utils";
+import { Icons } from './Icons';
+import NavItems from './NavItems';
+import Search from './search/Search';
+import { MobileNavData } from './Header/data';
+import Whatsapp from './Whatsapp';
+import MobileNavItem from './MobileNavItem';
+import ResourcePage from './Header/Resource';
+import Popup from './Popup';
+import Login from './Login';
+import Product from './Products';
+import Services from './Services';
+import Callus from './Callus';
+import SearchBody from './SearchBody';
+import useNavbar from '@/hooks/useNavbar';
+import { cn } from '@/lib/utils';
 
 export default function Navbar() {
   const {
@@ -50,10 +50,10 @@ export default function Navbar() {
 
   return (
     <>
-      {hasAdvertisement && (
-        <div className="fixed bg-[#10441E] top-0 md:z-50 z-30 h-fit w-full  py-2 flex">
-          <div className="px-4 flex flex-col items-center w-full ">
-            <div className="flex items-center justify-center w-full text-white ">
+      {/* {hasAdvertisement && ( */}
+      <div className="fixed bg-[#10441E] top-0 md:z-50 z-30 h-fit w-full  py-2 flex">
+        <div className="px-4 flex flex-col items-center w-full ">
+          {/* <div className="flex items-center justify-center w-full text-white ">
               <svg
                 width={37}
                 height={36}
@@ -102,18 +102,18 @@ export default function Navbar() {
                   Start Here
                 </button>
               </Link>
-            </div>
-          </div>
-          {/* <RxCross2
+            </div> */}
+        </div>
+        {/* <RxCross2
 						onClick={() => setHasAdvertisement((prev) => !prev)}
 						className="ml-auto text-3xl md:text-4xl text-red-600 Click here to buy now 👈🏽"
 					/> */}
-        </div>
-      )}
+      </div>
+      {/* )} */}
       <div
         className={cn(
-          "fixed bg-background  md:z-50 z-30 inset-0 h-fit flex items-end md:mb-0 mb-5 ",
-          `${hasAdvertisement ? "top-20" : "top-0"}`
+          'fixed bg-background  md:z-50 z-30 inset-0 h-fit flex items-end md:mb-0 mb-5 ',
+          `${hasAdvertisement ? 'top-20' : 'top-0'}`,
         )}
       >
         <MaxWithWrapper className="relative max-w-screen-2xl w-full px-0 md:px-0">
@@ -122,7 +122,7 @@ export default function Navbar() {
               <div className="flex flex-16 items-center relative">
                 {/* mobile nav */}
                 <div className="ml-4 flex flex-col md:flex-row md:items-start items-center lg:ml-0 w-full ">
-                  <NavLink to={"/"} className={"relative"}>
+                  <NavLink to={'/'} className={'relative'}>
                     <Icons.logo className="h-8 w-36" />
                     <span className="opacity-0 absolute">home</span>
                   </NavLink>
@@ -162,7 +162,7 @@ export default function Navbar() {
           <ResourcePage
             setIsHovered={setIsHovered}
             isHovered={isHovered}
-            key={"desktop"}
+            key={'desktop'}
           />
         </MaxWithWrapper>
 
@@ -228,7 +228,7 @@ export default function Navbar() {
       {screenSize.width < 650 && showResourceMobile && (
         <Popup titleHeader="Resources" setOpenPopup={closeAllPopups}>
           <div className="h-full overflow-y-scroll pb-16">
-            <ResourcePage resCls="flex relative p-2" key={"mobile"} />
+            <ResourcePage resCls="flex relative p-2" key={'mobile'} />
           </div>
         </Popup>
       )}
