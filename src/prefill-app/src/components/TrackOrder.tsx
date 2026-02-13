@@ -57,7 +57,12 @@ const TrackOrder: React.FC = () => {
     }
   };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status?: string) => {
+    // Add null/undefined check
+    if (!status) {
+      return <Clock className="w-5 h-5 text-gray-600" />;
+    }
+
     const statusLower = status.toLowerCase();
 
     if (statusLower.includes('confirmed') || statusLower.includes('placed')) {
@@ -93,7 +98,12 @@ const TrackOrder: React.FC = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status?: string) => {
+    // Add null/undefined check
+    if (!status) {
+      return 'bg-gray-50 text-gray-700';
+    }
+
     const statusLower = status.toLowerCase();
 
     if (
@@ -218,7 +228,7 @@ const TrackOrder: React.FC = () => {
                       fontFamily: 'Familjen Grotesk, sans-serif',
                     }}
                   >
-                    {orderStatus.batch_id}
+                    {orderStatus.batch_id || 'N/A'}
                   </h2>
                   {orderStatus.order_id && (
                     <p
@@ -237,7 +247,7 @@ const TrackOrder: React.FC = () => {
                     className="text-sm font-medium"
                     style={{ fontFamily: 'Manrope, sans-serif' }}
                   >
-                    {orderStatus.status}
+                    {orderStatus.status || 'Unknown Status'}
                   </span>
                 </div>
               </div>
@@ -319,27 +329,27 @@ const TrackOrder: React.FC = () => {
                               className="font-semibold text-[#2b2b2b] text-sm sm:text-base"
                               style={{ fontFamily: 'Manrope, sans-serif' }}
                             >
-                              {event.status}
+                              {event.status || 'Status Update'}
                             </h4>
                             <span
                               className="text-xs sm:text-sm text-gray-500 flex-shrink-0"
                               style={{ fontFamily: 'Manrope, sans-serif' }}
                             >
-                              {event.date}
+                              {event.date || 'N/A'}
                             </span>
                           </div>
                           <p
                             className="text-xs sm:text-sm text-gray-600 mb-1"
                             style={{ fontFamily: 'Manrope, sans-serif' }}
                           >
-                            {event.description}
+                            {event.description || 'No description available'}
                           </p>
                           {event.location && (
                             <p
                               className="text-xs text-gray-500"
                               style={{ fontFamily: 'Manrope, sans-serif' }}
                             >
-                              {event.location}
+                              📍 {event.location}
                             </p>
                           )}
                         </div>
@@ -348,33 +358,6 @@ const TrackOrder: React.FC = () => {
                   </div>
                 </div>
               )}
-
-            {/* Help Section */}
-            {/* <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6">
-              <h4
-                className="font-semibold text-[#2b2b2b] mb-2 text-sm sm:text-base"
-                style={{ fontFamily: 'Manrope, sans-serif' }}
-              >
-                Need Help?
-              </h4>
-              <p
-                className="text-xs sm:text-sm text-gray-600 mb-3"
-                style={{ fontFamily: 'Manrope, sans-serif' }}
-              >
-                If you have any questions about your order, please contact our
-                customer support team.
-              </p>
-              <button
-                onClick={() => {
-                  // You can add navigation to contact/support page here
-                  console.log('Contact support clicked');
-                }}
-                className="text-xs sm:text-sm font-medium text-[#3da467] hover:text-[#2e8a39] transition-colors"
-                style={{ fontFamily: 'Manrope, sans-serif' }}
-              >
-                Contact Support →
-              </button>
-            </div> */}
           </div>
         )}
 
