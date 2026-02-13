@@ -10,16 +10,16 @@ import {
 import { useRefill } from '../Services/refillApi';
 
 interface TrackingEvent {
-  date: string;
-  status: string;
-  location: string;
-  description: string;
+  date?: string;
+  status?: string;
+  location?: string;
+  description?: string;
 }
 
 interface OrderStatus {
-  batch_id: string;
   order_id?: string;
-  status: string;
+  batch_id?: string;
+  status?: string;
   estimated_delivery?: string;
   current_location?: string;
   tracking_history?: TrackingEvent[];
@@ -36,7 +36,7 @@ const TrackOrder: React.FC = () => {
     e.preventDefault();
 
     if (!orderNumber.trim()) {
-      setLocalError('Please enter a batch ID');
+      setLocalError('Please enter an order ID');
       return;
     }
 
@@ -52,13 +52,12 @@ const TrackOrder: React.FC = () => {
     } catch (err) {
       console.error('Failed to track order:', err);
       setLocalError(
-        'Order not found. Please check your batch ID and try again.',
+        'Order not found. Please check your order ID and try again.',
       );
     }
   };
 
   const getStatusIcon = (status?: string) => {
-    // Add null/undefined check
     if (!status) {
       return <Clock className="w-5 h-5 text-gray-600" />;
     }
@@ -99,7 +98,6 @@ const TrackOrder: React.FC = () => {
   };
 
   const getStatusColor = (status?: string) => {
-    // Add null/undefined check
     if (!status) {
       return 'bg-gray-50 text-gray-700';
     }
@@ -154,7 +152,7 @@ const TrackOrder: React.FC = () => {
               lineHeight: '150%',
             }}
           >
-            Enter your batch ID to track your delivery
+            Enter your order ID to track your delivery
           </p>
         </div>
 
@@ -170,7 +168,7 @@ const TrackOrder: React.FC = () => {
                     setOrderNumber(e.target.value);
                     setLocalError(null);
                   }}
-                  placeholder="Enter your batch ID"
+                  placeholder="Enter your order ID (e.g., BA-N5V0GVFF6S)"
                   className="w-full px-4 py-3 sm:py-3.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3da467] focus:border-transparent text-sm sm:text-base"
                   style={{
                     fontFamily: 'Manrope, sans-serif',
@@ -220,7 +218,7 @@ const TrackOrder: React.FC = () => {
                     className="text-sm text-gray-600 mb-1"
                     style={{ fontFamily: 'Manrope, sans-serif' }}
                   >
-                    Batch ID
+                    Order ID
                   </p>
                   <h2
                     className="text-xl sm:text-2xl font-bold text-[#2b2b2b]"
@@ -228,16 +226,8 @@ const TrackOrder: React.FC = () => {
                       fontFamily: 'Familjen Grotesk, sans-serif',
                     }}
                   >
-                    {orderStatus.batch_id || 'N/A'}
+                    {orderStatus.order_id || orderStatus.batch_id || 'N/A'}
                   </h2>
-                  {orderStatus.order_id && (
-                    <p
-                      className="text-xs text-gray-500 mt-1"
-                      style={{ fontFamily: 'Manrope, sans-serif' }}
-                    >
-                      Order: {orderStatus.order_id}
-                    </p>
-                  )}
                 </div>
                 <div
                   className={`flex items-center gap-2 px-4 py-2 rounded-full self-start sm:self-auto ${getStatusColor(orderStatus.status)}`}
@@ -331,19 +321,23 @@ const TrackOrder: React.FC = () => {
                             >
                               {event.status || 'Status Update'}
                             </h4>
-                            <span
-                              className="text-xs sm:text-sm text-gray-500 flex-shrink-0"
+                            {event.date && (
+                              <span
+                                className="text-xs sm:text-sm text-gray-500 flex-shrink-0"
+                                style={{ fontFamily: 'Manrope, sans-serif' }}
+                              >
+                                {event.date}
+                              </span>
+                            )}
+                          </div>
+                          {event.description && (
+                            <p
+                              className="text-xs sm:text-sm text-gray-600 mb-1"
                               style={{ fontFamily: 'Manrope, sans-serif' }}
                             >
-                              {event.date || 'N/A'}
-                            </span>
-                          </div>
-                          <p
-                            className="text-xs sm:text-sm text-gray-600 mb-1"
-                            style={{ fontFamily: 'Manrope, sans-serif' }}
-                          >
-                            {event.description || 'No description available'}
-                          </p>
+                              {event.description}
+                            </p>
+                          )}
                           {event.location && (
                             <p
                               className="text-xs text-gray-500"
@@ -378,7 +372,7 @@ const TrackOrder: React.FC = () => {
                 className="text-sm sm:text-base text-gray-600"
                 style={{ fontFamily: 'Manrope, sans-serif' }}
               >
-                Enter your batch ID above to see real-time tracking information
+                Enter your order ID above to see real-time tracking information
                 for your delivery.
               </p>
             </div>
