@@ -6,28 +6,39 @@ import {
   CheckCircle,
   Clock,
   AlertCircle,
+  XCircle,
+  ShoppingBag,
 } from 'lucide-react';
 import { useRefill } from '../Services/refillApi';
 
-interface TrackingEvent {
-  date?: string;
-  status?: string;
-  location?: string;
-  description?: string;
+interface OrderItem {
+  product_name: string;
+  product_image: string;
+  quantity: number;
+  unit_price: number;
+  order_price: number;
+  dosage?: string;
+  status: string;
 }
 
-interface OrderStatus {
-  order_id?: string;
-  batch_id?: string;
-  status?: string;
-  estimated_delivery?: string;
-  current_location?: string;
-  tracking_history?: TrackingEvent[];
+interface OrderData {
+  batch_id: string;
+  status: string;
+  created_at: string;
+  items_total: string;
+  grand_total: number;
+  delivery_charge: number;
+  payment_method: string;
+  order_items: OrderItem[];
+  customer_name?: string;
+  customer_email?: string;
+  customer_phone?: string;
+  transaction_status?: string;
 }
 
 const TrackOrder: React.FC = () => {
   const [orderNumber, setOrderNumber] = useState('');
-  const [orderStatus, setOrderStatus] = useState<OrderStatus | null>(null);
+  const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [localError, setLocalError] = useState<string | null>(null);
 
   const { trackOrder, isLoading, error: apiError } = useRefill();
@@ -41,20 +52,85 @@ const TrackOrder: React.FC = () => {
     }
 
     setLocalError(null);
-    setOrderStatus(null);
+    setOrderData(null);
 
     try {
       console.log('Tracking order:', orderNumber);
-      const response = await trackOrder(orderNumber.trim());
+      const response: any = await trackOrder(orderNumber.trim());
       console.log('Tracking response:', response);
 
-      setOrderStatus(response);
+      // Check if response has the order object
+      if (!response || !response.order) {
+        setLocalError(
+          'Order not found. Please check your order ID and try again.',
+        );
+        return;
+      }
+
+      const orderInfo = response.order;
+
+      // Check if order object is null
+      if (orderInfo === null) {
+        setLocalError(
+          'Order not found. Please check your order ID or contact support.',
+        );
+        return;
+      }
+
+      //  Extract order data
+      const extractedData: OrderData = {
+        batch_id: orderInfo.batch_id || 'N/A',
+        status: orderInfo.single_order?.status || 'pending',
+        created_at: orderInfo.created_at || '',
+        items_total: orderInfo.items_total || '0',
+        grand_total: orderInfo.grand_total || 0,
+        delivery_charge: orderInfo.delivery_charge || 0,
+        payment_method: orderInfo.payment_method || 'N/A',
+        order_items:
+          orderInfo.order?.map((item: any) => ({
+            product_name: item.product_name || 'Unknown Product',
+            product_image: item.product_image || '',
+            quantity: item.quantity || 1,
+            unit_price: item.unit_price || 0,
+            order_price: item.order_price || 0,
+            dosage: item.dosage || '',
+            status: item.status || 'pending',
+          })) || [],
+        customer_name: orderInfo.session?.customer?.name || '',
+        customer_email: orderInfo.session?.customer?.email || '',
+        customer_phone: orderInfo.session?.customer?.phone || '',
+        transaction_status: orderInfo.transaction?.status || 'pending',
+      };
+
+      setOrderData(extractedData);
+      setOrderNumber('');
     } catch (err) {
       console.error('Failed to track order:', err);
-      setLocalError(
-        'Order not found. Please check your order ID and try again.',
-      );
+
+      if (err instanceof Error) {
+        if (err.message.includes('404')) {
+          setLocalError(
+            'Order not found. Please check your order ID and try again.',
+          );
+        } else if (err.message.includes('500')) {
+          setLocalError(
+            'Server error. Please try again later or contact support.',
+          );
+        } else {
+          setLocalError(
+            'Unable to track order at this time. Please try again later.',
+          );
+        }
+      } else {
+        setLocalError('An unexpected error occurred. Please try again.');
+      }
     }
+  };
+
+  const handleClearResults = () => {
+    setOrderData(null);
+    setLocalError(null);
+    setOrderNumber('');
   };
 
   const getStatusIcon = (status?: string) => {
@@ -64,24 +140,10 @@ const TrackOrder: React.FC = () => {
 
     const statusLower = status.toLowerCase();
 
-    if (statusLower.includes('confirmed') || statusLower.includes('placed')) {
+    if (statusLower.includes('approved') || statusLower.includes('paid')) {
       return <CheckCircle className="w-5 h-5 text-green-600" />;
-    } else if (
-      statusLower.includes('dispatch') ||
-      statusLower.includes('packed') ||
-      statusLower.includes('ready')
-    ) {
-      return <Package className="w-5 h-5 text-blue-600" />;
-    } else if (
-      statusLower.includes('transit') ||
-      statusLower.includes('shipping')
-    ) {
-      return <Truck className="w-5 h-5 text-orange-600" />;
-    } else if (
-      statusLower.includes('delivery') ||
-      statusLower.includes('arriving')
-    ) {
-      return <Truck className="w-5 h-5 text-purple-600" />;
+    } else if (statusLower.includes('pending')) {
+      return <Clock className="w-5 h-5 text-orange-600" />;
     } else if (
       statusLower.includes('delivered') ||
       statusLower.includes('completed')
@@ -93,7 +155,7 @@ const TrackOrder: React.FC = () => {
     ) {
       return <AlertCircle className="w-5 h-5 text-red-600" />;
     } else {
-      return <Clock className="w-5 h-5 text-gray-600" />;
+      return <Package className="w-5 h-5 text-blue-600" />;
     }
   };
 
@@ -104,16 +166,15 @@ const TrackOrder: React.FC = () => {
 
     const statusLower = status.toLowerCase();
 
-    if (
+    if (statusLower.includes('approved') || statusLower.includes('paid')) {
+      return 'bg-green-50 text-green-700';
+    } else if (statusLower.includes('pending')) {
+      return 'bg-orange-50 text-orange-700';
+    } else if (
       statusLower.includes('delivered') ||
       statusLower.includes('completed')
     ) {
       return 'bg-green-50 text-green-700';
-    } else if (
-      statusLower.includes('transit') ||
-      statusLower.includes('delivery')
-    ) {
-      return 'bg-orange-50 text-orange-700';
     } else if (
       statusLower.includes('cancel') ||
       statusLower.includes('failed')
@@ -121,6 +182,22 @@ const TrackOrder: React.FC = () => {
       return 'bg-red-50 text-red-700';
     } else {
       return 'bg-blue-50 text-blue-700';
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return 'N/A';
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch {
+      return dateString;
     }
   };
 
@@ -152,7 +229,7 @@ const TrackOrder: React.FC = () => {
               lineHeight: '150%',
             }}
           >
-            Enter your order ID to track your delivery
+            Enter your batch ID to track your delivery
           </p>
         </div>
 
@@ -168,7 +245,7 @@ const TrackOrder: React.FC = () => {
                     setOrderNumber(e.target.value);
                     setLocalError(null);
                   }}
-                  placeholder="Enter your order ID (e.g., BA-N5V0GVFF6S)"
+                  placeholder="Enter your batch ID (e.g., BA-9LMIV1SZJF)"
                   className="w-full px-4 py-3 sm:py-3.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3da467] focus:border-transparent text-sm sm:text-base"
                   style={{
                     fontFamily: 'Manrope, sans-serif',
@@ -197,8 +274,8 @@ const TrackOrder: React.FC = () => {
             </div>
 
             {displayError && (
-              <div className="mt-3 flex items-center gap-2 text-sm text-red-600">
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <div className="mt-3 p-3 bg-red-50 border border-red-100 rounded-lg flex items-start gap-2 text-sm text-red-600">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 <p style={{ fontFamily: 'Manrope, sans-serif' }}>
                   {displayError}
                 </p>
@@ -208,9 +285,21 @@ const TrackOrder: React.FC = () => {
         </div>
 
         {/* Order Status Results */}
-        {orderStatus && (
+        {orderData && (
           <div className="space-y-6">
-            {/* Status Summary Card */}
+            {/* Clear Results Button */}
+            <div className="flex justify-end">
+              <button
+                onClick={handleClearResults}
+                className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                style={{ fontFamily: 'Manrope, sans-serif' }}
+              >
+                <XCircle className="w-4 h-4" />
+                Clear Results
+              </button>
+            </div>
+
+            {/* Order Summary Card */}
             <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-8">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
@@ -218,7 +307,7 @@ const TrackOrder: React.FC = () => {
                     className="text-sm text-gray-600 mb-1"
                     style={{ fontFamily: 'Manrope, sans-serif' }}
                   >
-                    Order ID
+                    Batch ID
                   </p>
                   <h2
                     className="text-xl sm:text-2xl font-bold text-[#2b2b2b]"
@@ -226,137 +315,196 @@ const TrackOrder: React.FC = () => {
                       fontFamily: 'Familjen Grotesk, sans-serif',
                     }}
                   >
-                    {orderStatus.order_id || orderStatus.batch_id || 'N/A'}
+                    {orderData.batch_id}
                   </h2>
-                </div>
-                <div
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full self-start sm:self-auto ${getStatusColor(orderStatus.status)}`}
-                >
-                  <div className="w-2 h-2 bg-current rounded-full animate-pulse"></div>
-                  <span
-                    className="text-sm font-medium"
+                  <p
+                    className="text-xs text-gray-500 mt-1"
                     style={{ fontFamily: 'Manrope, sans-serif' }}
                   >
-                    {orderStatus.status || 'Unknown Status'}
-                  </span>
+                    Placed: {formatDate(orderData.created_at)}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full ${getStatusColor(orderData.status)}`}
+                  >
+                    <div className="w-2 h-2 bg-current rounded-full animate-pulse"></div>
+                    <span
+                      className="text-sm font-medium capitalize"
+                      style={{ fontFamily: 'Manrope, sans-serif' }}
+                    >
+                      {orderData.status}
+                    </span>
+                  </div>
+                  {orderData.transaction_status && (
+                    <div
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-center ${getStatusColor(orderData.transaction_status)}`}
+                    >
+                      {getStatusIcon(orderData.transaction_status)}
+                      <span
+                        className="text-xs font-medium capitalize"
+                        style={{ fontFamily: 'Manrope, sans-serif' }}
+                      >
+                        Payment: {orderData.transaction_status}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {orderStatus.estimated_delivery && (
-                  <div className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p
-                        className="text-xs sm:text-sm text-gray-600 mb-1"
-                        style={{ fontFamily: 'Manrope, sans-serif' }}
-                      >
-                        Estimated Delivery
-                      </p>
-                      <p
-                        className="text-sm sm:text-base font-medium text-[#2b2b2b]"
-                        style={{ fontFamily: 'Manrope, sans-serif' }}
-                      >
-                        {orderStatus.estimated_delivery}
-                      </p>
-                    </div>
+              {/* Order Details Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 pb-6 border-b">
+                <div className="flex items-start gap-3">
+                  <ShoppingBag className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p
+                      className="text-xs sm:text-sm text-gray-600 mb-1"
+                      style={{ fontFamily: 'Manrope, sans-serif' }}
+                    >
+                      Order Total
+                    </p>
+                    <p
+                      className="text-sm sm:text-base font-medium text-[#2b2b2b]"
+                      style={{ fontFamily: 'Manrope, sans-serif' }}
+                    >
+                      ₦{orderData.grand_total.toLocaleString()}
+                    </p>
+                    <p
+                      className="text-xs text-gray-500"
+                      style={{ fontFamily: 'Manrope, sans-serif' }}
+                    >
+                      Items: ₦{parseInt(orderData.items_total).toLocaleString()}{' '}
+                      + Delivery: ₦{orderData.delivery_charge.toLocaleString()}
+                    </p>
                   </div>
-                )}
+                </div>
 
-                {orderStatus.current_location && (
-                  <div className="flex items-start gap-3">
-                    <Truck className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p
-                        className="text-xs sm:text-sm text-gray-600 mb-1"
-                        style={{ fontFamily: 'Manrope, sans-serif' }}
-                      >
-                        Current Location
-                      </p>
-                      <p
-                        className="text-sm sm:text-base font-medium text-[#2b2b2b]"
-                        style={{ fontFamily: 'Manrope, sans-serif' }}
-                      >
-                        {orderStatus.current_location}
-                      </p>
-                    </div>
+                <div className="flex items-start gap-3">
+                  <Truck className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p
+                      className="text-xs sm:text-sm text-gray-600 mb-1"
+                      style={{ fontFamily: 'Manrope, sans-serif' }}
+                    >
+                      Payment Method
+                    </p>
+                    <p
+                      className="text-sm sm:text-base font-medium text-[#2b2b2b] capitalize"
+                      style={{ fontFamily: 'Manrope, sans-serif' }}
+                    >
+                      {orderData.payment_method}
+                    </p>
                   </div>
-                )}
+                </div>
               </div>
-            </div>
 
-            {/* Tracking Timeline */}
-            {orderStatus.tracking_history &&
-              orderStatus.tracking_history.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-8">
+              {/* Customer Info */}
+              {orderData.customer_name && (
+                <div className="mb-6 pb-6 border-b">
                   <h3
-                    className="text-lg sm:text-xl font-bold text-[#2b2b2b] mb-6"
-                    style={{
-                      fontFamily: 'Familjen Grotesk, sans-serif',
-                    }}
+                    className="text-sm font-semibold text-gray-700 mb-3"
+                    style={{ fontFamily: 'Manrope, sans-serif' }}
                   >
-                    Tracking History
+                    Customer Information
                   </h3>
-
-                  <div className="space-y-4 sm:space-y-6">
-                    {orderStatus.tracking_history.map((event, index) => (
-                      <div key={index} className="flex gap-4">
-                        {/* Timeline indicator */}
-                        <div className="flex flex-col items-center">
-                          <div className="flex-shrink-0">
-                            {getStatusIcon(event.status)}
-                          </div>
-                          {index !==
-                            orderStatus.tracking_history!.length - 1 && (
-                            <div className="w-0.5 h-full bg-gray-200 mt-2"></div>
-                          )}
-                        </div>
-
-                        {/* Event details */}
-                        <div className="flex-1 pb-6">
-                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-4 mb-2">
-                            <h4
-                              className="font-semibold text-[#2b2b2b] text-sm sm:text-base"
-                              style={{ fontFamily: 'Manrope, sans-serif' }}
-                            >
-                              {event.status || 'Status Update'}
-                            </h4>
-                            {event.date && (
-                              <span
-                                className="text-xs sm:text-sm text-gray-500 flex-shrink-0"
-                                style={{ fontFamily: 'Manrope, sans-serif' }}
-                              >
-                                {event.date}
-                              </span>
-                            )}
-                          </div>
-                          {event.description && (
-                            <p
-                              className="text-xs sm:text-sm text-gray-600 mb-1"
-                              style={{ fontFamily: 'Manrope, sans-serif' }}
-                            >
-                              {event.description}
-                            </p>
-                          )}
-                          {event.location && (
-                            <p
-                              className="text-xs text-gray-500"
-                              style={{ fontFamily: 'Manrope, sans-serif' }}
-                            >
-                              📍 {event.location}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                  <div className="space-y-2">
+                    <p
+                      className="text-sm text-gray-600"
+                      style={{ fontFamily: 'Manrope, sans-serif' }}
+                    >
+                      <span className="font-medium text-gray-700">Name:</span>{' '}
+                      {orderData.customer_name}
+                    </p>
+                    {orderData.customer_email && (
+                      <p
+                        className="text-sm text-gray-600"
+                        style={{ fontFamily: 'Manrope, sans-serif' }}
+                      >
+                        <span className="font-medium text-gray-700">
+                          Email:
+                        </span>{' '}
+                        {orderData.customer_email}
+                      </p>
+                    )}
+                    {orderData.customer_phone && (
+                      <p
+                        className="text-sm text-gray-600"
+                        style={{ fontFamily: 'Manrope, sans-serif' }}
+                      >
+                        <span className="font-medium text-gray-700">
+                          Phone:
+                        </span>{' '}
+                        {orderData.customer_phone}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
+
+              {/* Order Items */}
+              <div>
+                <h3
+                  className="text-base sm:text-lg font-semibold text-[#2b2b2b] mb-4"
+                  style={{ fontFamily: 'Manrope, sans-serif' }}
+                >
+                  Order Items ({orderData.order_items.length})
+                </h3>
+                <div className="space-y-4">
+                  {orderData.order_items.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex gap-4 p-4 bg-gray-50 rounded-lg"
+                    >
+                      <img
+                        src={item.product_image}
+                        alt={item.product_name}
+                        className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-lg bg-white"
+                        onError={(e) => {
+                          e.currentTarget.src =
+                            '/prefill-images/medicine bottle.svg';
+                        }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h4
+                          className="font-medium text-sm sm:text-base text-[#2b2b2b] truncate"
+                          style={{ fontFamily: 'Manrope, sans-serif' }}
+                        >
+                          {item.product_name}
+                        </h4>
+                        {item.dosage && (
+                          <p
+                            className="text-xs text-gray-500 mt-1"
+                            style={{ fontFamily: 'Manrope, sans-serif' }}
+                          >
+                            {item.dosage}
+                          </p>
+                        )}
+                        <div className="flex items-center justify-between mt-2">
+                          <p
+                            className="text-xs sm:text-sm text-gray-600"
+                            style={{ fontFamily: 'Manrope, sans-serif' }}
+                          >
+                            Qty: {item.quantity} × ₦
+                            {item.unit_price.toLocaleString()}
+                          </p>
+                          <p
+                            className="text-sm sm:text-base font-semibold text-[#2b2b2b]"
+                            style={{ fontFamily: 'Manrope, sans-serif' }}
+                          >
+                            ₦{item.order_price.toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
-        {/* Empty State - When no order is being tracked */}
-        {!orderStatus && !isLoading && (
+        {/* Empty State */}
+        {!orderData && !isLoading && !displayError && (
           <div className="bg-white rounded-2xl shadow-sm p-8 sm:p-12 text-center">
             <div className="max-w-md mx-auto">
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -372,8 +520,8 @@ const TrackOrder: React.FC = () => {
                 className="text-sm sm:text-base text-gray-600"
                 style={{ fontFamily: 'Manrope, sans-serif' }}
               >
-                Enter your order ID above to see real-time tracking information
-                for your delivery.
+                Enter your batch ID above to see your order details and tracking
+                information.
               </p>
             </div>
           </div>

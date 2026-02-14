@@ -17,6 +17,7 @@ import PaymentSuccess from './components/Payment';
 import PaymentFailed from './components/PaymentFail';
 import WellnessPersona from './components/Persona';
 import TrackOrder from './components/TrackOrder';
+import NotFound from './components/NotFound';
 
 // Home Page Component
 function HomePage() {
@@ -96,6 +97,10 @@ function TrackOrderPage() {
   return <TrackOrder />;
 }
 
+function NotFoundPage() {
+  return <NotFound />;
+}
+
 function RefillApp() {
   return (
     <Routes>
@@ -116,6 +121,7 @@ function RefillApp() {
       <Route path="payment-failed" element={<PaymentFailedPage />} />
       <Route path="persona" element={<WellnessPersonaPage />} />
       <Route path="track-order" element={<TrackOrderPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
