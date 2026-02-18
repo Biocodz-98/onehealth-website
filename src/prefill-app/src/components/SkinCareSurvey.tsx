@@ -95,7 +95,7 @@ const SurveyComponent: React.FC = () => {
     };
 
     fetchProducts();
-  }, [isCheckingSession, sessionUuid]);
+  }, [isCheckingSession, sessionUuid, getProductsV2]);
 
   const toggleSelection = (id: number) => {
     setSelectedItems((prev) =>
