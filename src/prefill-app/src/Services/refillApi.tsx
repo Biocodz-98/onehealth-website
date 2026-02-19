@@ -209,7 +209,7 @@ interface RefillContextType {
   clearSession: () => void;
 }
 
-const BASE_URL = 'https://dev.onehealthng.com/api/v1/refill';
+const BASE_URL = 'https://onehealthng.com/api/v1/refill';
 
 class RefillAPIService {
   private async request<T>(
