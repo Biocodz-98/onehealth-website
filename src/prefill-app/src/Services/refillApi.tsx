@@ -209,14 +209,14 @@ interface RefillContextType {
   clearSession: () => void;
 }
 
-const BASE_URL = 'https://onehealthng.com/api/v1/refill';
+const VITE_API_REFILL_URL = 'https://onehealthng.com/api/v1/refill';
 
 class RefillAPIService {
   private async request<T>(
     endpoint: string,
     options: RequestInit = {},
   ): Promise<T> {
-    const url = `${BASE_URL}${endpoint}`;
+    const url = `${VITE_API_REFILL_URL}${endpoint}`;
     const defaultHeaders = { 'Content-Type': 'application/json' };
 
     try {
