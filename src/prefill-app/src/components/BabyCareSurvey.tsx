@@ -95,7 +95,7 @@ const BabyCareComponent: React.FC = () => {
     };
 
     fetchProducts();
-  }, [isCheckingSession, sessionUuid, getProductsV2]);
+  }, [isCheckingSession, sessionUuid]);
 
   const toggleSelection = (id: number) => {
     setSelectedItems((prev) =>

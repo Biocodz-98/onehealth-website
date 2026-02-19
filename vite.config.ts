@@ -15,6 +15,6 @@ export default defineConfig({
     fs: {
       allow: ['..'],
     },
-    port: 3000,
+    port: 5100,
   },
 });
